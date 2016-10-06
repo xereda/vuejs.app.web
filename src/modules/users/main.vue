@@ -1,10 +1,43 @@
 <template>
   <div>
+    <section class="section">
+      <div class="container">
+        <h1 class="title">Cadastro de usuários</h1>
+        <h2 class="subtitle">aqui entra o subtitle</h2>
+        <hr>
 
-    <h3>USERS</h3>
-
-    <h4>{{ user }}</h4>
-
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th class="is-hidden-mobile">E-mail</th>
+          <th class="is-hidden-mobile">Admin?</th>
+          <th class="is-hidden-mobile">Ativo?</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="doc in docs">
+          <td>{{ doc.name }}</td>
+          <td class="is-hidden-mobile">{{ doc.email }}</td>
+          <td class="is-hidden-mobile">{{ (doc.admin) ? 'Sim' : 'Não' }}</td>
+          <td class="is-hidden-mobile">{{ (doc.active) ? 'Sim' : 'Não' }}</td>
+          <td class="is-icon">
+            <a href="#">
+              <i class="fa fa-folder-open"></i>
+            </a>
+          </td>
+          <td class="is-icon">
+            <a href="#">
+              <i class="fa fa-trash"></i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
   </div>
 </template>
 
