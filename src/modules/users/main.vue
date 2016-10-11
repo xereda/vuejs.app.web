@@ -23,20 +23,20 @@
             <div class="level-item">
               <p class="control has-addons">
                 <span class="select">
-                  <select @change="selectChanged" v-model="control.filters.search.fieldName">
+                  <select :class="getCSSState()" @change="selectChanged" v-model="control.filters.search.fieldName">
                     <option value="q">Todos</option>
                     <option v-for="(col, index) in collection" v-if="isSearchFilter(col)" :value="index">{{ col.label }}</option>
                   </select>
                 </span>
-                <input class="input" type="text"
+                <input :class="'input ' + getCSSState()" type="text"
                       ref="searchTextField"
                        v-focus
                        v-model="control.filters.search.text"
-                       @keyup.enter="(control.filters.search.text.length > 3) ? localUpdateFiltersSearch() : null"
+                       @keyup.enter="(control.filters.search.text.length > 3) ? localUpdateSearchFilters() : null"
                        placeholder="Filtrar o resultado">
                 <button class="button is-primary"
                         :disabled="control.filters.search.text.length <= 3"
-                        @click="localUpdateFiltersSearch">
+                        @click="localUpdateSearchFilters">
                   Filtrar
                 </button>
               </p>
@@ -44,10 +44,19 @@
           </div>
           <!-- Right side -->
           <div class="level-right">
-            <p class="level-item"><strong>Todos</strong></p>
-            <p class="level-item"><a>Ativos</a></p>
-            <p class="level-item"><a>Administradores</a></p>
-            <p class="level-item"><a class="button is-success" @click="modalOpen()">Novo</a></p>
+            <p class="level-item"><a :class="getCSSState()" @click="removeAllBooleanFilter([])"><strong>Todos</strong></a></p>
+            <p class="level-item"
+               v-for="(col, index) in collection"
+               v-if="col.type === 'boolean'">
+              <a :class="getCSSState()" @click="localAddBooleanFilter(index)" v-if="isBooleanApplied(index) === false"> - {{ col.label }}</a>
+              <span v-else class="tag is-warning is-medium">
+                {{ col.label }}
+                <button @click="localRemoveBooleanFilter(index)" :class="'delete is-small ' + getCSSState()"></button>
+              </span>
+            </p>
+
+
+            <p class="level-item"><a :class="'button is-success ' + getCSSState()" @click="modalOpen()">Novo</a></p>
           </div>
         </nav>
 
@@ -75,13 +84,11 @@
             </tr>
           </tbody>
         </table>
-
         <dm-pagination :current-pag="pagination.currentPag"
                        :total="pagination.total"
                        :page-limite="pagination.limit"
+                       :is-loading="isLoading()"
                        @set-current-pag="changePag"></dm-pagination>
-
-  filters: {{ filters.search }} | control.filters: {{ control.filters.search }}
   </div>
 </section>
 </template>
@@ -97,6 +104,7 @@ export default {
     return {
       docs: [],
       control: {
+        isLoading: false,
         filters: {
           search: {
             text: '',
@@ -111,7 +119,6 @@ export default {
     dmPagination
   },
   mounted () {
-    console.log(this.topbarConfig)
     topbar.config(this.topbarConfig)
     this.getAll()
   },
@@ -120,15 +127,30 @@ export default {
       'updateUserSession',
       'updateCurrentPag',
       'updateTotalDocs',
-      'updateFiltersSearchUsers'
+      'updateFiltersSearchUsers',
+      'addBooleanFilter',
+      'removeBooleanFilter',
+      'removeAllBooleanFilter'
     ]),
     selectChanged () {
-      console.log('dentro')
       this.$refs.searchTextField.focus()
     },
-    localUpdateFiltersSearch () {
+    localUpdateSearchFilters () {
       const _search = this.control.filters.search
       this.updateFiltersSearchUsers({ text: _search.text, fieldName: _search.fieldName, state: 'applied' })
+    },
+    localRemoveBooleanFilter (field) {
+      this.removeBooleanFilter(field)
+    },
+    localAddBooleanFilter (field) {
+      this.addBooleanFilter(field)
+    },
+    isBooleanApplied (index) {
+      const _boolean = this.filters.boolean
+      if (_boolean.indexOf(index) > -1) {
+        return true
+      }
+      return false
     },
     clearSearchFields () {
       const _obj = { text: '', fieldName: 'q', state: '' } // defino o objeto para zerar as propriedades
@@ -139,10 +161,6 @@ export default {
       this.updateCurrentPag(pag)
       this.getAll()
     },
-    // localUpdateFiltersSearch () {
-    //   this.control.filter.search.applied = true
-    //   this.updateFiltersSearchUsers(control.filters.search)
-    // },
     isSearchFilter (col) {
       if (((col.type === 'text') || (col.type === 'email')) && (col.filter === true)) {
         return true
@@ -166,8 +184,26 @@ export default {
           return doc[index]
       }
     },
-    getAll () {
+    startLoading () {
+      this.control.isLoading = true
       topbar.show()
+    },
+    stopLoading () {
+      this.control.isLoading = false
+      topbar.hide()
+    },
+    isLoading () {
+      return this.control.isLoading
+    },
+    getCSSState () {
+      if (this.isLoading() === true) {
+        return 'is-disabled'
+      }
+      return ''
+    },
+    getAll () {
+      this.startLoading()
+      const _boolean = this.filters.boolean
       const _search = this.filters.search
       const _limit = this.pagination.limit
       let _params = ''
@@ -179,8 +215,11 @@ export default {
         } else {
           _params += '/' + _search.text + '/i'
         }
-        this.updateCurrentPag(1)
       }
+
+      _boolean.forEach((element, index) => {
+        _params += '&' + element + '=true'
+      })
 
       let _pag = this.pagination.currentPag
       _params += '&_limit=' + _limit
@@ -190,11 +229,10 @@ export default {
       this.$http.get('http://localhost:5000/users/?_fields=_id,name,email,active,admin' + _params).then((response) => {
         this.updateTotalDocs(response.headers.get('X-Total-Count'))
         this.docs = response.body
-        topbar.hide()
+        this.stopLoading()
       }, (response) => {
         // error callback
-        console.log('erro no http: ', response)
-        topbar.hide()
+        this.stopLoading()
       })
     }
   },
@@ -227,7 +265,11 @@ export default {
   },
   watch: {
     'filters.search.state' (val, oldVal) {
-      console.log('dentro do watch')
+      this.updateCurrentPag(1)
+      this.getAll()
+    },
+    'filters.boolean' (val, oldVal) {
+      this.updateCurrentPag(1)
       this.getAll()
     }
   }

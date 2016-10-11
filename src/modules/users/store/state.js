@@ -64,6 +64,7 @@ export default {
       text: '',
       fieldName: '',
       state: ''
-    }
+    },
+    boolean: []
   }
 }

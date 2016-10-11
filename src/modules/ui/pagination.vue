@@ -40,8 +40,6 @@ export default {
   },
   computed: {
     pages () {
-      console.log('entrou no pages()')
-
       const totalPages = this.totalPages()
       let _array = []
 
@@ -55,25 +53,14 @@ export default {
         _array = _.range(this.currentPag - 2, this.currentPag + (CENTRAL_PAGE_BUTTONS - 2))
       }
 
-      console.log('_array do computed: ', _array)
       return _array
     }
   },
   mounted () {
-    console.log('dentro do componente pagination: ', new Date())
   },
   methods: {
-    startLoading () {
-      this.loadingControl = true
-    },
-    stopLoading () {
-      this.loadingControl = false
-    },
-    isLoading () {
-      return this.loadingControl
-    },
     setCSSBackNextButton () {
-      if (this.isLoading() === true) {
+      if (this.isLoading === true) {
         return 'button is-disabled'
       }
       return 'button'
@@ -83,7 +70,7 @@ export default {
       if (this.iscurrentPagInLoop(currentPag, pag)) {
         _css += ' is-info'
       }
-      if (this.isLoading() === true) {
+      if (this.isLoading === true) {
         _css += ' is-disabled'
       }
       return _css
@@ -95,7 +82,7 @@ export default {
       return false
     },
     setPage (pag) {
-      this.startLoading()
+      console.log('isLoading: ', this.isLoading)
       this.$emit('set-current-pag', pag)
     },
     defPrevButton () {
@@ -115,15 +102,8 @@ export default {
       return _t
     }
   },
-  props: [ 'total', 'currentPag', 'pageLimite' ],
-  components: {},
-  watch: {
-    currentPag (val, oldVal) {
-      console.log('valor anterior: ', oldVal)
-      console.log('valor novo: ', val)
-      this.stopLoading()
-    }
-  }
+  props: [ 'total', 'currentPag', 'pageLimite', 'isLoading' ],
+  components: {}
 }
 </script>
 
