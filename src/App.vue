@@ -7,8 +7,10 @@
 </template>
 
 <script>
+import 'lodash'
+import 'sweetalert'
 import 'font-awesome/css/font-awesome.css'
-import 'bulma/css/bulma.css'
+// import 'bulma/css/bulma.css'
 
 import dmHeader from './modules/ui/header.vue'
 import dmFooter from './modules/ui/footer.vue'
@@ -25,6 +27,12 @@ export default {
 }
 </script>
 
-<style>
+<style lang="sass">
+
+  $blue: #3273dc
+  $grey-light: #b5b5b5
+  $link: $grey-light
+  $link-hover: $blue
+  @import '~bulma'
 
 </style>

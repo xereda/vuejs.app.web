@@ -1,3 +1,3 @@
 export default {
-  paginationLimite: 10
+  outraConfiguracao: 10
 }

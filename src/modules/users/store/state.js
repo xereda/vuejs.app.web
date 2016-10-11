@@ -4,6 +4,7 @@ export default {
     name: {
       type: 'text',
       label: 'Nome',
+      filter: true,
       required: true,
       table: {
         header: {
@@ -15,6 +16,7 @@ export default {
     email: {
       type: 'email',
       label: 'E-mail',
+      filter: true,
       required: true,
       table: {
         header: {
@@ -27,6 +29,7 @@ export default {
     admin: {
       type: 'boolean',
       label: 'Admin',
+      filter: true,
       required: true,
       table: {
         header: {
@@ -39,6 +42,7 @@ export default {
     active: {
       type: 'boolean',
       label: 'Ativo',
+      filter: true,
       required: true,
       table: {
         header: {
@@ -53,6 +57,13 @@ export default {
     },
     updatedById: {
       type: 'objectId'
+    }
+  },
+  filters: {
+    search: {
+      text: '',
+      fieldName: '',
+      state: ''
     }
   }
 }
