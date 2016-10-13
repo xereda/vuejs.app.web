@@ -7,10 +7,11 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 import 'lodash'
 import 'sweetalert'
 import 'font-awesome/css/font-awesome.css'
-// import 'bulma/css/bulma.css'
 
 import dmHeader from './modules/ui/header.vue'
 import dmFooter from './modules/ui/footer.vue'
@@ -20,9 +21,20 @@ export default {
     return {
     }
   },
+  mounted () {
+    // this.$http.options.root = this.config.APIURIBase // nao funcionou
+  },
   components: {
     dmHeader,
     dmFooter
+  },
+  computed: {
+    ...mapState({
+      config: state => {
+        const { config } = state
+        return config
+      }
+    })
   }
 }
 </script>

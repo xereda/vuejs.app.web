@@ -48,7 +48,7 @@
             <p class="level-item"
                v-for="(col, index) in collection"
                v-if="col.type === 'boolean'">
-              <a :class="getCSSState()" @click="localAddBooleanFilter(index)" v-if="isBooleanApplied(index) === false"> - {{ col.label }}</a>
+              <a :class="getCSSState()" @click="localAddBooleanFilter(index)" v-if="isBooleanApplied(index) === false">{{ col.label }}</a>
               <span v-else class="tag is-warning is-medium">
                 {{ col.label }}
                 <button @click="localRemoveBooleanFilter(index)" :class="'delete is-small ' + getCSSState()"></button>
@@ -60,30 +60,35 @@
           </div>
         </nav>
 
-        <table class="table">
-          <thead>
-            <tr>
-              <th v-for="col in collection" v-if="isVisibleHeader(col)" :class="col.table.header.class">{{ col.label }}</th>
-              <th></th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="doc in docs">
-              <td v-for="(col, index) in collection" v-if="isVisibleHeader(col)" :class="col.table.header.class">{{ getValueField(doc, col, index) }}</td>
-              <td class="is-icon">
-                <a href="#">
-                  <i class="fa fa-folder-open"></i>
-                </a>
-              </td>
-              <td class="is-icon">
-                <a href="#">
-                  <i class="fa fa-trash"></i>
-                </a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div ref="tableDiv" class="tableDivClass">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th v-for="col in collection" v-if="isVisibleHeader(col)" :class="col.table.header.class">{{ col.label }}</th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="doc in docs">
+                  <td v-for="(col, index) in collection" v-if="isVisibleHeader(col)" :class="col.table.header.class">{{ getValueField(doc, col, index) }}</td>
+                  <td class="is-icon">
+                    <a href="#">
+                      <i class="fa fa-folder-open"></i>
+                    </a>
+                  </td>
+                  <td class="is-icon">
+                    <a href="#">
+                      <i class="fa fa-trash"></i>
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+
+        {{ returnableColumnFields }}
+
         <dm-pagination :current-pag="pagination.currentPag"
                        :total="pagination.total"
                        :page-limite="pagination.limit"
@@ -94,6 +99,9 @@
 </template>
 
 <script>
+import Spinner from 'spin'
+let spinner
+
 import topbar from 'topbar'
 import { mapState, mapActions } from 'vuex'
 import dmPagination from '../ui/pagination.vue'
@@ -120,6 +128,7 @@ export default {
   },
   mounted () {
     topbar.config(this.topbarConfig)
+    spinner = new Spinner(this.spinnerConfig)
     this.getAll()
   },
   methods: {
@@ -186,10 +195,12 @@ export default {
     },
     startLoading () {
       this.control.isLoading = true
+      spinner.spin(this.$refs.tableDiv)
       topbar.show()
     },
     stopLoading () {
       this.control.isLoading = false
+      spinner.stop()
       topbar.hide()
     },
     isLoading () {
@@ -206,7 +217,9 @@ export default {
       const _boolean = this.filters.boolean
       const _search = this.filters.search
       const _limit = this.pagination.limit
+      let _pag = this.pagination.currentPag
       let _params = ''
+      const _fields = this.returnableColumnFields.join()
 
       if (_search.state === 'applied') {
         _params += '&' + _search.fieldName + '='
@@ -221,12 +234,11 @@ export default {
         _params += '&' + element + '=true'
       })
 
-      let _pag = this.pagination.currentPag
       _params += '&_limit=' + _limit
       _params += '&_pag=' + _pag
 
       // GET /someUrl
-      this.$http.get('http://localhost:5000/users/?_fields=_id,name,email,active,admin' + _params).then((response) => {
+      this.$http.get(this.APIURIBase + 'users/?_fields=' + _fields + _params).then((response) => {
         this.updateTotalDocs(response.headers.get('X-Total-Count'))
         this.docs = response.body
         this.stopLoading()
@@ -242,9 +254,27 @@ export default {
         const { collection } = state.users
         return collection
       },
+      returnableColumnFields: state => {
+        const { collection } = state.users
+        let _arr = []
+        Object.keys(collection).forEach((element) => {
+          if (collection[element].APIReturnable === true) {
+            _arr.push(element)
+          }
+        })
+        return _arr
+      },
+      APIURIBase: state => {
+        const { config } = state
+        return config.APIURIBase
+      },
       topbarConfig: state => {
         const { config } = state
         return config.topbar
+      },
+      spinnerConfig: state => {
+        const { config } = state
+        return config.spinner
       },
       pagination: state => {
         const { config } = state
@@ -277,4 +307,16 @@ export default {
 </script>
 
 <style>
+  .tableDivClass {
+    height: 30em !important;
+    background-color: white;
+  }
+
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity 2s
+  }
+  .fade-enter, .fade-leave-active {
+    opacity: 1s
+  }
+
 </style>

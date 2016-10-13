@@ -1,10 +1,14 @@
 export default {
   collection: {
-    _id: { type: 'objectId' },
+    _id: {
+      type: 'objectId',
+      APIReturnable: true
+    },
     name: {
       type: 'text',
       label: 'Nome',
       filter: true,
+      APIReturnable: true,
       required: true,
       table: {
         header: {
@@ -17,6 +21,7 @@ export default {
       type: 'email',
       label: 'E-mail',
       filter: true,
+      APIReturnable: true,
       required: true,
       table: {
         header: {
@@ -30,6 +35,7 @@ export default {
       type: 'boolean',
       label: 'Admin',
       filter: true,
+      APIReturnable: true,
       required: true,
       table: {
         header: {
@@ -43,6 +49,7 @@ export default {
       type: 'boolean',
       label: 'Ativo',
       filter: true,
+      APIReturnable: true,
       required: true,
       table: {
         header: {
@@ -66,5 +73,6 @@ export default {
       state: ''
     },
     boolean: []
-  }
+  },
+  sort: []
 }
