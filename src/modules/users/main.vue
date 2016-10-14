@@ -7,7 +7,7 @@
         <!-- Main container -->
         <nav class="level">
           <!-- Left side -->
-          <div class="level-left" v-if="filters.search.state === 'applied'">
+          <div class="level-left" v-if="appliedFilters()">
             <span class="">Filtro aplicado:&nbsp;</span>
             <span class="tag is-warning is-medium">
               [{{ (filters.search.fieldName === 'q') ? 'Todos' : filters.search.fieldName }}] {{ filters.search.text }}
@@ -61,10 +61,15 @@
         </nav>
 
         <div ref="tableDiv" class="tableDivClass">
-            <table class="table">
+          <transition name="fade">
+            <table class="table" v-show="transitionTable">
               <thead>
                 <tr>
-                  <th v-for="col in collection" v-if="isVisibleHeader(col)" :class="col.table.header.class">{{ col.label }}</th>
+                  <th v-for="(col, index) in collection" v-if="isVisibleHeader(col)" :class="col.table.header.class">
+                    <a @click="addSortColumn({ name: index, order: true })">
+                      <i class="fa fa-arrow-circle-o-down fa-lg" aria-hidden="true"></i> {{ col.label }}
+                    </a>
+                  </th>
                   <th></th>
                   <th></th>
                 </tr>
@@ -85,10 +90,9 @@
                 </tr>
               </tbody>
             </table>
+          </transition>
         </div>
-
-        {{ returnableColumnFields }}
-
+        <button type="button" name="button" @click="transitionTable = !transitionTable"> aparecer </button>
         <dm-pagination :current-pag="pagination.currentPag"
                        :total="pagination.total"
                        :page-limite="pagination.limit"
@@ -110,6 +114,7 @@ export default {
   name: 'dmUsers',
   data () {
     return {
+      transitionTable: false,
       docs: [],
       control: {
         isLoading: false,
@@ -139,8 +144,12 @@ export default {
       'updateFiltersSearchUsers',
       'addBooleanFilter',
       'removeBooleanFilter',
-      'removeAllBooleanFilter'
+      'removeAllBooleanFilter',
+      'addSortColumn'
     ]),
+    appliedFilters () {
+      return this.filters.search.state === 'applied'
+    },
     selectChanged () {
       this.$refs.searchTextField.focus()
     },
@@ -194,14 +203,17 @@ export default {
       }
     },
     startLoading () {
+      this.transitionTable = false
       this.control.isLoading = true
       spinner.spin(this.$refs.tableDiv)
       topbar.show()
     },
     stopLoading () {
+      clearTimeout(this.startProcess)
       this.control.isLoading = false
       spinner.stop()
       topbar.hide()
+      this.transitionTable = true
     },
     isLoading () {
       return this.control.isLoading
@@ -213,13 +225,20 @@ export default {
       return ''
     },
     getAll () {
-      this.startLoading()
+      const startProcess = setTimeout(() => {
+        if (this.isLoading() === false) {
+          this.startLoading()
+        }
+      }, this.config.delayLoading)
+
       const _boolean = this.filters.boolean
       const _search = this.filters.search
       const _limit = this.pagination.limit
       let _pag = this.pagination.currentPag
       let _params = ''
       const _fields = this.returnableColumnFields.join()
+      const _sort = this.sort.join()
+      console.log('_sort: ', _sort)
 
       if (_search.state === 'applied') {
         _params += '&' + _search.fieldName + '='
@@ -238,13 +257,16 @@ export default {
       _params += '&_pag=' + _pag
 
       // GET /someUrl
-      this.$http.get(this.APIURIBase + 'users/?_fields=' + _fields + _params).then((response) => {
+      const _uri = this.APIURIBase + 'users/?_fields=' + _fields + _params + '&_sort=' + _sort
+      this.$http.get(_uri).then((response) => {
         this.updateTotalDocs(response.headers.get('X-Total-Count'))
         this.docs = response.body
         this.stopLoading()
+        clearTimeout(startProcess)
       }, (response) => {
         // error callback
         this.stopLoading()
+        clearTimeout(startProcess)
       })
     }
   },
@@ -263,6 +285,10 @@ export default {
           }
         })
         return _arr
+      },
+      config: state => {
+        const { config } = state
+        return config
       },
       APIURIBase: state => {
         const { config } = state
@@ -283,6 +309,10 @@ export default {
       filters: state => {
         const { filters } = state.users
         return filters
+      },
+      sort: state => {
+        const { sort } = state.users
+        return sort
       }
     })
   },
@@ -306,17 +336,26 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+
   .tableDivClass {
     height: 30em !important;
     background-color: white;
   }
 
+  th a {
+    color: rgba(0,0,0,0.5);
+  }
+
+  $animationTime: .5s;
+
   .fade-enter-active, .fade-leave-active {
-    transition: opacity 2s
+    transition: opacity $animationTime;
   }
+
   .fade-enter, .fade-leave-active {
-    opacity: 1s
+    opacity: 0;
   }
+
 
 </style>

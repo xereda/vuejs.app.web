@@ -74,5 +74,5 @@ export default {
     },
     boolean: []
   },
-  sort: []
+  sort: [ 'name', 'email' ]
 }

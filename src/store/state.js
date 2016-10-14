@@ -49,6 +49,7 @@ export default {
       currentPag: 1,
       total: 0
     },
-    APIURIBase: 'http://localhost:5000/'
+    APIURIBase: 'http://localhost:5000/',
+    delayLoading: 250
   }
 }

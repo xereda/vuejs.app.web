@@ -10,5 +10,8 @@ export default {
   },
   removeAllBooleanFilter (context, array) {
     context.commit('REMOVE_ALL_BOOLEAN_FILTER', array)
+  },
+  addSortColumn (context, obj) {
+    context.commit('ADD_SORT_COLUMN', obj)
   }
 }

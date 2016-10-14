@@ -39,12 +39,12 @@ export default {
 }
 </script>
 
-<style lang="sass">
+<style lang="scss">
 
-  $blue: #3273dc
-  $grey-light: #b5b5b5
-  $link: $grey-light
-  $link-hover: $blue
-  @import '~bulma'
+  $blue: #3273dc;
+  $grey-light: #b5b5b5;
+  $link: $grey-light;
+  $link-hover: $blue;
+  @import '~bulma';
 
 </style>
