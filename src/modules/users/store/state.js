@@ -74,5 +74,7 @@ export default {
     },
     boolean: []
   },
-  sort: [ 'name', 'email' ]
+  sort: [
+    { field: 'name', sort: 'asc' }
+  ]
 }

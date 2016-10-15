@@ -16,14 +16,15 @@ export default {
     }
   },
   'ADD_SORT_COLUMN' (state, obj) {
-    console.log('dentro da ADD_SORT_COLUMN: ', obj)
-    const _sort = state.sort
-    console.log('_sort: ', _sort)
-    if (_sort.indexOf(obj.name) > -1) {
-      _sort.splice(_sort.indexOf(obj.name), 1)
+    let _sort = state.sort
+    _sort = _sort.filter((element) => {
+      return element.field !== obj.field
+    })
+    if (obj.sort === 'desc' || obj.sort === '') {
+      _sort.unshift({ field: obj.field, sort: 'asc' })
+    } else {
+      _sort.unshift({ field: obj.field, sort: 'desc' })
     }
-    console.log('_sort.splice: ', _sort)
-    obj.order === false ? _sort.push('-' + obj.name) : _sort.push(obj.name)
-    console.log('_sort.push: ', _sort)
+    state.sort = _sort
   }
 }

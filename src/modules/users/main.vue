@@ -66,8 +66,8 @@
               <thead>
                 <tr>
                   <th v-for="(col, index) in collection" v-if="isVisibleHeader(col)" :class="col.table.header.class">
-                    <a @click="addSortColumn({ name: index, order: true })">
-                      <i class="fa fa-arrow-circle-o-down fa-lg" aria-hidden="true"></i> {{ col.label }}
+                    <a :class="control.disableSortColumns === true ? 'is-disabled': ''" @click="localAddSortColumn(index)">
+                      <i :class="getCSSSorteColumnSate(index)" aria-hidden="true"></i> {{ col.label }}
                     </a>
                   </th>
                   <th></th>
@@ -99,6 +99,7 @@
                        :is-loading="isLoading()"
                        @set-current-pag="changePag"></dm-pagination>
   </div>
+  {{ sort }}
 </section>
 </template>
 
@@ -117,6 +118,7 @@ export default {
       transitionTable: false,
       docs: [],
       control: {
+        disableSortColumns: false,
         isLoading: false,
         filters: {
           search: {
@@ -203,12 +205,14 @@ export default {
       }
     },
     startLoading () {
+      this.control.disableSortColumns = true
       this.transitionTable = false
       this.control.isLoading = true
       spinner.spin(this.$refs.tableDiv)
       topbar.show()
     },
     stopLoading () {
+      this.control.disableSortColumns = false
       clearTimeout(this.startProcess)
       this.control.isLoading = false
       spinner.stop()
@@ -221,6 +225,29 @@ export default {
     getCSSState () {
       if (this.isLoading() === true) {
         return 'is-disabled'
+      }
+      return ''
+    },
+    localAddSortColumn (column) {
+      if (this.isLoading() === false) {
+        this.control.disableSortColumns = true
+        this.addSortColumn({ field: column, sort: this.getSortColumnState(column) })
+        this.changePag(1)
+      }
+    },
+    getSortColumnState (column) {
+      if (this.sort.indexOf('-' + column) > -1) {
+        return 'desc'
+      } else if (this.sort.indexOf(column) > -1) {
+        return 'asc'
+      }
+      return ''
+    },
+    getCSSSorteColumnSate (column) {
+      if (this.getSortColumnState(column) === 'asc') {
+        return 'fa fa-arrow-circle-o-down fa-lg'
+      } else if (this.getSortColumnState(column) === 'desc') {
+        return 'fa fa-arrow-circle-o-up fa-lg'
       }
       return ''
     },
@@ -238,7 +265,6 @@ export default {
       let _params = ''
       const _fields = this.returnableColumnFields.join()
       const _sort = this.sort.join()
-      console.log('_sort: ', _sort)
 
       if (_search.state === 'applied') {
         _params += '&' + _search.fieldName + '='
@@ -258,6 +284,7 @@ export default {
 
       // GET /someUrl
       const _uri = this.APIURIBase + 'users/?_fields=' + _fields + _params + '&_sort=' + _sort
+      console.log('_uri: ', _uri)
       this.$http.get(_uri).then((response) => {
         this.updateTotalDocs(response.headers.get('X-Total-Count'))
         this.docs = response.body
@@ -311,8 +338,12 @@ export default {
         return filters
       },
       sort: state => {
+        let _arr = []
         const { sort } = state.users
-        return sort
+        sort.forEach((element, index) => {
+          element['sort'] === 'desc' ? _arr.push('-' + element['field']) : _arr.push(element['field'])
+        })
+        return _arr
       }
     })
   },
