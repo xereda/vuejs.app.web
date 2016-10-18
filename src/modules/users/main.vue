@@ -1,8 +1,8 @@
 <template>
     <section class="section">
       <div class="container">
-        <h1 class="title">Cadastro de usuários</h1>
-        <h2 class="subtitle">aqui entra o subtitle</h2>
+        <h1 class="title">{{ general.title }}</h1>
+        <h2 class="subtitle">{{ general.subTitle }}</h2>
         <hr>
         <!-- Main container -->
         <nav class="level">
@@ -17,7 +17,7 @@
           <div class="level-left" v-else>
             <div class="level-item">
               <p class="subtitle is-5">
-                <strong>{{ pagination.total }}</strong> Usuários
+                <strong>{{ pagination.total }}</strong> {{ general.title }}
               </p>
             </div>
             <div class="level-item">
@@ -34,7 +34,7 @@
                        v-model="control.filters.search.text"
                        @keyup.enter="(control.filters.search.text.length > 3) ? localUpdateSearchFilters() : null"
                        placeholder="Filtrar o resultado">
-                <button class="button is-primary"
+                <button class="button is-info"
                         :disabled="control.filters.search.text.length <= 3"
                         @click="localUpdateSearchFilters">
                   Filtrar
@@ -56,7 +56,7 @@
             </p>
 
 
-            <p class="level-item"><a :class="'button is-success ' + getCSSState()" @click="modalOpen()">Novo</a></p>
+            <p class="level-item"><a :class="'button is-success ' + getCSSState()" @click="newDocument()">Novo</a></p>
           </div>
         </nav>
 
@@ -99,13 +99,7 @@
                        @set-current-pag="changePag"></dm-pagination>
   </div>
 
-
-  <dm-modal :control="getModalState()" @set-modal-state="setModalState"></dm-modal>
-
-
-  <button @click="setModalState(true)"> mostra </button>
-
-  <h3>{{ control.modal }}</h3>
+  <dm-modal :control="getModalState()" :document="control.modal.document" @set-modal-state="setModalState"></dm-modal>
 
 </section>
 </template>
@@ -127,7 +121,8 @@ export default {
       docs: [],
       control: {
         modal: {
-          show: false
+          show: false,
+          document: {}
         },
         disableSortColumns: false,
         isLoading: false,
@@ -161,6 +156,10 @@ export default {
       'removeAllBooleanFilter',
       'addSortColumn'
     ]),
+    newDocument () {
+      this.control.modal.document = {}
+      this.setModalState(true)
+    },
     getModalState () {
       return this.control.modal.show
     },
@@ -317,6 +316,10 @@ export default {
   },
   computed: {
     ...mapState({
+      general: state => {
+        const { general } = state.users
+        return general
+      },
       collection: state => {
         const { collection } = state.users
         return collection
@@ -386,25 +389,23 @@ export default {
 </script>
 
 <style lang="scss">
+  @import '../../scss/config';
 
   .tableDivClass {
-    height: 30em !important;
-    background-color: white;
+    height: $tableDivHeight;
+    background-color: $tableDivBgColor;
   }
 
   th a {
-    color: rgba(0,0,0,0.5);
+    color: $columnHeaderLink;
   }
 
-  $animationTime: .5s;
-
   .fade-enter-active, .fade-leave-active {
-    transition: opacity $animationTime;
+    transition: opacity $fadeGridTime;
   }
 
   .fade-enter, .fade-leave-active {
     opacity: 0;
   }
-
 
 </style>

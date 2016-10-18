@@ -40,11 +40,7 @@ export default {
 </script>
 
 <style lang="scss">
-
-  $blue: #3273dc;
-  $grey-light: #b5b5b5;
-  $link: $grey-light;
-  $link-hover: $blue;
+  @import './scss/config';
   @import '~bulma';
 
 </style>
