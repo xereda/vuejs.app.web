@@ -92,18 +92,26 @@
             </table>
           </transition>
         </div>
-        <button type="button" name="button" @click="transitionTable = !transitionTable"> aparecer </button>
         <dm-pagination :current-pag="pagination.currentPag"
                        :total="pagination.total"
                        :page-limite="pagination.limit"
                        :is-loading="isLoading()"
                        @set-current-pag="changePag"></dm-pagination>
   </div>
-  {{ sort }}
+
+
+  <dm-modal :control="getModalState()" @set-modal-state="setModalState"></dm-modal>
+
+
+  <button @click="setModalState(true)"> mostra </button>
+
+  <h3>{{ control.modal }}</h3>
+
 </section>
 </template>
 
 <script>
+import dmModal from './components/modal.vue'
 import Spinner from 'spin'
 let spinner
 
@@ -118,6 +126,9 @@ export default {
       transitionTable: false,
       docs: [],
       control: {
+        modal: {
+          show: false
+        },
         disableSortColumns: false,
         isLoading: false,
         filters: {
@@ -131,7 +142,8 @@ export default {
     }
   },
   components: {
-    dmPagination
+    dmPagination,
+    dmModal
   },
   mounted () {
     topbar.config(this.topbarConfig)
@@ -143,12 +155,18 @@ export default {
       'updateUserSession',
       'updateCurrentPag',
       'updateTotalDocs',
-      'updateFiltersSearchUsers',
+      'updateFiltersSearch',
       'addBooleanFilter',
       'removeBooleanFilter',
       'removeAllBooleanFilter',
       'addSortColumn'
     ]),
+    getModalState () {
+      return this.control.modal.show
+    },
+    setModalState (show) {
+      this.control.modal.show = show
+    },
     appliedFilters () {
       return this.filters.search.state === 'applied'
     },
@@ -157,7 +175,7 @@ export default {
     },
     localUpdateSearchFilters () {
       const _search = this.control.filters.search
-      this.updateFiltersSearchUsers({ text: _search.text, fieldName: _search.fieldName, state: 'applied' })
+      this.updateFiltersSearch({ text: _search.text, fieldName: _search.fieldName, state: 'applied' })
     },
     localRemoveBooleanFilter (field) {
       this.removeBooleanFilter(field)
@@ -175,7 +193,7 @@ export default {
     clearSearchFields () {
       const _obj = { text: '', fieldName: 'q', state: '' } // defino o objeto para zerar as propriedades
       this.control.filters.search = _.clone(_obj) // esta em meu data
-      this.updateFiltersSearchUsers(_obj) // eh uma mutations invocada por uma action no vuex
+      this.updateFiltersSearch(_obj) // eh uma mutations invocada por uma action no vuex
     },
     changePag (pag) {
       this.updateCurrentPag(pag)

@@ -15,10 +15,10 @@ export default {
   },
   config: {
     spinner: {
-      lines: 10, // The number of lines to draw
-      length: 10, // The length of each line
-      width: 10, // The line thickness
-      radius: 20, // The radius of the inner circle
+      lines: 11, // The number of lines to draw
+      length: 5, // The length of each line
+      width: 4, // The line thickness
+      radius: 8, // The radius of the inner circle
       corners: 1, // Corner roundness (0..1)
       scale: 1,
       color: '#3273dc', // #rgb or #rrggbb or array of colors
