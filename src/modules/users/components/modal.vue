@@ -14,10 +14,9 @@
               <label class="label" v-if="showTopLabel(col.type)">{{ col.label }}</label>
 
               <p class="control has-icon" v-if="isTextInput(col.type)">
-                <input v-validate data-rules="required|email" data-delay="500" :class="{ 'input': true, 'is-danger': errors.has('email') }" :name="index" type="col.type" :placeholder="col.placeHolder">
+                <input v-validate :data-rules="getDataRules(col)" :data-as="col.label" :data-delay="config.delayApplyRule" :class="{ 'input': true, 'is-danger': errors.has(index) }" :name="index" :type="col.type" :placeholder="col.placeHolder">
                 <i :class="col.cssIcon"></i>
-                <span class="help is-danger">{{ col.error }}</span>
-                <span v-show="errors.has('email')" class="help is-danger">O campo {{ col.label }} é obrigatório.</span>
+                <span v-show="errors.has(index)" class="help is-danger">{{ errors.first(index) }}</span>
               </p>
 
               <p class="control" v-if="isCheckboxInput(col.type)">
@@ -32,7 +31,7 @@
         </form>
       </section>
       <footer class="modal-card-foot">
-        <a class="button is-primary">Save changes</a>
+        <a :class="getCSSButtonSave()">Salvar</a>
         <a class="button" @click="modalClose()">Cancel</a>
       </footer>
     </div>
@@ -40,6 +39,21 @@
 </template>
 
 <script>
+import messages from '../../../locale/veeValidate/pt_BR/messages'
+import Vue from 'vue'
+import VeeValidate, { Validator } from 'vee-validate'
+Vue.use(VeeValidate)
+// Merge dictionary messages.
+Validator.updateDictionary({
+  pt_BR: {
+    messages
+  }
+})
+Validator.extend('ignore', {
+  messages: {},
+  validate: value => true
+})
+
 import 'animate.css/animate.min.css'
 import { mapState } from 'vuex'
 
@@ -52,6 +66,10 @@ export default {
   },
   computed: {
     ...mapState({
+      config: state => {
+        const { config } = state
+        return config
+      },
       collection: state => {
         const { collection } = state.users
         return collection
@@ -66,8 +84,26 @@ export default {
     }
   },
   mounted () {
+    this.$validator.setLocale('pt_BR')
   },
   methods: {
+    getCSSButtonSave () {
+      if (this.errors.any() === false) {
+        return 'button is-info is-disabled'
+      }
+      return 'button is-info'
+    },
+    getDataRules (col) {
+      if ((col.required === true) && (col.veeValidate !== undefined)) {
+        return 'required|' + col.veeValidate
+      } else if (col.required === true) {
+        return 'required'
+      } else if (col.veeValidate !== undefined) {
+        return col.veeValidate
+      } else {
+        return 'ignore'
+      }
+    },
     showTopLabel (type) {
       if (this.isTextInput(type) === true) {
         return true

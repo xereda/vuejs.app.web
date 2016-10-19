@@ -20,6 +20,7 @@ export default {
       filter: true,
       APIReturnable: true,
       required: true,
+      veeValidate: 'min:3',
       cssIcon: 'fa fa-user',
       cssResponsiveModal: 'column is-6',
       table: {
@@ -37,6 +38,7 @@ export default {
       filter: true,
       APIReturnable: true,
       required: true,
+      veeValidate: 'email',
       cssIcon: 'fa fa-envelope',
       cssResponsiveModal: 'column is-6',
       table: {
@@ -48,10 +50,11 @@ export default {
     },
     password: {
       type: 'password',
-      label: 'Senha',
+      label: 'Senhaaaaa',
       placeHolder: 'Informe a senha do usuário',
       error: 'Informe uma senha válida',
       required: true,
+      veeValidate: 'confirmed:password2',
       cssIcon: 'fa fa-lock',
       cssResponsiveModal: 'column is-6'
     },
