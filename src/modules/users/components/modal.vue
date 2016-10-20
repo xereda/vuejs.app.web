@@ -13,13 +13,42 @@
 
               <label class="label" v-if="showTopLabel(col.type)">{{ col.label }}</label>
 
-              <p class="control has-icon" v-if="isTextInput(col.type)">
-                <input v-validate :data-rules="getDataRules(col)" :data-as="col.label" :data-delay="config.delayApplyRule" :class="{ 'input': true, 'is-danger': errors.has(index) }" :name="index" :type="col.type" :placeholder="col.placeHolder">
-                <i :class="col.cssIcon"></i>
-                <span v-show="errors.has(index)" class="help is-danger">{{ errors.first(index) }}</span>
+              <p class="control has-icon">
+                <input v-if="col.type === 'text'"
+                       v-model="modalDoc[index]"
+                       v-validate
+                       :data-rules="getDataRules(col)"
+                       :data-as="col.label"
+                       :data-delay="config.delayApplyRule"
+                       :class="{ 'input': true, 'is-danger': errors.has(index) }"
+                       :name="index"
+                       type="text"
+                       :placeholder="col.placeHolder">
+                <input v-if="col.type === 'email'"
+                       v-model="modalDoc[index]"
+                       v-validate
+                       :data-rules="getDataRules(col)"
+                       :data-as="col.label"
+                       :data-delay="config.delayApplyRule"
+                       :class="{ 'input': true, 'is-danger': errors.has(index) }"
+                       :name="index"
+                       type="email"
+                       :placeholder="col.placeHolder">
+                <input v-if="col.type === 'password'"
+                       v-model="modalDoc[index]"
+                       v-validate
+                       :data-rules="getDataRules(col)"
+                       :data-as="col.label"
+                       :data-delay="config.delayApplyRule"
+                       :class="{ 'input': true, 'is-danger': errors.has(index) }"
+                       :name="index"
+                       type="password"
+                       :placeholder="col.placeHolder">
+                <i v-if="isSimpleInputType(col.type)" :class="col.cssIcon"></i>
+                <span v-if="isSimpleInputType(col.type)" class="help is-danger">{{ errors.first(index) }}&nbsp;</span>
               </p>
 
-              <p class="control" v-if="isCheckboxInput(col.type)">
+              <p class="control" v-if="col.type === 'boolean'">
                 <label class="checkbox">
                   <input type="checkbox">
                   {{ col.label }}
@@ -31,8 +60,8 @@
         </form>
       </section>
       <footer class="modal-card-foot">
-        <a :class="getCSSButtonSave()">Salvar</a>
-        <a class="button" @click="modalClose()">Cancel</a>
+        <a :class="getCSSButtonSave" @click="formSubmit()">Salvar</a>
+        <a class="button" @click="modalClose()">Cancelar</a>
       </footer>
     </div>
   </div>
@@ -57,11 +86,15 @@ Validator.extend('ignore', {
 import 'animate.css/animate.min.css'
 import { mapState } from 'vuex'
 
+const SIMPLE_INPUT_TYPES = [ 'text', 'email', 'password' ]
+
 export default {
   data () {
     return {
       fadeIn: true,
-      fadeOut: false
+      fadeOut: false,
+      modalDoc: {
+      }
     }
   },
   computed: {
@@ -81,17 +114,20 @@ export default {
     }),
     title () {
       return _.isEmpty(this.document) ? this.general.modal.titleNewDocument : this.general.modal.titleUpdateDocument
+    },
+    getCSSButtonSave () {
+      if (this.errors.any() === true) {
+        return 'button is-info is-disabled'
+      }
+      return 'button is-info'
     }
   },
   mounted () {
     this.$validator.setLocale('pt_BR')
   },
   methods: {
-    getCSSButtonSave () {
-      if (this.errors.any() === false) {
-        return 'button is-info is-disabled'
-      }
-      return 'button is-info'
+    formSubmit () {
+      this.$validator.validateAll()
     },
     getDataRules (col) {
       if ((col.required === true) && (col.veeValidate !== undefined)) {
@@ -104,26 +140,14 @@ export default {
         return 'ignore'
       }
     },
-    showTopLabel (type) {
-      if (this.isTextInput(type) === true) {
+    isSimpleInputType (type) {
+      if (SIMPLE_INPUT_TYPES.indexOf(type) > -1) {
         return true
       }
       return false
     },
-    isTextInput (type) {
-      switch (type) {
-        case 'text':
-          return true
-        case 'email':
-          return true
-        case 'password':
-          return true
-        default:
-          return false
-      }
-    },
-    isCheckboxInput (type) {
-      if (type === 'boolean') {
+    showTopLabel (type) {
+      if (this.isSimpleInputType(type)) {
         return true
       }
       return false

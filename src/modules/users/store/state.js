@@ -20,7 +20,7 @@ export default {
       filter: true,
       APIReturnable: true,
       required: true,
-      veeValidate: 'min:3',
+      veeValidate: 'alpha|min:3',
       cssIcon: 'fa fa-user',
       cssResponsiveModal: 'column is-6',
       table: {
@@ -50,7 +50,7 @@ export default {
     },
     password: {
       type: 'password',
-      label: 'Senhaaaaa',
+      label: 'Senha',
       placeHolder: 'Informe a senha do usuário',
       error: 'Informe uma senha válida',
       required: true,
