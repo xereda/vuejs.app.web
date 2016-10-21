@@ -105,6 +105,9 @@
 </template>
 
 <script>
+import moment from 'moment'
+import localePTBR from 'moment/locale/pt-br'
+
 import dmModal from './components/modal.vue'
 import Spinner from 'spin'
 let spinner
@@ -141,6 +144,8 @@ export default {
     dmModal
   },
   mounted () {
+    moment().locale('pt-BR', localePTBR)
+    console.log('locale dentro do modulo: ', moment().format('L'))
     topbar.config(this.topbarConfig)
     spinner = new Spinner(this.spinnerConfig)
     this.getAll()
@@ -217,6 +222,11 @@ export default {
             return 'Não'
           }
           return 'Sim'
+        case 'date':
+          if (doc[index] !== undefined) {
+            return moment(doc[index]).format('DD/MM/YYYY HH:mm')
+          }
+          return ''
         default:
           return doc[index]
       }

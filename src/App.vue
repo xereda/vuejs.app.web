@@ -22,7 +22,6 @@ export default {
     }
   },
   mounted () {
-    // this.$http.options.root = this.config.APIURIBase // nao funcionou
   },
   components: {
     dmHeader,

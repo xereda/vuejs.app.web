@@ -9,12 +9,12 @@
       <section class="modal-card-body">
         <form>
           <div class="columns is-multiline">
-            <div :class="col.cssResponsiveModal" v-if="validColumn(index)" v-for="(col, index) in collection">
+            <div :class="col.modal.responsiveCSS" v-if="validColumn(index)" v-for="(col, index) in collection">
 
               <label class="label" v-if="showTopLabel(col.type)">{{ col.label }}</label>
 
               <p class="control has-icon">
-                <input v-if="col.type === 'text'"
+                <input v-if="[ 'text', 'date' ].indexOf(col.type) > -1"
                        v-model="modalDoc[index]"
                        v-validate
                        :data-rules="getDataRules(col)"
@@ -44,13 +44,14 @@
                        :name="index"
                        type="password"
                        :placeholder="col.placeHolder">
-                <i v-if="isSimpleInputType(col.type)" :class="col.cssIcon"></i>
+                <i v-if="isSimpleInputType(col.type)" :class="col.modal.cssIcon"></i>
                 <span v-if="isSimpleInputType(col.type)" class="help is-danger">{{ errors.first(index) }}&nbsp;</span>
               </p>
 
               <p class="control" v-if="col.type === 'boolean'">
                 <label class="checkbox">
-                  <input type="checkbox">
+                  <input type="checkbox"
+                         v-model="modalDoc[index]">
                   {{ col.label }}
                 </label>
               </p>
@@ -68,25 +69,10 @@
 </template>
 
 <script>
-import messages from '../../../locale/veeValidate/pt_BR/messages'
-import Vue from 'vue'
-import VeeValidate, { Validator } from 'vee-validate'
-Vue.use(VeeValidate)
-// Merge dictionary messages.
-Validator.updateDictionary({
-  pt_BR: {
-    messages
-  }
-})
-Validator.extend('ignore', {
-  messages: {},
-  validate: value => true
-})
-
 import 'animate.css/animate.min.css'
 import { mapState } from 'vuex'
 
-const SIMPLE_INPUT_TYPES = [ 'text', 'email', 'password' ]
+const SIMPLE_INPUT_TYPES = [ 'text', 'email', 'password', 'date' ]
 
 export default {
   data () {
@@ -110,6 +96,10 @@ export default {
       general: state => {
         const { general } = state.users
         return general
+      },
+      session: state => {
+        const { user } = state
+        return user
       }
     }),
     title () {
@@ -124,18 +114,38 @@ export default {
   },
   mounted () {
     this.$validator.setLocale('pt_BR')
+    // console.log('moment: ', moment())
   },
   methods: {
+    createDoc () {
+      this.modalDoc.createdById = this.session._id
+      const _uri = this.config.APIURIBase + 'users'
+
+      this.$http.post(_uri, this.modalDoc, { emulateJSON: true }).then((response) => {
+        // get status
+        console.log(response.status)
+        // get status text
+        console.log(response.statusText)
+      }, (response) => {
+        console.log('deu erro - response: ', response)
+      })
+    },
     formSubmit () {
+      console.log('dentro do formSubmit', this.errors, this.errors.any())
       this.$validator.validateAll()
+      if (this.errors.any() === false) {
+        console.log('nao ha erros')
+        console.log('modalDoc: ', this.modalDoc)
+        this.createDoc()
+      }
     },
     getDataRules (col) {
-      if ((col.required === true) && (col.veeValidate !== undefined)) {
-        return 'required|' + col.veeValidate
+      if ((col.required === true) && (col.modal.veeValidate !== undefined)) {
+        return 'required|' + col.modal.veeValidate
       } else if (col.required === true) {
         return 'required'
-      } else if (col.veeValidate !== undefined) {
-        return col.veeValidate
+      } else if (col.modal.veeValidate !== undefined) {
+        return col.modal.veeValidate
       } else {
         return 'ignore'
       }

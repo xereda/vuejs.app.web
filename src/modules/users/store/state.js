@@ -20,9 +20,11 @@ export default {
       filter: true,
       APIReturnable: true,
       required: true,
-      veeValidate: 'alpha|min:3',
-      cssIcon: 'fa fa-user',
-      cssResponsiveModal: 'column is-6',
+      modal: {
+        veeValidate: 'min:3',
+        cssIcon: 'fa fa-user',
+        responsiveCSS: 'column is-6'
+      },
       table: {
         header: {
           visible: true,
@@ -38,9 +40,11 @@ export default {
       filter: true,
       APIReturnable: true,
       required: true,
-      veeValidate: 'email',
-      cssIcon: 'fa fa-envelope',
-      cssResponsiveModal: 'column is-6',
+      modal: {
+        veeValidate: 'email',
+        cssIcon: 'fa fa-envelope',
+        responsiveCSS: 'column is-6'
+      },
       table: {
         header: {
           visible: true,
@@ -54,9 +58,11 @@ export default {
       placeHolder: 'Informe a senha do usuário',
       error: 'Informe uma senha válida',
       required: true,
-      veeValidate: 'confirmed:password2',
-      cssIcon: 'fa fa-lock',
-      cssResponsiveModal: 'column is-6'
+      modal: {
+        veeValidate: 'confirmed:password2|min:5',
+        cssIcon: 'fa fa-lock',
+        responsiveCSS: 'column is-6'
+      }
     },
     password2: {
       type: 'password',
@@ -64,8 +70,10 @@ export default {
       placeHolder: 'Repita a senha',
       error: 'Repita a senha corretamente',
       required: true,
-      cssIcon: 'fa fa-lock',
-      cssResponsiveModal: 'column is-6'
+      modal: {
+        cssIcon: 'fa fa-lock',
+        responsiveCSS: 'column is-6'
+      }
     },
     admin: {
       type: 'boolean',
@@ -73,7 +81,9 @@ export default {
       filter: true,
       APIReturnable: true,
       required: true,
-      cssResponsiveModal: 'column is-2',
+      modal: {
+        responsiveCSS: 'column is-2'
+      },
       table: {
         header: {
           visible: true,
@@ -87,14 +97,35 @@ export default {
       filter: true,
       APIReturnable: true,
       required: true,
-      cssResponsiveModal: 'column is-2',
+      modal: {
+        responsiveCSS: 'column is-2'
+      },
       table: {
         header: {
           visible: true,
           class: 'is-hidden-mobile'
         }
       }
-
+    },
+    line1: {
+      modal: {
+        responsiveCSS: 'column is-8'
+      }
+    },
+    createdAt: {
+      type: 'date',
+      label: 'Criado em',
+      APIReturnable: true,
+      modal: {
+        cssIcon: 'fa fa-calendar',
+        responsiveCSS: 'column is-6'
+      },
+      table: {
+        header: {
+          visible: true,
+          class: 'is-hidden-touch'
+        }
+      }
     },
     createdById: {
       type: 'objectId'
