@@ -1,3 +1,6 @@
 export default {
-  outraConfiguracao: 10
+  general: {
+    title: 'Configuração do sistema',
+    subTitle: 'Parâtros do sistema DocMob'
+  }
 }

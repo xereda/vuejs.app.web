@@ -58,7 +58,7 @@
           <ul>
             <li :class="($route.name === 'dashboard') ? 'is-active' : ''"><router-link to="/dashboard">Dashboard</router-link></li>
             <li :class="($route.name === 'users') ? 'is-active' : ''"><router-link to="/users">Usuários</router-link></li>
-            <li><a>Grid</a></li>
+            <li :class="($route.name === 'configurator') ? 'is-active' : ''"><router-link to="/configurator">Configuração</router-link></li>
             <li><a>Elements</a></li>
             <li><a>Components</a></li>
             <li><a>Layout</a></li>

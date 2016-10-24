@@ -5725,9 +5725,13 @@ void-elements@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-2.0.1.tgz#c066afb582bb1cb4128d60ea92392e94d5e9dbec"
 
-vue-bulma-message:
+vue-bulma-notification:
   version "1.1.0"
-  resolved "https://registry.yarnpkg.com/vue-bulma-message/-/vue-bulma-message-1.1.0.tgz#ef06f29afc77c4efc06d27ed99fc3d6c7b28437d"
+  resolved "https://registry.yarnpkg.com/vue-bulma-notification/-/vue-bulma-notification-1.1.0.tgz#30ef1bf6aaff3a0450e74670f011595db2827919"
+
+vue-bulma-switch:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/vue-bulma-switch/-/vue-bulma-switch-1.0.0.tgz#815baeb40cb81356e45f63babd4cc3104c1ef57b"
 
 vue-hot-reload-api@^2.0.1:
   version "2.0.6"
@@ -5925,6 +5929,10 @@ ws@1.0.1:
   dependencies:
     options ">=0.0.5"
     ultron "1.0.x"
+
+xereda-vue-bulma-message:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/xereda-vue-bulma-message/-/xereda-vue-bulma-message-2.0.1.tgz#4a329465fce86f1214911d1650619cd1003f221b"
 
 xml-char-classes@^1.0.0:
   version "1.0.0"

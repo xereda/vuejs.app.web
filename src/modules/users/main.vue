@@ -232,6 +232,13 @@ export default {
             return 'Não'
           }
           return 'Sim'
+        case 'text':
+          if (doc[index] !== undefined) {
+            if (doc[index].length > this.config.grid.textCropLength) {
+              return doc[index].substring(0, this.config.grid.textCropLength - 3) + '...'
+            }
+          }
+          return doc[index]
         case 'date':
           if (doc[index] !== undefined) {
             return moment(doc[index]).format('DD/MM/YYYY HH:mm')
@@ -293,7 +300,7 @@ export default {
         if (this.isLoading() === false) {
           this.startLoading()
         }
-      }, this.config.delayLoading)
+      }, this.config.grid.delayLoading)
 
       const _boolean = this.filters.boolean
       const _search = this.filters.search

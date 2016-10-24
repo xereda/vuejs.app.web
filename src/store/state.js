@@ -50,7 +50,14 @@ export default {
       total: 0
     },
     APIURIBase: 'http://localhost:5000/',
-    delayLoading: 250,
-    delayApplyRule: 250
+    grid: {
+      delayLoading: 250,
+      textCropLength: 40
+    },
+    modal: {
+      delayApplyRule: 250,
+      delayModalSaveButton: 800,
+      messagePresentationTime: 4000
+    }
   }
 }

@@ -21,7 +21,7 @@ export default {
       APIReturnable: true,
       required: true,
       modal: {
-        veeValidate: 'min:3|alpha_dash',
+        veeValidate: 'min:3|regex:^[a-zA-Z\\s]*$',
         cssIcon: 'fa fa-user',
         responsiveCSS: 'column is-6'
       },
