@@ -7,6 +7,7 @@
         <button class="delete" @click="modalClose()"></button>
       </header>
       <section class="modal-card-body">
+        <dm-notification v-if="showNotification" set-notification-closed="closedNotification"></dm-notification>
         <form>
           <div class="columns is-multiline">
             <div :class="col.modal.responsiveCSS" v-if="validColumn(index)" v-for="(col, index) in collection">
@@ -70,6 +71,24 @@
 
 <script>
 import 'animate.css/animate.min.css'
+
+import Vue from 'Vue'
+import bulmaMessage from 'vue-bulma-message'
+const BulmaMessageComponent = Vue.extend(bulmaMessage)
+const openMessage = (propsData = {
+  title: '',
+  message: '',
+  type: '',
+  direction: '',
+  duration: 1500,
+  container: '.messages'
+}) => {
+  return new BulmaMessageComponent({
+    el: document.createElement('div'),
+    propsData
+  })
+}
+
 import { mapState } from 'vuex'
 
 const SIMPLE_INPUT_TYPES = [ 'text', 'email', 'password', 'date' ]
@@ -77,6 +96,7 @@ const SIMPLE_INPUT_TYPES = [ 'text', 'email', 'password', 'date' ]
 export default {
   data () {
     return {
+      showNotification: false,
       fadeIn: true,
       fadeOut: false,
       modalDoc: {
@@ -114,9 +134,30 @@ export default {
   },
   mounted () {
     this.$validator.setLocale('pt_BR')
-    // console.log('moment: ', moment())
   },
   methods: {
+    showError () {
+      const _obj = {
+        title: 'Erro',
+        message: 'aqui entra a mensagem de erro',
+        duration: 5000,
+        showCloseButton: true,
+        type: 'danger'
+      }
+      this.openBulmaMessage(_obj)
+    },
+    openBulmaMessage (obj) {
+      openMessage({
+        title: obj.title,
+        message: obj.message,
+        duration: obj.duration,
+        showCloseButton: obj.showCloseButton,
+        type: obj.type
+      })
+    },
+    closedNotification (closed) {
+      closed ? this.showNotification = false : this.showNotification = true
+    },
     createDoc () {
       this.modalDoc.createdById = this.session._id
       const _uri = this.config.APIURIBase + 'users'
@@ -126,16 +167,40 @@ export default {
         console.log(response.status)
         // get status text
         console.log(response.statusText)
+        const _obj = {
+          title: 'Ok',
+          message: 'O documento foi criado com sucesso!',
+          duration: 5000,
+          showCloseButton: true,
+          type: 'success'
+        }
+        this.modalDoc = {}
+        this.openBulmaMessage(_obj)
+        this.$emit('set-pag', 1)
       }, (response) => {
-        console.log('deu erro - response: ', response)
+        const _obj = {
+          title: 'Erro inserindo documento',
+          message: '',
+          duration: 5000,
+          showCloseButton: true,
+          type: 'danger'
+        }
+        if (response.status === 0) {
+          _obj.message += 'Erro de conexão a API DocMob'
+        } else if (response.data.err.errors !== undefined) {
+          Object.keys(response.data.err.errors).forEach((element, index) => {
+            _obj.message += response.data.err.errors[element].message
+          })
+        } else {
+          _obj.message += response.data.err.errmsg
+        }
+
+        this.openBulmaMessage(_obj)
       })
     },
     formSubmit () {
-      console.log('dentro do formSubmit', this.errors, this.errors.any())
       this.$validator.validateAll()
       if (this.errors.any() === false) {
-        console.log('nao ha erros')
-        console.log('modalDoc: ', this.modalDoc)
         this.createDoc()
       }
     },
@@ -178,7 +243,9 @@ export default {
       }, 510)
     }
   },
-  components: {},
+  components: {
+    bulmaMessage
+  },
   props: [
     'control',
     'document'
@@ -188,8 +255,11 @@ export default {
 
 <style lang="scss">
 @import '../../../scss/config.scss';
+@import '../../../scss/vueBulma/message.scss';
 
 #modal {
   animation-duration: $fadeModal;
 }
+
+
 </style>

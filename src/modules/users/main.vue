@@ -70,13 +70,23 @@
                       <i :class="getCSSSorteColumnSate(index)" aria-hidden="true"></i> {{ col.label }}
                     </a>
                   </th>
-                  <th></th>
-                  <th></th>
+                  <th class="is-hidden-touch">
+                    <a :class="control.disableSortColumns === true ? 'is-disabled': ''" @click="localAddSortColumn('createdAt')">
+                      <i :class="getCSSSorteColumnSate('createdAt')" aria-hidden="true"></i> Criado em
+                    </a>
+                  </th><!-- criado em  -->
+                  <th></th><!-- botao editar -->
+                  <th></th><!-- excluir -->
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="doc in docs">
                   <td v-for="(col, index) in collection" v-if="isVisibleHeader(col)" :class="col.table.header.class">{{ getValueField(doc, col, index) }}</td>
+                  <td class="is-hidden-touch" v-if="doc['createdAt'] !== undefined">
+                    {{  doc['createdAt'] | moment('DD/MM/YYYY HH:mm') }}
+                  </td>
+                  <td class="is-hidden-touch" v-else>
+                  </td>
                   <td class="is-icon">
                     <a href="#">
                       <i class="fa fa-folder-open"></i>
@@ -99,7 +109,7 @@
                        @set-current-pag="changePag"></dm-pagination>
   </div>
 
-  <dm-modal :control="getModalState()" :document="control.modal.document" @set-modal-state="setModalState"></dm-modal>
+  <dm-modal :control="getModalState()" :document="control.modal.document" @set-pag="changePag" @set-modal-state="setModalState"></dm-modal>
 
 </section>
 </template>
@@ -290,7 +300,7 @@ export default {
       const _limit = this.pagination.limit
       let _pag = this.pagination.currentPag
       let _params = ''
-      const _fields = this.returnableColumnFields.join()
+      const _fields = this.returnableColumnFields.join() + ',createdAt,createdById,updatedAt,updatedById'
       const _sort = this.sort.join()
 
       if (_search.state === 'applied') {
@@ -402,7 +412,7 @@ export default {
   @import '../../scss/config';
 
   .tableDivClass {
-    height: $tableDivHeight;
+    min-height: $tableDivHeight;
     background-color: $tableDivBgColor;
   }
 

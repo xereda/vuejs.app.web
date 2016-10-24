@@ -21,7 +21,7 @@ export default {
       APIReturnable: true,
       required: true,
       modal: {
-        veeValidate: 'min:3',
+        veeValidate: 'min:3|alpha_dash',
         cssIcon: 'fa fa-user',
         responsiveCSS: 'column is-6'
       },
@@ -59,7 +59,7 @@ export default {
       error: 'Informe uma senha válida',
       required: true,
       modal: {
-        veeValidate: 'confirmed:password2|min:5',
+        veeValidate: 'confirmed:password2|min:3',
         cssIcon: 'fa fa-lock',
         responsiveCSS: 'column is-6'
       }
@@ -106,32 +106,6 @@ export default {
           class: 'is-hidden-mobile'
         }
       }
-    },
-    line1: {
-      modal: {
-        responsiveCSS: 'column is-8'
-      }
-    },
-    createdAt: {
-      type: 'date',
-      label: 'Criado em',
-      APIReturnable: true,
-      modal: {
-        cssIcon: 'fa fa-calendar',
-        responsiveCSS: 'column is-6'
-      },
-      table: {
-        header: {
-          visible: true,
-          class: 'is-hidden-touch'
-        }
-      }
-    },
-    createdById: {
-      type: 'objectId'
-    },
-    updatedById: {
-      type: 'objectId'
     }
   },
   filters: {
