@@ -60,22 +60,25 @@
             </div>
           </div>
         </form>
+        <dm-modal-audit :documentId="modalDoc._id" v-if="isUpdateDocument() "></dm-modal-audit>
       </section>
       <footer class="modal-card-foot">
         <a :class="getCSSButtonSave" @click="formSubmit()">Salvar</a>
         <a class="button" @click="modalClose()">Cancelar</a>
-        <input type="text" v-model="teste" ref="teste" v-focus />
       </footer>
     </div>
   </div>
 </template>
 
 <script>
+import Vue from 'Vue'
+import { mapState } from 'vuex'
+import _ from 'lodash'
 import topbar from 'topbar'
+import bulmaMessage from 'xereda-vue-bulma-message'
+import dmModalAudit from '../../ui/modal/audit.vue'
 import 'animate.css/animate.min.css'
 
-import Vue from 'Vue'
-import bulmaMessage from 'xereda-vue-bulma-message'
 const BulmaMessageComponent = Vue.extend(bulmaMessage)
 const openMessage = (propsData = {
   title: '',
@@ -91,14 +94,12 @@ const openMessage = (propsData = {
   })
 }
 
-import { mapState } from 'vuex'
-
 const SIMPLE_INPUT_TYPES = [ 'text', 'email', 'password', 'date' ]
 
 export default {
   data () {
     return {
-      teste: 'opa la',
+      modelo: 'opa la',
       isLoading: false,
       showNotification: false,
       fadeIn: true,
@@ -117,6 +118,10 @@ export default {
       config: state => {
         const { config } = state
         return config
+      },
+      API: state => {
+        const { API } = state.users
+        return API
       },
       collection: state => {
         const { collection } = state.users
@@ -142,15 +147,11 @@ export default {
     }
   },
   methods: {
-    showError () {
-      const _obj = {
-        title: 'Erro',
-        message: 'aqui entra a mensagem de erro',
-        duration: 5000,
-        showCloseButton: true,
-        type: 'danger'
-      }
-      this.openBulmaMessage(_obj)
+    getModalState () {
+      return _.isEmpty(this.modalDoc) ? 'new' : 'update'
+    },
+    isUpdateDocument () {
+      return this.getModalState() === 'update'
     },
     openBulmaMessage (obj) {
       openMessage({
@@ -185,7 +186,7 @@ export default {
     createDoc () {
       this.startLoading()
       this.modalDoc.createdById = this.session._id
-      const _uri = this.config.APIURIBase + 'users'
+      const _uri = this.config.APIURIBase + this.API.resource
 
       this.$http.post(_uri, this.modalDoc, { emulateJSON: true }).then((response) => {
         // get status
@@ -269,15 +270,15 @@ export default {
       }, 510)
     }
   },
-  directives: {
-    focus: {
-      inserted (el) {
-        el.focus()
-      }
-    }
-  },
   components: {
-    bulmaMessage
+    bulmaMessage,
+    dmModalAudit
+  },
+  watch: {
+    document (val) {
+      this.errors.clear()
+      this.modalDoc = this.document
+    }
   },
   props: [
     'control',

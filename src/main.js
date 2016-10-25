@@ -25,6 +25,7 @@ import router from './routes'
 
 /* eslint-disable no-new */
 new Vue({
+  name: 'docmob',
   store,
   router,
   render: h => h(App)

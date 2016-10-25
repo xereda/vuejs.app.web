@@ -17,6 +17,7 @@ import dmHeader from './modules/ui/header.vue'
 import dmFooter from './modules/ui/footer.vue'
 
 export default {
+  name: 'app',
   data () {
     return {
     }

@@ -7,6 +7,9 @@ export default {
       titleUpdateDocument: 'Alterando usuário'
     }
   },
+  API: {
+    resource: 'users'
+  },
   collection: {
     _id: {
       type: 'objectId',

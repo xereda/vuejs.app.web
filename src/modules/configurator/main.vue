@@ -5,24 +5,32 @@
       <h2 class="subtitle">{{ general.subTitle }}</h2>
       <hr>
 
-      <!-- <div>
-        <p>
-          <vb-switch type="success" size="large" :value="value" checked @change="updateValue"></vb-switch>
-        </p>
-        <p>
-          {{ modalDoc.admin }}
-        </p>
-      </div> -->
+      <collapse accordion is-fullwidth>
+         <collapse-item title="Components">
+           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris. @bulmaio. #css #responsive
+         </collapse-item>
+         <collapse-item title="Elements">
+           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris. @bulmaio. #css #responsive
+         </collapse-item>
+         <collapse-item title="Nests" selected>
+         <collapse>
+           <collapse-item title="Nest Child" selected>
+             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris. @bulmaio. #css #responsive
+           </collapse-item>
+         </collapse>
+       </collapse-item>
+     </collapse>
 
     </div>
   </section>
 </template>
 
 <script>
+import Vue from 'vue'
 import { mapState } from 'vuex'
 
-import Vue from 'vue'
-// import VbSwitch from 'vue-bulma-switch'
+import Collapse from 'xereda-vue-bulma-collapse/src/Collapse.vue'
+import CollapseItem from 'xereda-vue-bulma-collapse/src/Item.vue'
 
 import Notification from 'vue-bulma-notification'
 const NotificationComponent = Vue.extend(Notification)
@@ -49,8 +57,9 @@ export default {
     }
   },
   components: {
-    Notification
-    // VbSwitch
+    Notification,
+    Collapse,
+    CollapseItem
   },
   mounted () {
     openNotification({

@@ -91,7 +91,6 @@
 <script>
 export default {
   mounted () {
-    console.log('title: ', this.title)
   },
   props: [ 'title' ]
 }

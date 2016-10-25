@@ -88,6 +88,10 @@ animate.css@^3.5.2:
   version "3.5.2"
   resolved "https://registry.yarnpkg.com/animate.css/-/animate.css-3.5.2.tgz#91e668dc069a808e5e499514867b97aae0166c36"
 
+animejs:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/animejs/-/animejs-1.1.1.tgz#be910a58735b467a52ccd858ea60f02f877bd92e"
+
 ansi-escapes@^1.1.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/ansi-escapes/-/ansi-escapes-1.4.0.tgz#d3a8a83b319aa67793662b13e761c7911422306e"
@@ -5725,6 +5729,10 @@ void-elements@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-2.0.1.tgz#c066afb582bb1cb4128d60ea92392e94d5e9dbec"
 
+vue-bulma-collapse:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/vue-bulma-collapse/-/vue-bulma-collapse-1.0.0.tgz#e1f9ecc70939b9542600d3510a5955c878757e51"
+
 vue-bulma-notification:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/vue-bulma-notification/-/vue-bulma-notification-1.1.0.tgz#30ef1bf6aaff3a0450e74670f011595db2827919"
@@ -5929,6 +5937,10 @@ ws@1.0.1:
   dependencies:
     options ">=0.0.5"
     ultron "1.0.x"
+
+"xereda-vue-bulma-collapse@git+https://github.com/xereda/xereda-vue-bulma-collapse":
+  version "1.0.0"
+  resolved "git+https://github.com/xereda/xereda-vue-bulma-collapse#0b5cad0592fc34301b0b02a5002adaa5b4fcaacd"
 
 xereda-vue-bulma-message:
   version "2.0.1"

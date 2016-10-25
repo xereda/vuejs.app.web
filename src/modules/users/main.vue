@@ -88,7 +88,7 @@
                   <td class="is-hidden-touch" v-else>
                   </td>
                   <td class="is-icon">
-                    <a href="#">
+                    <a @click="updateDocument(doc)">
                       <i class="fa fa-folder-open"></i>
                     </a>
                   </td>
@@ -155,7 +155,6 @@ export default {
   },
   mounted () {
     moment().locale('pt-BR', localePTBR)
-    console.log('locale dentro do modulo: ', moment().format('L'))
     topbar.config(this.topbarConfig)
     spinner = new Spinner(this.spinnerConfig)
     this.getAll()
@@ -173,6 +172,11 @@ export default {
     ]),
     newDocument () {
       this.control.modal.document = {}
+      this.setModalState(true)
+    },
+    updateDocument (doc) {
+      console.log('doc: ', JSON.stringify(doc))
+      this.control.modal.document = doc
       this.setModalState(true)
     },
     getModalState () {
@@ -233,6 +237,13 @@ export default {
           }
           return 'Sim'
         case 'text':
+          if (doc[index] !== undefined) {
+            if (doc[index].length > this.config.grid.textCropLength) {
+              return doc[index].substring(0, this.config.grid.textCropLength - 3) + '...'
+            }
+          }
+          return doc[index]
+        case 'email':
           if (doc[index] !== undefined) {
             if (doc[index].length > this.config.grid.textCropLength) {
               return doc[index].substring(0, this.config.grid.textCropLength - 3) + '...'
@@ -327,8 +338,7 @@ export default {
       _params += '&_pag=' + _pag
 
       // GET /someUrl
-      const _uri = this.APIURIBase + 'users/?_fields=' + _fields + _params + '&_sort=' + _sort
-      console.log('_uri: ', _uri)
+      const _uri = this.config.APIURIBase + this.API.resource + '/?_fields=' + _fields + _params + '&_sort=' + _sort
       this.$http.get(_uri).then((response) => {
         this.updateTotalDocs(response.headers.get('X-Total-Count'))
         this.docs = response.body
@@ -347,6 +357,10 @@ export default {
         const { general } = state.users
         return general
       },
+      API: state => {
+        const { API } = state.users
+        return API
+      },
       collection: state => {
         const { collection } = state.users
         return collection
@@ -364,10 +378,6 @@ export default {
       config: state => {
         const { config } = state
         return config
-      },
-      APIURIBase: state => {
-        const { config } = state
-        return config.APIURIBase
       },
       topbarConfig: state => {
         const { config } = state
