@@ -109,7 +109,7 @@
                        @set-current-pag="changePag"></dm-pagination>
   </div>
 
-  <dm-modal :control="modalIsOpened()" :modal-state="getModalState()" :document="control.modal.document" @set-pag="changePag" @close-modal="setModalClosed"></dm-modal>
+  <dm-modal :control="modalIsOpened()" v-if="modalIsOpened()" :modal-state="getModalState()" :document-id="control.modal.documentId" @set-pag="changePag" @close-modal="setModalClosed"></dm-modal>
 
 </section>
 </template>
@@ -174,13 +174,13 @@ export default {
       'addSortColumn'
     ]),
     newDocument () {
-      this.control.modal.document = {}
+      this.control.modal.documentId = ''
       this.setModalState('new')
       this.setModalOpened()
     },
     updateDocument (doc) {
-      console.log('doc: ', JSON.stringify(doc))
-      this.control.modal.document = doc
+      console.log('vai atualizar este documento aqui oh: ', doc._id)
+      this.control.modal.documentId = doc._id
       this.setModalState('update')
       this.setModalOpened()
     },
@@ -228,7 +228,9 @@ export default {
       this.updateFiltersSearch(_obj) // eh uma mutations invocada por uma action no vuex
     },
     changePag (pag) {
-      this.updateCurrentPag(pag)
+      if (pag !== undefined) {
+        this.updateCurrentPag(pag)
+      }
       this.getAll()
     },
     isSearchFilter (col) {
@@ -353,6 +355,7 @@ export default {
 
       // GET /someUrl
       const _uri = this.config.APIURIBase + this.API.resource + '/?_fields=' + _fields + _params + '&_sort=' + _sort
+      console.log('_uri do getAll(): ', _uri)
       this.$http.get(_uri).then((response) => {
         this.updateTotalDocs(response.headers.get('X-Total-Count'))
         this.docs = response.body

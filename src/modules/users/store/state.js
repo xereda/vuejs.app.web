@@ -46,7 +46,8 @@ export default {
       modal: {
         veeValidate: 'email',
         cssIcon: 'fa fa-envelope',
-        responsiveCSS: 'column is-6'
+        responsiveCSS: 'column is-6',
+        readOnlyOnUpdate: true
       },
       table: {
         header: {
@@ -55,6 +56,11 @@ export default {
         }
       }
     },
+    // __space1__: {
+    //   modal: {
+    //     responsiveCSS: 'column is-2'
+    //   }
+    // },
     password: {
       type: 'password',
       label: 'Senha',
@@ -64,7 +70,8 @@ export default {
       modal: {
         veeValidate: 'confirmed:password2|min:3',
         cssIcon: 'fa fa-lock',
-        responsiveCSS: 'column is-6'
+        responsiveCSS: 'column is-6',
+        hiddenOnUpdate: true
       }
     },
     password2: {
@@ -75,7 +82,8 @@ export default {
       required: true,
       modal: {
         cssIcon: 'fa fa-lock',
-        responsiveCSS: 'column is-6'
+        responsiveCSS: 'column is-6',
+        hiddenOnUpdate: true
       }
     },
     admin: {
@@ -117,7 +125,8 @@ export default {
       fieldName: '',
       state: ''
     },
-    boolean: []
+    boolean: [
+    ]
   },
   sort: [
     { field: 'name', sort: 'asc' }

@@ -93,6 +93,7 @@ export default {
       })
     },
     showAuditInfo (data) {
+      console.log('informacoes de auditoria: ', data)
       if (data !== undefined) {
         this.auditInfo.createdBy.name = data.createdById.name
         this.auditInfo.createdBy.date = moment(data.createdAt).format('DD/MM/YYYY HH:mm')
@@ -107,10 +108,18 @@ export default {
   },
   watch: {
     documentId (val) {
+      console.log('vai chamar vindo de uma alteracao em documentId')
+      this.getAuditInfo()
+    },
+    lastDocUpdateDate (val, oldVal) {
+      console.log('vai chamar vindo de uma alteracao em lastDocUpdateDate', val, oldVal)
       this.getAuditInfo()
     }
   },
-  props: [ 'documentId' ]
+  props: [
+    'documentId',
+    'lastDocUpdateDate'
+  ]
 }
 </script>
 
