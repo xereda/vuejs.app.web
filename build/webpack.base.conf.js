@@ -45,6 +45,13 @@ module.exports = {
         test: /\.vue$/,
         loader: 'vue'
       },
+      // {
+      //   test: /\.js$/,
+      //   loader: ['babel'],
+      //   include: projectRoot,
+      //   // /node_modules\/(?!vue-bulma-.*)/
+      //   exclude: [new RegExp(`node_modules\\${path.sep}(?!vue-bulma-.*)`)]
+      // },
       {
         test: /\.js$/,
         loader: 'babel',

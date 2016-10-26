@@ -1,13 +1,12 @@
 <template lang="html">
   <div id="modal" :class="{ 'modal': true, 'is-active': control, 'animated': true, 'fadeIn': fadeIn, 'fadeOut': fadeOut }">
     <div class="modal-background"></div>
-    <div class="modal-card">
+    <div class="modal-card custom">
       <header class="modal-card-head">
         <p class="modal-card-title">{{ title }}</p>
         <button class="delete" @click="modalClose()"></button>
       </header>
       <section class="modal-card-body">
-        <dm-notification v-if="showNotification" set-notification-closed="closedNotification"></dm-notification>
         <form>
           <div class="columns is-multiline">
             <div :class="col.modal.responsiveCSS" v-if="validColumn(index)" v-for="(col, index) in collection">
@@ -71,28 +70,12 @@
 </template>
 
 <script>
-import Vue from 'Vue'
 import { mapState } from 'vuex'
 import _ from 'lodash'
 import topbar from 'topbar'
-import bulmaMessage from 'xereda-vue-bulma-message'
-import dmModalAudit from '../../ui/modal/audit.vue'
+import dmModalAudit from './auditInfo.vue'
 import 'animate.css/animate.min.css'
-
-const BulmaMessageComponent = Vue.extend(bulmaMessage)
-const openMessage = (propsData = {
-  title: '',
-  message: '',
-  type: '',
-  direction: '',
-  duration: 1500,
-  container: '.messages'
-}) => {
-  return new BulmaMessageComponent({
-    el: document.createElement('div'),
-    propsData
-  })
-}
+import showMessage from '../../../utils/message'
 
 const SIMPLE_INPUT_TYPES = [ 'text', 'email', 'password', 'date' ]
 
@@ -101,7 +84,6 @@ export default {
     return {
       modelo: 'opa la',
       isLoading: false,
-      showNotification: false,
       fadeIn: true,
       fadeOut: false,
       modalDoc: {
@@ -148,22 +130,19 @@ export default {
   },
   methods: {
     getModalState () {
-      return _.isEmpty(this.modalDoc) ? 'new' : 'update'
+      return this.modalState
     },
     isUpdateDocument () {
       return this.getModalState() === 'update'
     },
-    openBulmaMessage (obj) {
-      openMessage({
+    showAlerts (obj) {
+      showMessage({
         title: obj.title,
         message: obj.message,
         duration: obj.duration,
         showCloseButton: obj.showCloseButton,
         type: obj.type
       })
-    },
-    closedNotification (closed) {
-      closed ? this.showNotification = false : this.showNotification = true
     },
     startLoading () {
       this.isLoading = true
@@ -201,7 +180,7 @@ export default {
           type: 'success'
         }
         this.modalDoc = {}
-        this.openBulmaMessage(_obj)
+        this.showAlerts(_obj)
         this.$emit('set-pag', 1)
         this.stopLoading(0)
       }, (response) => {
@@ -221,7 +200,7 @@ export default {
         } else {
           _obj.message += response.data.err.errmsg
         }
-        this.openBulmaMessage(_obj)
+        this.showAlerts(_obj)
         this.stopLoading(this.config.modal.delayModalSaveButton)
       })
     },
@@ -266,12 +245,11 @@ export default {
       setTimeout(function () {
         self.fadeOut = false
         self.fadeIn = true
-        self.$emit('set-modal-state', false)
+        self.$emit('close-modal')
       }, 510)
     }
   },
   components: {
-    bulmaMessage,
     dmModalAudit
   },
   watch: {
@@ -282,17 +260,20 @@ export default {
   },
   props: [
     'control',
-    'document'
+    'document',
+    'modalState'
   ]
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '../../../scss/config.scss';
 
 #modal {
   animation-duration: $fadeModal;
 }
-
+.custom {
+  width: 90% !important;
+}
 
 </style>

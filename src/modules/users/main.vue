@@ -109,7 +109,7 @@
                        @set-current-pag="changePag"></dm-pagination>
   </div>
 
-  <dm-modal :control="getModalState()" :document="control.modal.document" @set-pag="changePag" @set-modal-state="setModalState"></dm-modal>
+  <dm-modal :control="modalIsOpened()" :modal-state="getModalState()" :document="control.modal.document" @set-pag="changePag" @close-modal="setModalClosed"></dm-modal>
 
 </section>
 </template>
@@ -126,6 +126,8 @@ import topbar from 'topbar'
 import { mapState, mapActions } from 'vuex'
 import dmPagination from '../ui/pagination.vue'
 
+import showNotification from '../../utils/notification'
+
 export default {
   name: 'dmUsers',
   data () {
@@ -135,6 +137,7 @@ export default {
       control: {
         modal: {
           show: false,
+          state: 'new',
           document: {}
         },
         disableSortColumns: false,
@@ -172,18 +175,29 @@ export default {
     ]),
     newDocument () {
       this.control.modal.document = {}
-      this.setModalState(true)
+      this.setModalState('new')
+      this.setModalOpened()
     },
     updateDocument (doc) {
       console.log('doc: ', JSON.stringify(doc))
       this.control.modal.document = doc
-      this.setModalState(true)
+      this.setModalState('update')
+      this.setModalOpened()
     },
     getModalState () {
-      return this.control.modal.show
+      return this.control.modal.state
     },
-    setModalState (show) {
-      this.control.modal.show = show
+    setModalState (state) {
+      this.control.modal.state = state
+    },
+    modalIsOpened () {
+      return this.control.modal.show === true
+    },
+    setModalOpened () {
+      this.control.modal.show = true
+    },
+    setModalClosed () {
+      this.control.modal.show = false
     },
     appliedFilters () {
       return this.filters.search.state === 'applied'
@@ -348,6 +362,12 @@ export default {
         // error callback
         this.stopLoading()
         clearTimeout(startProcess)
+        showNotification({
+          title: '[ Erro de acesso a API ]',
+          message: 'Houve um erro ao acessar a API do sistema. Por favor, entre em contato com o administrador do sistema.',
+          type: 'danger',
+          duration: 5000
+        })
       })
     }
   },
