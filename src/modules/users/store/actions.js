@@ -13,5 +13,8 @@ export default {
   },
   addSortColumn (context, obj) {
     context.commit('ADD_SORT_COLUMN_USERS', obj)
+  },
+  uxModalCollapseState (context, opened) {
+    context.commit('UX_MODAL_COLLAPSE_STATE_USERS', opened)
   }
 }

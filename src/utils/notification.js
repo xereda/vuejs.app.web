@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import _notification from 'vue-bulma-notification'
+import _notification from 'xereda-vue-bulma-notification'
 const Notification = Vue.extend(_notification)
 
 const showNotification = (propsData = {

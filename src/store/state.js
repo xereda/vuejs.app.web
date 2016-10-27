@@ -1,6 +1,6 @@
 export default {
   user: {
-    _id: '57dc4b610c2468fc18fa618c',
+    _id: '58124f84c5560561f8e2dfc0',
     name: '',
     email: '',
     workplace: {

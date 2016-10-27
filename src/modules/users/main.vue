@@ -8,6 +8,11 @@
         <nav class="level">
           <!-- Left side -->
           <div class="level-left" v-if="appliedFilters()">
+            <div class="level-item">
+              <p class="subtitle is-5">
+                (<strong>{{ pagination.total }}</strong> {{ general.title }})
+              </p>
+            </div>
             <span class="">Filtro aplicado:&nbsp;</span>
             <span class="tag is-warning is-medium">
               [{{ (filters.search.fieldName === 'q') ? 'Todos' : filters.search.fieldName }}] {{ filters.search.text }}
@@ -17,7 +22,7 @@
           <div class="level-left" v-else>
             <div class="level-item">
               <p class="subtitle is-5">
-                <strong>{{ pagination.total }}</strong> {{ general.title }}
+                (<strong>{{ pagination.total }}</strong> {{ general.title }})
               </p>
             </div>
             <div class="level-item">
@@ -316,9 +321,9 @@ export default {
     },
     getCSSSorteColumnSate (column) {
       if (this.getSortColumnState(column) === 'asc') {
-        return 'fa fa-arrow-circle-o-down fa-lg'
+        return 'fa fa-sort-amount-asc icon-sort-column'
       } else if (this.getSortColumnState(column) === 'desc') {
-        return 'fa fa-arrow-circle-o-up fa-lg'
+        return 'fa fa-sort-amount-desc icon-sort-column'
       }
       return ''
     },
@@ -365,9 +370,11 @@ export default {
         // error callback
         this.stopLoading()
         clearTimeout(startProcess)
+        console.log('erro no getall: ', response)
         showNotification({
           title: '[ Erro de acesso a API ]',
-          message: 'Houve um erro ao acessar a API do sistema. Por favor, entre em contato com o administrador do sistema.',
+          message: 'Houve um erro ao acessar a API do sistema. Por favor, entre em contato com o administrador do sistema',
+          APIError: '<br /><br />' + response.body.response,
           type: 'danger',
           duration: 5000
         })
@@ -466,6 +473,10 @@ export default {
 
   .fade-enter, .fade-leave-active {
     opacity: 0;
+  }
+
+  .icon-sort-column {
+    font-size: 1em;
   }
 
 </style>

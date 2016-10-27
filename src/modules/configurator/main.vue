@@ -21,6 +21,12 @@
        </collapse-item>
      </collapse>
 
+     <ul style="list-style-type:disc">
+       <li>Coffee</li>
+       <li>Tea</li>
+       <li>Milk</li>
+     </ul>
+
     </div>
   </section>
 </template>
@@ -32,7 +38,7 @@ import { mapState } from 'vuex'
 import Collapse from 'xereda-vue-bulma-collapse/src/Collapse.vue'
 import CollapseItem from 'xereda-vue-bulma-collapse/src/Item.vue'
 
-import Notification from 'vue-bulma-notification'
+import Notification from 'xereda-vue-bulma-notification'
 const NotificationComponent = Vue.extend(Notification)
 const openNotification = (propsData = {
   title: '',

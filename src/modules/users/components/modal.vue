@@ -7,6 +7,22 @@
         <button class="delete" @click="modalClose()"></button>
       </header>
       <section class="modal-card-body">
+        <div class="tabs is-boxed">
+          <ul>
+            <li class="is-active">
+              <a>
+                <span class="icon is-small"><i class="fa fa-info-circle"></i></span>
+                <span>Geral</span>
+              </a>
+            </li>
+            <li>
+              <a>
+                <span class="icon is-small"><i class="fa fa-link"></i></span>
+                <span>Relações</span>
+              </a>
+            </li>
+          </ul>
+        </div>
         <form>
           <div class="columns is-multiline">
             <div :class="col.modal.responsiveCSS" v-if="validColumn(col, index)" v-for="(col, index) in collection">
@@ -71,7 +87,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 // import _ from 'lodash'
 import topbar from 'topbar'
 import dmModalAudit from './auditInfo.vue'
@@ -118,6 +134,10 @@ export default {
       session: state => {
         const { user } = state
         return user
+      },
+      ux: state => {
+        const { ux } = state.users
+        return ux
       }
     }),
     title () {
@@ -131,6 +151,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions([]),
     isReadOnlyOnUpdate (col) {
       return col.modal.readOnlyOnUpdate && this.isUpdateDocument()
     },
@@ -202,6 +223,7 @@ export default {
         this.showUserNotifications(response, 'createDoc', 'success')
         this.$emit('set-pag', 1)
         this.stopLoading(0)
+        this.modalDoc = {}
       }, (response) => {
         this.showUserNotifications(response, 'createdDoc', 'error')
         this.stopLoading(this.config.modal.delayModalSaveButton)

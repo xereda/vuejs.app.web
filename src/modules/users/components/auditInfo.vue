@@ -1,6 +1,6 @@
 <template lang="html">
   <collapse accordion is-fullwidth class="margem">
-     <collapse-item title="Informações de auditoria">
+     <collapse-item @click="uxModalCollapseState(!ux.modal.collapse.opened)" :selected="ux.modal.collapse.opened" title="Informações de auditoria">
        <div class="columns is-multiline">
          <div class="column is-3">
            <label class="label">Criado em:</label>
@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import moment from 'moment'
 import CollapseObject from '../../../utils/collapse'
 
@@ -74,6 +74,10 @@ export default {
       API: state => {
         const { API } = state.users
         return API
+      },
+      ux: state => {
+        const { ux } = state.users
+        return ux
       }
     })
   },
@@ -81,6 +85,9 @@ export default {
     this.getAuditInfo()
   },
   methods: {
+    ...mapActions([
+      'uxModalCollapseState'
+    ]),
     getAuditInfo () {
       console.log('vai buscar as informacoes de auditoria do _id: ', this.documentId)
       // GET /someUrl

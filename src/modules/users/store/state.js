@@ -119,6 +119,13 @@ export default {
       }
     }
   },
+  ux: {
+    userDecisions: {
+      modal: {
+        collapseOpened: true
+      }
+    }
+  },
   filters: {
     search: {
       text: '',
@@ -129,6 +136,6 @@ export default {
     ]
   },
   sort: [
-    { field: 'name', sort: 'asc' }
+    // { field: 'name', sort: 'asc' }
   ]
 }

@@ -26,5 +26,8 @@ export default {
       _sort.unshift({ field: obj.field, sort: 'desc' })
     }
     state.sort = _sort
+  },
+  'UX_MODAL_COLLAPSE_STATE_USERS' (state, opened) {
+    state.ux.modal.collapse.opened = opened
   }
 }
