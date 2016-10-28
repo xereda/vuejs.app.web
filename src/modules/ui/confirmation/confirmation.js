@@ -1,7 +1,7 @@
-const removeOne = (callback, doc) => {
+const removeOne = (obj) => {
   swal({
-    title: 'Deseja remover?????',
-    text: 'Após remover o registro selecionado, \n você não poderá restaurá-lo!',
+    title: 'Deseja remover?',
+    text: 'Após remover o documento selecionado (' + obj.documentIdentify + '), você não poderá restaurá-lo!',
     type: 'warning',
     showCancelButton: true,
     showLoaderOnConfirm: true,
@@ -10,8 +10,7 @@ const removeOne = (callback, doc) => {
     cancelButtonText: 'Cancelar',
     closeOnConfirm: false },
     function () {
-      setTimeout(() => callback(doc))
-      callback(doc)
+      setTimeout(() => obj.callback({ documentId: obj.documentId, documentIdentify: obj.documentIdentify }))
     })
 }
 

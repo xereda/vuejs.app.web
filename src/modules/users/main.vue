@@ -98,7 +98,7 @@
                     </a>
                   </td>
                   <td class="is-icon">
-                    <a @click="removeDocument(doc)">
+                    <a @click="removeDocumentConfirme({ documentId: doc._id, documentIdentify: doc.name })">
                       <i class="fa fa-trash"></i>
                     </a>
                   </td>
@@ -114,7 +114,7 @@
                        @set-current-pag="changePag"></dm-pagination>
   </div>
 
-  <dm-modal :control="modalIsOpened()" v-if="modalIsOpened()" :modal-state="getModalState()" :document-id="control.modal.documentId" @set-pag="changePag" @close-modal="setModalClosed"></dm-modal>
+  <dm-modal :control="modalIsOpened()" v-if="modalIsOpened()" :modal-state="getModalState()" :document-id="control.modal.documentId" @remove-document="removeDocumentConfirme" @set-pag="changePag" @close-modal="setModalClosed"></dm-modal>
 
 </section>
 </template>
@@ -123,8 +123,7 @@
 import moment from 'moment'
 import localePTBR from 'moment/locale/pt-br'
 
-import sweetalert from '../ui/sweetalert/sweetalert'
-console.log(sweetalert)
+import confirmation from '../ui/confirmation/confirmation'
 
 import dmModal from './components/Modal.vue'
 import Spinner from 'spin'
@@ -135,6 +134,7 @@ import { mapState, mapActions } from 'vuex'
 import dmPagination from '../ui/Pagination.vue'
 
 import showNotification from '../ui/notification/notification'
+import showMessage from '../ui/message/message'
 
 export default {
   name: 'dmUsers',
@@ -187,17 +187,37 @@ export default {
       this.setModalOpened()
     },
     updateDocument (doc) {
-      console.log('vai atualizar este documento aqui oh: ', doc._id)
       this.control.modal.documentId = doc._id
       this.setModalState('update')
       this.setModalOpened()
     },
-    callback (doc) {
-      console.log('isso aqui eh um callback que foi la para dentro do sweetalert', doc)
-      setTimeout(() => swal('Removido!', 'O registro selecionado foi removido com sucesso!', 'success'), 1000)
+    removeDocumentCallback (obj) {
+      const _uri = this.config.APIURIBase + this.API.resource + '/' + obj.documentId
+      this.$http.delete(_uri).then((response) => {
+        // get status
+        console.log(response.status)
+        // get status text
+        console.log(response.statusText)
+        setTimeout(() => swal('Removido!', `O documento "${obj.documentIdentify}" foi removido com sucesso!`, 'success'))
+        this.setModalClosed()
+        this.changePag()
+      }, (response) => {
+        setTimeout(() => swal('Erro!', `Não foi possível remover o documento "${obj.documentIdentify}"`, 'error'))
+      })
+      // setTimeout(() => swal('Removido!', 'O registro selecionado foi removido com sucesso!', 'success'), 1000)
     },
-    removeDocument (doc) {
-      sweetalert.removeOne(this.callback, doc)
+    removeDocumentConfirme (obj) {
+      if (this.API.resource === 'users' && obj.documentId === this.config.adminUserId) {
+        showMessage({
+          title: 'Informações de segurança',
+          message: 'O usuário administrador não pode ser removido. Dúvidas, por favor, entre em contato com a DocMob.',
+          duration: 4000,
+          showCloseButton: true,
+          type: 'warning'
+        })
+      } else {
+        confirmation.removeOne({ callback: this.removeDocumentCallback, documentId: obj.documentId, documentIdentify: obj.documentIdentify })
+      }
     },
     getModalState () {
       return this.control.modal.state
@@ -370,7 +390,6 @@ export default {
 
       // GET /someUrl
       const _uri = this.config.APIURIBase + this.API.resource + '/?_fields=' + _fields + _params + '&_sort=' + _sort
-      console.log('_uri do getAll(): ', _uri)
       this.$http.get(_uri).then((response) => {
         this.updateTotalDocs(response.headers.get('X-Total-Count'))
         this.docs = response.body
@@ -380,7 +399,6 @@ export default {
         // error callback
         this.stopLoading()
         clearTimeout(startProcess)
-        console.log('erro no getall: ', response)
         this.showError(response)
       })
     },

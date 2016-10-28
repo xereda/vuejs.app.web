@@ -4,7 +4,7 @@
     <div class="modal-card custom">
       <header class="modal-card-head">
         <p class="modal-card-title">{{ title }}</p>
-        <button class="delete" @click="modalClose()"></button>
+        <button class="delete" @click="confirmeModalClose()"></button>
       </header>
       <section class="modal-card-body">
         <div class="tabs is-boxed">
@@ -80,7 +80,8 @@
       </section>
       <footer class="modal-card-foot">
         <a :class="getCSSButtonSave" @click="formSubmit()">Salvar</a>
-        <a class="button" @click="modalClose()">Cancelar</a>
+        <a class="button" @click="confirmeModalClose()">Cancelar</a>
+        <a class="button is-danger" v-if="isUpdateDocument()" @click="removeDocument()">Excluir</a>
       </footer>
     </div>
   </div>
@@ -88,7 +89,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-// import _ from 'lodash'
+import _ from 'lodash'
 import topbar from 'topbar'
 import dmModalAudit from './auditInfo.vue'
 import 'animate.css/animate.min.css'
@@ -100,10 +101,13 @@ export default {
   data () {
     return {
       modelo: 'opa la',
-      isLoading: false,
+      loading: false,
       fadeIn: true,
       fadeOut: false,
       modalDoc: {
+      },
+      clonedDoc: {
+
       }
     }
   },
@@ -112,6 +116,7 @@ export default {
     // topbar.show()
     this.$validator.setLocale('pt_BR')
     this.isUpdateDocument() === true ? this.getDoc() : null
+    this.clonedDoc = {}
   },
   computed: {
     ...mapState({
@@ -144,7 +149,8 @@ export default {
       return (this.isUpdateDocument()) ? this.general.modal.titleUpdateDocument : this.general.modal.titleNewDocument
     },
     getCSSButtonSave () {
-      if ((this.errors.any() === true) || (this.isLoading === true)) {
+      console.log('oiaa: ', this.isPristine(), this.errors.any(), this.loading)
+      if ((this.isPristine()) || (this.errors.any() === true) || (this.isLoading())) {
         return 'button is-info is-disabled'
       }
       return 'button is-info'
@@ -152,6 +158,15 @@ export default {
   },
   methods: {
     ...mapActions([]),
+    isPristine () {
+      return !this.changedModalDoc()
+    },
+    isDirty () {
+      return this.changedModalDoc()
+    },
+    changedModalDoc () {
+      return !_.isEqual(this.clonedDoc, this.modalDoc)
+    },
     isReadOnlyOnUpdate (col) {
       return col.modal.readOnlyOnUpdate && this.isUpdateDocument()
     },
@@ -177,33 +192,33 @@ export default {
       })
     },
     startLoading () {
-      this.isLoading = true
+      this.loading = true
       topbar.show()
     },
     stopLoading (delay) {
       if (delay > 0) {
         setTimeout(() => {
-          this.isLoading = false
+          this.loading = false
           topbar.hide()
         }, delay)
       } else {
-        this.isLoading = false
+        this.loading = false
         topbar.hide()
       }
     },
     isLoading () {
-      return this.isLoading
+      return this.loading
+    },
+    removeDocument () {
+      this.$emit('remove-document', { documentId: this.modalDoc._id, documentIdentify: this.modalDoc.name })
     },
     getDoc () {
       this.startLoading()
       const _uri = this.config.APIURIBase + this.API.resource + '/' + this.documentId
 
       this.$http.get(_uri).then((response) => {
-        // get status
-        console.log(response.status)
-        // get status text
-        console.log(response.statusText)
         this.modalDoc = response.body
+        this.clonedDoc = _.clone(this.modalDoc)
         this.stopLoading(0)
       }, (response) => {
         this.showUserNotifications(response, 'getDoc', 'error')
@@ -233,8 +248,6 @@ export default {
       this.startLoading()
       this.modalDoc.updatedById = this.session._id
       const _uri = this.config.APIURIBase + this.API.resource
-
-      console.log('vai atualizar isso aqui: ', this.modalDoc)
 
       this.$http.put(_uri, this.modalDoc, { emulateJSON: true }).then((response) => {
         // get status
@@ -343,6 +356,23 @@ export default {
       }
       return true
     },
+    confirmeModalClose () {
+      const self = this
+      if (this.isDirty()) {
+        swal({ title: 'Deseja sair?',
+        text: 'Existem informações não salvas no formulário. \n Deseja realmente sair sem salvar?',
+        type: 'warning',
+        showCancelButton: true,
+        showLoaderOnConfirm: true,
+        confirmButtonColor: '#DD6B55',
+        confirmButtonText: 'Sim, desejo sair!',
+        cancelButtonText: 'Voltar',
+        closeOnConfirm: true },
+        () => setTimeout(() => self.modalClose()))
+      } else {
+        this.modalClose()
+      }
+    },
     modalClose () {
       this.fadeOut = true
       const self = this
@@ -358,7 +388,6 @@ export default {
   },
   watch: {
     documentId (val) {
-      console.log('mudou o id: ', val)
       this.errors.clear()
     }
   },

@@ -1,6 +1,6 @@
 export default {
   user: {
-    _id: '58124f84c5560561f8e2dfc0',
+    _id: '58124f84c5560561f8e2dfbf',
     name: '',
     email: '',
     workplace: {
@@ -14,6 +14,7 @@ export default {
     lastSessionDate: new Date()
   },
   config: {
+    adminUserId: '58124f84c5560561f8e2dfbf',
     spinner: {
       lines: 11, // The number of lines to draw
       length: 5, // The length of each line
