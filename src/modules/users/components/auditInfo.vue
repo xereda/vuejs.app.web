@@ -1,6 +1,6 @@
 <template lang="html">
-  <collapse accordion is-fullwidth class="margem">
-     <collapse-item @click="uxModalCollapseState(!ux.modal.collapse.opened)" :selected="ux.modal.collapse.opened" title="Informações de auditoria">
+  <collapse accordion is-fullwidth class="margem" @on-click="changeCollapseState">
+     <collapse-item :selected="userDecisions.modal.auditInfo.collapseOpened" title="Informações de auditoria">
        <div class="columns is-multiline">
          <div class="column is-3">
            <label class="label">Criado em:</label>
@@ -48,7 +48,8 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import moment from 'moment'
-import CollapseObject from '../../../utils/collapse'
+import Collapse from '../../ui/collapse/Collapse.vue'
+import CollapseItem from '../../ui/collapse/Item.vue'
 
 export default {
   data () {
@@ -75,9 +76,9 @@ export default {
         const { API } = state.users
         return API
       },
-      ux: state => {
+      userDecisions: state => {
         const { ux } = state.users
-        return ux
+        return ux.userDecisions
       }
     })
   },
@@ -88,14 +89,15 @@ export default {
     ...mapActions([
       'uxModalCollapseState'
     ]),
+    changeCollapseState (param) {
+      this.uxModalCollapseState(param === 'opened')
+    },
     getAuditInfo () {
-      console.log('vai buscar as informacoes de auditoria do _id: ', this.documentId)
       // GET /someUrl
       const _uri = this.config.APIURIBase + this.API.resource + '/' + this.documentId + '/?_populate=createdById,updatedById&_fields=createdAt,updatedAt,createdById,updatedById'
       this.$http.get(_uri).then((response) => {
         this.showAuditInfo(response.body)
       }, (response) => {
-        console.log('response.body: ', response.body)
         // error callback
       })
     },
@@ -110,8 +112,8 @@ export default {
     }
   },
   components: {
-    Collapse: CollapseObject.Collapse,
-    CollapseItem: CollapseObject.CollapseItem
+    Collapse,
+    CollapseItem
   },
   watch: {
     documentId (val) {

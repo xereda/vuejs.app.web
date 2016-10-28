@@ -92,7 +92,7 @@ import { mapState, mapActions } from 'vuex'
 import topbar from 'topbar'
 import dmModalAudit from './auditInfo.vue'
 import 'animate.css/animate.min.css'
-import showMessage from '../../../utils/message'
+import showMessage from '../../ui/message/message'
 
 const SIMPLE_INPUT_TYPES = [ 'text', 'email', 'password', 'date' ]
 
@@ -225,7 +225,7 @@ export default {
         this.stopLoading(0)
         this.modalDoc = {}
       }, (response) => {
-        this.showUserNotifications(response, 'createdDoc', 'error')
+        this.showUserNotifications(response, 'createDoc', 'error')
         this.stopLoading(this.config.modal.delayModalSaveButton)
       })
     },
@@ -299,6 +299,9 @@ export default {
       if (status === 'error') {
         if (res.status === 0) {
           _obj.message += 'Erro de conexão a API DocMob'
+        } else if (res.status === 503) {
+          _obj.title = res.data.error
+          _obj.message = res.statusText
         } else if (res.data.err.errors !== undefined) {
           Object.keys(res.data.err.errors).forEach((element, index) => {
             _obj.message += res.data.err.errors[element].message + '<br />'
@@ -307,7 +310,6 @@ export default {
           _obj.message += res.data.err.errmsg
         }
       }
-
       this.showAlerts(_obj)
     },
     getDataRules (col) {

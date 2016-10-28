@@ -28,6 +28,6 @@ export default {
     state.sort = _sort
   },
   'UX_MODAL_COLLAPSE_STATE_USERS' (state, opened) {
-    state.ux.modal.collapse.opened = opened
+    state.ux.userDecisions.modal.auditInfo.collapseOpened = opened
   }
 }

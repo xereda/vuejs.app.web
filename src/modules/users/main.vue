@@ -98,7 +98,7 @@
                     </a>
                   </td>
                   <td class="is-icon">
-                    <a href="#">
+                    <a @click="removeDocument(doc)">
                       <i class="fa fa-trash"></i>
                     </a>
                   </td>
@@ -123,15 +123,18 @@
 import moment from 'moment'
 import localePTBR from 'moment/locale/pt-br'
 
-import dmModal from './components/modal.vue'
+import sweetalert from '../ui/sweetalert/sweetalert'
+console.log(sweetalert)
+
+import dmModal from './components/Modal.vue'
 import Spinner from 'spin'
 let spinner
 
 import topbar from 'topbar'
 import { mapState, mapActions } from 'vuex'
-import dmPagination from '../ui/pagination.vue'
+import dmPagination from '../ui/Pagination.vue'
 
-import showNotification from '../../utils/notification'
+import showNotification from '../ui/notification/notification'
 
 export default {
   name: 'dmUsers',
@@ -188,6 +191,13 @@ export default {
       this.control.modal.documentId = doc._id
       this.setModalState('update')
       this.setModalOpened()
+    },
+    callback (doc) {
+      console.log('isso aqui eh um callback que foi la para dentro do sweetalert', doc)
+      setTimeout(() => swal('Removido!', 'O registro selecionado foi removido com sucesso!', 'success'), 1000)
+    },
+    removeDocument (doc) {
+      sweetalert.removeOne(this.callback, doc)
     },
     getModalState () {
       return this.control.modal.state
@@ -371,13 +381,25 @@ export default {
         this.stopLoading()
         clearTimeout(startProcess)
         console.log('erro no getall: ', response)
-        showNotification({
-          title: '[ Erro de acesso a API ]',
-          message: 'Houve um erro ao acessar a API do sistema. Por favor, entre em contato com o administrador do sistema',
-          APIError: '<br /><br />' + response.body.response,
-          type: 'danger',
-          duration: 5000
-        })
+        this.showError(response)
+      })
+    },
+    showError (res) {
+      let _APIError = 'Status: ' + res.status + '<br />'
+      _APIError += 'Texto: ' + res.statusText + '<br />'
+      if (res.data.error) {
+        _APIError += 'Mensagem: ' + res.data.error + '<br />'
+      }
+      if (res.body.errors) {
+        _APIError += 'Objeto JSON: ' + JSON.stringify(res.body.errors) + '<br />'
+      }
+
+      showNotification({
+        title: '[ Erro de acesso a API ]',
+        message: 'Houve um erro ao acessar a API do sistema. Por favor, entre em contato com o administrador do sistema',
+        APIError: '<br /><br />' + _APIError,
+        type: 'danger',
+        duration: 5000
       })
     }
   },

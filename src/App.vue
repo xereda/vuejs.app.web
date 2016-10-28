@@ -11,10 +11,11 @@ import { mapState } from 'vuex'
 
 import 'lodash'
 import 'sweetalert'
+import 'sweetalert/dist/sweetalert.css'
 import 'font-awesome/css/font-awesome.css'
 
-import dmHeader from './modules/ui/header.vue'
-import dmFooter from './modules/ui/footer.vue'
+import dmHeader from './modules/ui/Header.vue'
+import dmFooter from './modules/ui/Footer.vue'
 
 export default {
   name: 'app',

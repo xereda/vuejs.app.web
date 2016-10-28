@@ -38,7 +38,7 @@ import { mapState } from 'vuex'
 import Collapse from 'xereda-vue-bulma-collapse/src/Collapse.vue'
 import CollapseItem from 'xereda-vue-bulma-collapse/src/Item.vue'
 
-import Notification from 'xereda-vue-bulma-notification'
+import Notification from '../ui/notification/Notification.vue'
 const NotificationComponent = Vue.extend(Notification)
 const openNotification = (propsData = {
   title: '',

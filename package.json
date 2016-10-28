@@ -31,9 +31,7 @@
     "vue-resource": "^1.0.3",
     "vue-router": "^2.0.0-rc.7",
     "vuex": "^2.0.0-rc.6",
-    "xereda-vue-bulma-collapse": "git+https://github.com/xereda/xereda-vue-bulma-collapse",
-    "xereda-vue-bulma-message": "^2.0.3",
-    "xereda-vue-bulma-notification": "git+https://github.com/xereda/xereda-vue-bulma-notification.git"
+    "vuex-router-sync": "^3.0.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.4.0",

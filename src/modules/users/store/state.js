@@ -122,7 +122,9 @@ export default {
   ux: {
     userDecisions: {
       modal: {
-        collapseOpened: true
+        auditInfo: {
+          collapseOpened: true
+        }
       }
     }
   },

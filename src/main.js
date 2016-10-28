@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueResource from 'vue-resource'
+import { sync } from 'vuex-router-sync'
 import Vuemoment from 'vue-moment'
 import messages from './locale/veeValidate/pt_BR/messages'
 import VeeValidate, { Validator } from 'vee-validate'
@@ -22,6 +23,7 @@ Validator.extend('ignore', {
 import App from './App'
 import store from './store/store'
 import router from './routes'
+sync(store, router)
 
 /* eslint-disable no-new */
 new Vue({
