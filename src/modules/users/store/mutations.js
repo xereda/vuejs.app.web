@@ -1,21 +1,27 @@
 export default {
-  'UPDATE_FILTERS_SEARCH_USERS' (state, obj) {
+  'USERS.UPDATE_CURRENT_PAG' (state, pag) {
+    state.pagination.currentPag = pag
+  },
+  'USERS.UPDATE_TOTAL_DOCS' (state, total) {
+    state.pagination.total = total
+  },
+  'USERS.UPDATE_FILTERS_SEARCH' (state, obj) {
     state.filters.search = obj
   },
-  'ADD_BOOLEAN_FILTER_USERS' (state, field) {
+  'USERS.ADD_BOOLEAN_FILTER' (state, field) {
     state.filters.boolean.push(field)
   },
-  'REMOVE_BOOLEAN_FILTER_USERS' (state, field) {
+  'USERS.REMOVE_BOOLEAN_FILTER' (state, field) {
     // abaixo funciona!
     let _arr = state.filters.boolean
     _arr.splice(_arr.indexOf(field), 1)
   },
-  'REMOVE_ALL_BOOLEAN_FILTER_USERS' (state, array) {
+  'USERS.REMOVE_ALL_BOOLEAN_FILTER' (state, array) {
     if (state.filters.boolean.length > 0) {
       state.filters.boolean = array
     }
   },
-  'ADD_SORT_COLUMN_USERS' (state, obj) {
+  'USERS.ADD_SORT_COLUMN' (state, obj) {
     let _sort = state.sort
     _sort = _sort.filter((element) => {
       return element.field !== obj.field
@@ -27,7 +33,7 @@ export default {
     }
     state.sort = _sort
   },
-  'UX_MODAL_COLLAPSE_STATE_USERS' (state, opened) {
+  'USERS.UX_MODAL_COLLAPSE_STATE' (state, opened) {
     state.ux.userDecisions.modal.auditInfo.collapseOpened = opened
   }
 }

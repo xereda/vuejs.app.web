@@ -1,20 +1,26 @@
 export default {
-  updateFiltersSearch (context, obj) {
-    context.commit('UPDATE_FILTERS_SEARCH_USERS', obj)
+  users_updateCurrentPag (context, pag) {
+    context.commit('USERS.UPDATE_CURRENT_PAG', pag)
   },
-  addBooleanFilter (context, field) {
-    context.commit('ADD_BOOLEAN_FILTER_USERS', field)
+  users_updateTotalDocs (context, total) {
+    context.commit('USERS.UPDATE_TOTAL_DOCS', total)
   },
-  removeBooleanFilter (context, field) {
-    context.commit('REMOVE_BOOLEAN_FILTER_USERS', field)
+  users_updateFiltersSearch (context, obj) {
+    context.commit('USERS.UPDATE_FILTERS_SEARCH', obj)
   },
-  removeAllBooleanFilter (context, array) {
-    context.commit('REMOVE_ALL_BOOLEAN_FILTER_USERS', array)
+  users_addBooleanFilter (context, field) {
+    context.commit('USERS.ADD_BOOLEAN_FILTER', field)
   },
-  addSortColumn (context, obj) {
-    context.commit('ADD_SORT_COLUMN_USERS', obj)
+  users_removeBooleanFilter (context, field) {
+    context.commit('USERS.REMOVE_BOOLEAN_FILTER', field)
   },
-  uxModalCollapseState (context, opened) {
-    context.commit('UX_MODAL_COLLAPSE_STATE_USERS', opened)
+  users_removeAllBooleanFilter (context, array) {
+    context.commit('USERS.REMOVE_ALL_BOOLEAN_FILTER', array)
+  },
+  users_addSortColumn (context, obj) {
+    context.commit('USERS.ADD_SORT_COLUMN', obj)
+  },
+  users_uxModalCollapseState (context, opened) {
+    context.commit('USERS.UX_MODAL_COLLAPSE_STATE', opened)
   }
 }

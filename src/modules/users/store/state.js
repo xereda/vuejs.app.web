@@ -128,6 +128,11 @@ export default {
       }
     }
   },
+  pagination: {
+    limit: 10,
+    currentPag: 1,
+    total: 0
+  },
   filters: {
     search: {
       text: '',

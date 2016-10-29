@@ -45,11 +45,6 @@ export default {
       shadowBlur: 7,
       shadowColor: 'rgba(0, 0, 0, .99)'
     },
-    pagination: {
-      limit: 10,
-      currentPag: 1,
-      total: 0
-    },
     APIURIBase: 'http://localhost:5000/',
     grid: {
       delayLoading: 250,

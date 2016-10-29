@@ -49,7 +49,7 @@
           </div>
           <!-- Right side -->
           <div class="level-right">
-            <p class="level-item"><a :class="getCSSState()" @click="removeAllBooleanFilter([])"><strong>Todos</strong></a></p>
+            <p class="level-item"><a :class="getCSSState()" @click="users.removeAllBooleanFilter([])"><strong>Todos</strong></a></p>
             <p class="level-item"
                v-for="(col, index) in collection"
                v-if="col.type === 'boolean'">
@@ -172,14 +172,13 @@ export default {
   },
   methods: {
     ...mapActions([
-      'updateUserSession',
-      'updateCurrentPag',
-      'updateTotalDocs',
-      'updateFiltersSearch',
-      'addBooleanFilter',
-      'removeBooleanFilter',
-      'removeAllBooleanFilter',
-      'addSortColumn'
+      'users_updateCurrentPag',
+      'users_updateTotalDocs',
+      'users_updateFiltersSearch',
+      'users_addBooleanFilter',
+      'users_removeBooleanFilter',
+      'users_removeAllBooleanFilter',
+      'users_addSortColumn'
     ]),
     newDocument () {
       this.control.modal.documentId = ''
@@ -242,13 +241,13 @@ export default {
     },
     localUpdateSearchFilters () {
       const _search = this.control.filters.search
-      this.updateFiltersSearch({ text: _search.text, fieldName: _search.fieldName, state: 'applied' })
+      this.users_updateFiltersSearch({ text: _search.text, fieldName: _search.fieldName, state: 'applied' })
     },
     localRemoveBooleanFilter (field) {
-      this.removeBooleanFilter(field)
+      this.users_removeBooleanFilter(field)
     },
     localAddBooleanFilter (field) {
-      this.addBooleanFilter(field)
+      this.users_addBooleanFilter(field)
     },
     isBooleanApplied (index) {
       const _boolean = this.filters.boolean
@@ -260,11 +259,11 @@ export default {
     clearSearchFields () {
       const _obj = { text: '', fieldName: 'q', state: '' } // defino o objeto para zerar as propriedades
       this.control.filters.search = _.clone(_obj) // esta em meu data
-      this.updateFiltersSearch(_obj) // eh uma mutations invocada por uma action no vuex
+      this.users_updateFiltersSearch(_obj) // eh uma mutations invocada por uma action no vuex
     },
     changePag (pag) {
       if (pag !== undefined) {
-        this.updateCurrentPag(pag)
+        this.users_updateCurrentPag(pag)
       }
       this.getAll()
     },
@@ -337,7 +336,7 @@ export default {
     localAddSortColumn (column) {
       if (this.isLoading() === false) {
         this.control.disableSortColumns = true
-        this.addSortColumn({ field: column, sort: this.getSortColumnState(column) })
+        this.users_addSortColumn({ field: column, sort: this.getSortColumnState(column) })
         this.changePag(1)
       }
     },
@@ -391,7 +390,7 @@ export default {
       // GET /someUrl
       const _uri = this.config.APIURIBase + this.API.resource + '/?_fields=' + _fields + _params + '&_sort=' + _sort
       this.$http.get(_uri).then((response) => {
-        this.updateTotalDocs(response.headers.get('X-Total-Count'))
+        this.users_updateTotalDocs(response.headers.get('X-Total-Count'))
         this.docs = response.body
         this.stopLoading()
         clearTimeout(startProcess)
@@ -458,8 +457,8 @@ export default {
         return config.spinner
       },
       pagination: state => {
-        const { config } = state
-        return config.pagination
+        const { pagination } = state.users
+        return pagination
       },
       filters: state => {
         const { filters } = state.users
@@ -484,11 +483,11 @@ export default {
   },
   watch: {
     'filters.search.state' (val, oldVal) {
-      this.updateCurrentPag(1)
+      this.users_updateCurrentPag(1)
       this.getAll()
     },
     'filters.boolean' (val, oldVal) {
-      this.updateCurrentPag(1)
+      this.users_updateCurrentPag(1)
       this.getAll()
     }
   }

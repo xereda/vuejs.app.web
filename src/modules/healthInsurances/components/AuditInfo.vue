@@ -87,10 +87,10 @@ export default {
   },
   methods: {
     ...mapActions([
-      'uxModalCollapseState'
+      'hi_uxModalCollapseState'
     ]),
     changeCollapseState (param) {
-      this.uxModalCollapseState(param === 'opened')
+      this.hi_uxModalCollapseState(param === 'opened')
     },
     getAuditInfo () {
       // GET /someUrl
