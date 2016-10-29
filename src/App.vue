@@ -8,7 +8,6 @@
 
 <script>
 import { mapState } from 'vuex'
-
 import 'lodash'
 import 'sweetalert'
 import 'sweetalert/dist/sweetalert.css'

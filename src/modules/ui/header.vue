@@ -59,9 +59,6 @@
             <li :class="($route.name === 'dashboard') ? 'is-active' : ''"><router-link to="/dashboard">Dashboard</router-link></li>
             <li :class="($route.name === 'users') ? 'is-active' : ''"><router-link to="/users">Usuários</router-link></li>
             <li :class="($route.name === 'configurator') ? 'is-active' : ''"><router-link to="/configurator">Configuração</router-link></li>
-            <li><a>Elements</a></li>
-            <li><a>Components</a></li>
-            <li><a>Layout</a></li>
           </ul>
         </div>
       </nav>
@@ -72,7 +69,7 @@
   <nav class="nav has-shadow">
     <div class="container">
       <div class="nav-center">
-        <a class="nav-item is-tab is-active">Card</a>
+        <a :class="($route.name === 'healthInsurances') ? 'nav-item is-tab is-active' : 'nav-item is-tab'"><router-link to="/healthInsurances">Planos de Saúde</router-link></a>
         <a class="nav-item is-tab">Level</a>
         <a class="nav-item is-tab">Media object</a>
         <a class="nav-item is-tab">Menu</a>

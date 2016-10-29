@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <h3>DASHBOARD</h3>
+    <h3>DASHBOARD SHOW</h3>
 
   </div>
 </template>
