@@ -15,6 +15,21 @@
             <span></span>
             <span></span>
           </span>
+
+          <div class="nav-center">
+            <a class="nav-item" href="#">
+              <span class="icon">
+                <i class="fa fa-facebook-official"></i>
+              </span>
+            </a>
+            <a class="nav-item" href="#">
+              <span class="icon">
+                <i class="fa fa-twitter"></i>
+              </span>
+            </a>
+          </div>
+
+
           <div class="nav-right nav-menu">
             <a class="nav-item is-active">
               Início
@@ -27,7 +42,7 @@
             </a>
             <span class="nav-item">
               <a class="button is-info is-inverted">
-                <span class="icon">
+                <span class="icon is-small">
                   <i class="fa fa-download"></i>
                 </span>
                 <span>Download</span>

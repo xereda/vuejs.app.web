@@ -49,10 +49,9 @@
           </div>
           <!-- Right side -->
           <div class="level-right">
-            <p class="level-item"><a :class="getCSSState()" @click="hi_removeAllBooleanFilter([])"><strong>Todos</strong></a></p>
+            <p class="level-item" v-if="!_.isEmpty(booleanColumns)"><a :class="getCSSState()" @click="hi_removeAllBooleanFilter([])"><strong>Todos</strong></a></p>
             <p class="level-item"
-               v-for="(col, index) in collection"
-               v-if="col.type === 'boolean'">
+               v-for="(col, index) in booleanColumns">
               <a :class="getCSSState()" @click="localAddBooleanFilter(index)" v-if="isBooleanApplied(index) === false">{{ col.label }}</a>
               <span v-else class="tag is-warning is-medium">
                 {{ col.label }}
@@ -438,6 +437,17 @@ export default {
       collection: state => {
         const { collection } = state.healthInsurances
         return collection
+      },
+      booleanColumns: state => {
+        const { collection } = state.healthInsurances
+        let _obj = {}
+        Object.keys(collection).forEach((element, index) => {
+          if (collection[element].type === 'boolean') {
+            console.log('element: ', element, index, collection[element].type)
+            _obj[element] = collection[element]
+          }
+        })
+        return _obj
       },
       returnableColumnFields: state => {
         const { collection } = state.healthInsurances

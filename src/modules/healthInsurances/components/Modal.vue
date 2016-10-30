@@ -167,11 +167,17 @@ export default {
     title () {
       return (this.isUpdateDocument()) ? this.general.modal.titleUpdateDocument : this.general.modal.titleNewDocument
     },
-    getCSSButtonSave () {
-      if ((this.isPristine()) || (this.errors.any() === true) || (this.isLoading())) {
-        return 'button is-info is-disabled'
+    getCSSButtonSave: {
+      cache: false,
+      get () {
+        // console.log('this.isPristine(): ', this.isPristine())
+        // console.log('this.errors.any(): ', this.errors.any())
+        // console.log('this.isLoading(): ', this.isLoading())
+        if ((this.isPristine()) || (this.errors.any() === true) || (this.isLoading())) {
+          return 'button is-info is-disabled'
+        }
+        return 'button is-info'
       }
-      return 'button is-info'
     }
   },
   methods: {
