@@ -17,18 +17,18 @@
           </span>
           <div class="nav-right nav-menu">
             <a class="nav-item is-active">
-              Home
+              Início
             </a>
             <a class="nav-item">
-              Examples
+              DocMob
             </a>
             <a class="nav-item">
-              Documentation
+              Contato
             </a>
             <span class="nav-item">
-              <a class="button is-primary is-inverted">
+              <a class="button is-info is-inverted">
                 <span class="icon">
-                  <i class="fa fa-github"></i>
+                  <i class="fa fa-download"></i>
                 </span>
                 <span>Download</span>
               </a>
@@ -42,11 +42,16 @@
     <div class="hero-body">
       <div class="container has-text-centered">
         <h1 class="title">
-          {{ title }}
+          {{ session.workplace.name }}
         </h1>
         <h2 class="subtitle">
-          <span v-if="$route.name === 'users'">a rota é users</span>
-          <span v-else>a rota NAO é users</span>
+          <span>
+            {{ session.provider.name }}
+            <span class="tag is-small">
+              sair
+              <button @click="logOff()" class="delete is-small"></button>
+            </span>
+          </span>
         </h2>
       </div>
     </div>
@@ -70,7 +75,7 @@
     <div class="container">
       <div class="nav-center">
         <a :class="($route.name === 'healthInsurances') ? 'nav-item is-tab is-active' : 'nav-item is-tab'"><router-link to="/healthInsurances">Planos de Saúde</router-link></a>
-        <a class="nav-item is-tab">Level</a>
+        <a class="nav-item is-tab" v-for="">Level</a>
         <a class="nav-item is-tab">Media object</a>
         <a class="nav-item is-tab">Menu</a>
         <a class="nav-item is-tab">Message</a>
@@ -86,8 +91,31 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
+  methods: {
+    logOff () {
+      console.log('logOff')
+    }
+  },
   mounted () {
+  },
+  computed: {
+    ...mapState({
+      general: state => {
+        const { general } = state.healthInsurances
+        return general
+      },
+      session: state => {
+        const { user } = state
+        return user
+      },
+      config: state => {
+        const { config } = state
+        return config
+      }
+    })
   },
   props: [ 'title' ]
 }

@@ -8,7 +8,8 @@ export default {
     }
   },
   API: {
-    resource: 'healthInsurances'
+    resource: 'healthInsurances',
+    mutationPrefix: 'HI'
   },
   collection: {
     _id: {

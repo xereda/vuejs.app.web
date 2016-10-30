@@ -76,12 +76,31 @@
             </div>
           </div>
         </form>
-        <dm-modal-audit :last-doc-update-date="getLastDocUpdateDate()" :document-id="documentId" v-if="isUpdateDocument() "></dm-modal-audit>
+        <dm-modal-audit :mutation-prefix="API.mutationPrefix" :resource="API.resource" :last-doc-update-date="getLastDocUpdateDate()" :document-id="documentId" v-if="isUpdateDocument() "></dm-modal-audit>
       </section>
       <footer class="modal-card-foot">
-        <a :class="getCSSButtonSave" @click="formSubmit()">Salvar</a>
-        <a class="button" @click="confirmeModalClose()">Cancelar</a>
-        <a class="button is-danger" v-if="isUpdateDocument()" @click="removeDocument()">Excluir</a>
+
+        <a :class="getCSSButtonSave" @click="formSubmit()">
+          <span class="icon is-small">
+            <i class="fa fa-check"></i>
+          </span>
+          <span>Salvar</span>
+        </a>
+
+        <a :class="'button'" @click="confirmeModalClose()">
+          <span class="icon is-small">
+            <i class="fa fa-ban"></i>
+          </span>
+          <span>Cancelar</span>
+        </a>
+
+        <a :class="'button is-danger'" v-if="isUpdateDocument()" @click="removeDocument()">
+          <span class="icon is-small">
+            <i class="fa fa-trash"></i>
+          </span>
+          <span>Excluir</span>
+        </a>
+
       </footer>
     </div>
   </div>
@@ -91,7 +110,7 @@
 import { mapState, mapActions } from 'vuex'
 import _ from 'lodash'
 import topbar from 'topbar'
-import dmModalAudit from './auditInfo.vue'
+import dmModalAudit from '../../ui/auditInfo.vue'
 import 'animate.css/animate.min.css'
 import showMessage from '../../ui/message/message'
 
@@ -149,7 +168,6 @@ export default {
       return (this.isUpdateDocument()) ? this.general.modal.titleUpdateDocument : this.general.modal.titleNewDocument
     },
     getCSSButtonSave () {
-      console.log('oiaa: ', this.isPristine(), this.errors.any(), this.loading)
       if ((this.isPristine()) || (this.errors.any() === true) || (this.isLoading())) {
         return 'button is-info is-disabled'
       }
@@ -231,10 +249,6 @@ export default {
       const _uri = this.config.APIURIBase + this.API.resource
 
       this.$http.post(_uri, this.modalDoc, { emulateJSON: true }).then((response) => {
-        // get status
-        console.log(response.status)
-        // get status text
-        console.log(response.statusText)
         this.showUserNotifications(response, 'createDoc', 'success')
         this.$emit('set-pag', 1)
         this.stopLoading(0)
@@ -250,10 +264,6 @@ export default {
       const _uri = this.config.APIURIBase + this.API.resource
 
       this.$http.put(_uri, this.modalDoc, { emulateJSON: true }).then((response) => {
-        // get status
-        console.log(response.status)
-        // get status text
-        console.log(response.statusText)
         response.body.updatedAt !== undefined ? this.modalDoc.updatedAt = response.body.updatedAt : null
         this.showUserNotifications(response, 'updateDoc', 'success')
         this.clonedDoc = _.clone(this.modalDoc)

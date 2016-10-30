@@ -46,10 +46,10 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 import moment from 'moment'
-import Collapse from '../../ui/collapse/Collapse.vue'
-import CollapseItem from '../../ui/collapse/Item.vue'
+import Collapse from './collapse/Collapse.vue'
+import CollapseItem from './collapse/Item.vue'
 
 export default {
   data () {
@@ -72,12 +72,12 @@ export default {
         const { config } = state
         return config
       },
-      API: state => {
-        const { API } = state.users
+      API (state) {
+        const { API } = state[this.resource]
         return API
       },
-      userDecisions: state => {
-        const { ux } = state.users
+      userDecisions (state) {
+        const { ux } = state[this.resource]
         return ux.userDecisions
       }
     })
@@ -86,11 +86,8 @@ export default {
     this.getAuditInfo()
   },
   methods: {
-    ...mapActions([
-      'uxModalCollapseState'
-    ]),
     changeCollapseState (param) {
-      this.uxModalCollapseState(param === 'opened')
+      this.$store.commit(this.mutationPrefix + '.UX_MODAL_COLLAPSE_STATE', param === 'opened')
     },
     getAuditInfo () {
       // GET /someUrl
@@ -124,7 +121,9 @@ export default {
   },
   props: [
     'documentId',
-    'lastDocUpdateDate'
+    'lastDocUpdateDate',
+    'resource',
+    'mutationPrefix'
   ]
 }
 </script>

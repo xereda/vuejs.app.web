@@ -59,9 +59,14 @@
                 <button @click="localRemoveBooleanFilter(index)" :class="'delete is-small ' + getCSSState()"></button>
               </span>
             </p>
-
-
-            <p class="level-item"><a :class="'button is-success ' + getCSSState()" @click="newDocument()">Novo</a></p>
+            <p class="level-item">
+              <a :class="'button is-success ' + getCSSState()" @click="newDocument()">
+                <span class="icon is-small">
+                  <i class="fa fa-file-o"></i>
+                </span>
+                <span>Novo</span>
+              </a>
+            </p>
           </div>
         </nav>
 

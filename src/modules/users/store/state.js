@@ -8,7 +8,8 @@ export default {
     }
   },
   API: {
-    resource: 'users'
+    resource: 'users',
+    mutationPrefix: 'USERS'
   },
   collection: {
     _id: {

@@ -5,16 +5,19 @@ export default {
     email: '',
     workplace: {
       _id: '',
-      name: ''
+      name: 'Clínica Salute'
     },
     provider: {
       _id: '',
-      name: ''
+      name: 'Jackson Ricardo Schroeder'
     },
     lastSessionDate: new Date()
   },
   config: {
     adminUserId: '58124f84c5560561f8e2dfbf',
+    modules: [
+      { name: 'configura' }
+    ],
     spinner: {
       lines: 11, // The number of lines to draw
       length: 5, // The length of each line
