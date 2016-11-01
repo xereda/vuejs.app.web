@@ -25,6 +25,7 @@ import store from './store/store'
 import router from './routes'
 sync(store, router)
 
+/* eslint no-control-regex: "error" */
 /* eslint-disable no-new */
 new Vue({
   name: 'docmob',

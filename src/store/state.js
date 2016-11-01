@@ -16,7 +16,9 @@ export default {
   config: {
     adminUserId: '58124f84c5560561f8e2dfbf',
     modules: [
-      { name: 'configura' }
+      { route: '/users', name: 'users', label: 'Usuários' },
+      { route: '/healthInsurances', name: 'healthInsurances', label: 'Planos de Saúde' },
+      { route: '/cities', name: 'cities', label: 'Cidades' }
     ],
     spinner: {
       lines: 11, // The number of lines to draw

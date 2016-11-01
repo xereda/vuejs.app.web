@@ -7,6 +7,7 @@ import getters from './getters'
 import users from '../modules/users/store/store'
 import configurator from '../modules/configurator/store/store'
 import healthInsurances from '../modules/healthInsurances/store/store'
+import cities from '../modules/cities/store/store'
 
 Vue.use(Vuex)
 
@@ -18,6 +19,7 @@ export default new Vuex.Store({
   modules: {
     users,
     configurator,
-    healthInsurances
+    healthInsurances,
+    cities
   }
 })

@@ -7,8 +7,14 @@ import Users from './modules/users/route'
 import Dashboard from './modules/dashboard/route'
 import Configurator from './modules/configurator/route'
 import HealthInsurances from './modules/healthInsurances/route'
+import Cities from './modules/cities/route'
 
-const routes = [ ...Users, ...Dashboard, ...Configurator, ...HealthInsurances ]
+const routes = [ ...Users,
+                 ...Dashboard,
+                 ...Configurator,
+                 ...HealthInsurances,
+                 ...Cities
+               ]
 const router = new Router({ routes })
 
 export default router

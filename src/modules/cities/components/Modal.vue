@@ -27,42 +27,90 @@
           <div class="columns is-multiline">
             <div :class="col.modal.responsiveCSS" v-if="validColumn(col, index)" v-for="(col, index) in collection">
 
-              <label class="label" v-if="showTopLabel(col.type)">{{ col.label }}</label>
+              <div v-if="col.type !== 'geo'">
+                <label class="label" v-if="showTopLabel(col.type)">{{ col.label }}</label>
+                <p class="control has-icon">
+                  <input v-if="[ 'text', 'date' ].indexOf(col.type) > -1"
+                         v-model="modalDoc[index]"
+                         v-validate
+                         :data-rules="getDataRules(col)"
+                         :data-as="col.label"
+                         :data-delay="config.delayApplyRule"
+                         :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(col), 'is-danger': errors.has(index) }"
+                         :name="index"
+                         type="text"
+                         :placeholder="col.placeHolder">
+                  <input v-if="col.type === 'email'"
+                         v-model="modalDoc[index]"
+                         v-validate
+                         :data-rules="getDataRules(col)"
+                         :data-as="col.label"
+                         :data-delay="config.delayApplyRule"
+                         :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(col), 'is-danger': errors.has(index) }"
+                         :name="index"
+                         type="email"
+                         :placeholder="col.placeHolder">
+                  <input v-if="col.type === 'password'"
+                         v-model="modalDoc[index]"
+                         v-validate
+                         :data-rules="getDataRules(col)"
+                         :data-as="col.label"
+                         :data-delay="config.delayApplyRule"
+                         :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(col), 'is-danger': errors.has(index) }"
+                         :name="index"
+                         type="password"
+                         :placeholder="col.placeHolder">
+                  <input v-if="col.type === 'geo'"
+                         v-model="modalDoc[index]"
+                         v-validate
+                         :data-rules="getDataRules(col)"
+                         :data-as="col.label"
+                         :data-delay="config.delayApplyRule"
+                         :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(col), 'is-danger': errors.has(index) }"
+                         :name="index"
+                         type="number"
+                         :placeholder="col.placeHolder">
+                  <i v-if="isSimpleInputType(col.type)" :class="col.modal.cssIcon"></i>
+                  <span v-if="isSimpleInputType(col.type)" class="help is-danger">{{ errors.first(index) }}&nbsp;</span>
+                </p>
+              </div>
 
-              <p class="control has-icon">
-                <input v-if="[ 'text', 'date' ].indexOf(col.type) > -1"
-                       v-model="modalDoc[index]"
-                       v-validate
-                       :data-rules="getDataRules(col)"
-                       :data-as="col.label"
-                       :data-delay="config.delayApplyRule"
-                       :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(col), 'is-danger': errors.has(index) }"
-                       :name="index"
-                       type="text"
-                       :placeholder="col.placeHolder">
-                <input v-if="col.type === 'email'"
-                       v-model="modalDoc[index]"
-                       v-validate
-                       :data-rules="getDataRules(col)"
-                       :data-as="col.label"
-                       :data-delay="config.delayApplyRule"
-                       :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(col), 'is-danger': errors.has(index) }"
-                       :name="index"
-                       type="email"
-                       :placeholder="col.placeHolder">
-                <input v-if="col.type === 'password'"
-                       v-model="modalDoc[index]"
-                       v-validate
-                       :data-rules="getDataRules(col)"
-                       :data-as="col.label"
-                       :data-delay="config.delayApplyRule"
-                       :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(col), 'is-danger': errors.has(index) }"
-                       :name="index"
-                       type="password"
-                       :placeholder="col.placeHolder">
-                <i v-if="isSimpleInputType(col.type)" :class="col.modal.cssIcon"></i>
-                <span v-if="isSimpleInputType(col.type)" class="help is-danger">{{ errors.first(index) }}&nbsp;</span>
-              </p>
+              <div v-if="col.type === 'geo'">
+                <div class="columns">
+                  <div class="column">
+                    <label class="label" v-if="showTopLabel(col.type)">{{ col.label }}</label>
+                    <p class="control has-icon">
+                      <input v-model="modalDoc[index]"
+                             v-validate
+                             :data-rules="getDataRules(col)"
+                             :data-as="col.label"
+                             :data-delay="config.delayApplyRule"
+                             :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(col), 'is-danger': errors.has(index) }"
+                             :name="index"
+                             type="number"
+                             :placeholder="col.placeHolder">
+                      <i v-if="isSimpleInputType(col.type)" :class="col.modal.cssIcon"></i>
+                      <span v-if="isSimpleInputType(col.type)" class="help is-danger">{{ errors.first(index) }}&nbsp;</span>
+                    </p>
+                  </div>
+                  <div class="column">
+                    <label class="label" v-if="showTopLabel(col.type)">{{ col.label }}</label>
+                    <p class="control has-icon">
+                      <input v-model="modalDoc[index]"
+                             v-validate
+                             :data-rules="getDataRules(col)"
+                             :data-as="col.label"
+                             :data-delay="config.delayApplyRule"
+                             :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(col), 'is-danger': errors.has(index) }"
+                             :name="index"
+                             type="number"
+                             :placeholder="col.placeHolder">
+                      <i v-if="isSimpleInputType(col.type)" :class="col.modal.cssIcon"></i>
+                      <span v-if="isSimpleInputType(col.type)" class="help is-danger">{{ errors.first(index) }}&nbsp;</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
 
               <p class="control" v-if="col.type === 'boolean'">
                 <label class="checkbox">
@@ -114,7 +162,7 @@ import dmModalAudit from '../../ui/auditInfo.vue'
 import 'animate.css/animate.min.css'
 import showMessage from '../../ui/message/message'
 
-const SIMPLE_INPUT_TYPES = [ 'text', 'email', 'password', 'date' ]
+const SIMPLE_INPUT_TYPES = [ 'text', 'email', 'password', 'date', 'geo' ]
 
 export default {
   data () {
@@ -144,15 +192,15 @@ export default {
         return config
       },
       API: state => {
-        const { API } = state.users
+        const { API } = state.cities
         return API
       },
       collection: state => {
-        const { collection } = state.users
+        const { collection } = state.cities
         return collection
       },
       general: state => {
-        const { general } = state.users
+        const { general } = state.cities
         return general
       },
       session: state => {
@@ -160,7 +208,7 @@ export default {
         return user
       },
       ux: state => {
-        const { ux } = state.users
+        const { ux } = state.cities
         return ux
       }
     }),
