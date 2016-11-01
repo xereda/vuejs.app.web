@@ -60,53 +60,43 @@
                          :name="index"
                          type="password"
                          :placeholder="col.placeHolder">
-                  <input v-if="col.type === 'geo'"
-                         v-model="modalDoc[index]"
-                         v-validate
-                         :data-rules="getDataRules(col)"
-                         :data-as="col.label"
-                         :data-delay="config.delayApplyRule"
-                         :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(col), 'is-danger': errors.has(index) }"
-                         :name="index"
-                         type="number"
-                         :placeholder="col.placeHolder">
-                  <i v-if="isSimpleInputType(col.type)" :class="col.modal.cssIcon"></i>
-                  <span v-if="isSimpleInputType(col.type)" class="help is-danger">{{ errors.first(index) }}&nbsp;</span>
                 </p>
               </div>
 
               <div v-if="col.type === 'geo'">
                 <div class="columns">
                   <div class="column">
-                    <label class="label" v-if="showTopLabel(col.type)">{{ col.label }}</label>
+                    <label class="label" v-if="showTopLabel(col.type)">{{ col.geoDefinitions.long.label }}</label>
                     <p class="control has-icon">
-                      <input v-model="modalDoc[index]"
+                      <input v-model="modalDoc[index].coordinates[0]"
                              v-validate
                              :data-rules="getDataRules(col)"
-                             :data-as="col.label"
+                             :data-as="col.geoDefinitions.long.label"
                              :data-delay="config.delayApplyRule"
-                             :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(col), 'is-danger': errors.has(index) }"
-                             :name="index"
+                             :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(col), 'is-danger': errors.has(col.geoDefinitions.long.name) }"
+                             :name="col.geoDefinitions.long.name"
                              type="number"
-                             :placeholder="col.placeHolder">
+                             step="any"
+                             :placeholder="col.geoDefinitions.long.placeHolder">
                       <i v-if="isSimpleInputType(col.type)" :class="col.modal.cssIcon"></i>
-                      <span v-if="isSimpleInputType(col.type)" class="help is-danger">{{ errors.first(index) }}&nbsp;</span>
+                      <span v-if="isSimpleInputType(col.type)" class="help is-danger">{{ errors.first(col.geoDefinitions.long.name) }}&nbsp;</span>
                     </p>
                   </div>
                   <div class="column">
-                    <label class="label" v-if="showTopLabel(col.type)">{{ col.label }}</label>
+                    <label class="label" v-if="showTopLabel(col.type)">{{ col.geoDefinitions.lat.label }}</label>
                     <p class="control has-icon">
-                      <input v-model="modalDoc[index]"
+                      <input v-model="modalDoc[index].coordinates[1]"
                              v-validate
                              :data-rules="getDataRules(col)"
-                             :data-as="col.label"
+                             :data-as="col.geoDefinitions.lat.label"
                              :data-delay="config.delayApplyRule"
-                             :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(col), 'is-danger': errors.has(index) }"
-                             :name="index"
+                             :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(col), 'is-danger': errors.has(col.geoDefinitions.lat.name) }"
+                             :name="col.geoDefinitions.lat.name"
                              type="number"
-                             :placeholder="col.placeHolder">
+                             step="any"
+                             :placeholder="col.geoDefinitions.lat.placeHolder">
                       <i v-if="isSimpleInputType(col.type)" :class="col.modal.cssIcon"></i>
-                      <span v-if="isSimpleInputType(col.type)" class="help is-danger">{{ errors.first(index) }}&nbsp;</span>
+                      <span v-if="isSimpleInputType(col.type)" class="help is-danger">{{ errors.first(col.geoDefinitions.lat.name) }}&nbsp;</span>
                     </p>
                   </div>
                 </div>
@@ -123,6 +113,15 @@
 
             </div>
           </div>
+
+          modalDOC: {{ modalDoc }}
+          <hr>
+          clonedDoc: {{ clonedDoc  }}
+
+          <hr>
+
+          anyOtherFieldDoc: {{ anyOtherFieldDoc }}
+
         </form>
         <dm-modal-audit :mutation-prefix="API.mutationPrefix" :resource="API.resource" :last-doc-update-date="getLastDocUpdateDate()" :document-id="documentId" v-if="isUpdateDocument() "></dm-modal-audit>
       </section>
@@ -172,9 +171,22 @@ export default {
       fadeIn: true,
       fadeOut: false,
       modalDoc: {
+        geoLocation: {
+          coordinates: [],
+          type: 'Point'
+        }
       },
       clonedDoc: {
-
+        geoLocation: {
+          coordinates: [],
+          type: 'Point'
+        }
+      },
+      anyOtherFieldDoc: {
+        geoLocation: {
+          coordinates: [],
+          type: 'Point'
+        }
       }
     }
   },
@@ -183,7 +195,8 @@ export default {
     // topbar.show()
     this.$validator.setLocale('pt_BR')
     this.isUpdateDocument() === true ? this.getDoc() : null
-    this.clonedDoc = {}
+    this.clonedDoc = { geoLocation: { coordinates: [], type: 'Point' } }
+    this.anyOtherFieldDoc = _.clone(this.clonedDoc)
   },
   computed: {
     ...mapState({
@@ -306,7 +319,7 @@ export default {
         this.showUserNotifications(response, 'createDoc', 'success')
         this.$emit('set-pag', 1)
         this.stopLoading(0)
-        this.modalDoc = {}
+        this.modalDoc = { geoLocation: { coordinates: [], type: 'Point' } }
       }, (response) => {
         this.showUserNotifications(response, 'createDoc', 'error')
         this.stopLoading(this.config.modal.delayModalSaveButton)

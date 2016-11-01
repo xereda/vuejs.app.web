@@ -57,9 +57,41 @@ export default {
         }
       }
     },
+    country: {
+      type: 'text',
+      label: 'País',
+      placeHolder: 'Informe o país da cidade',
+      error: 'O nome do país é obrigatório',
+      filter: true,
+      APIReturnable: true,
+      required: true,
+      modal: {
+        veeValidate: 'min:2|alpha',
+        cssIcon: 'fa fa-list',
+        responsiveCSS: 'column is-6'
+      },
+      table: {
+        header: {
+          visible: true,
+          class: ''
+        }
+      }
+    },
     geoLocation: {
       type: 'geo',
-      label: 'Geo coordenadas',
+      label: 'Geolocalização',
+      geoDefinitions: {
+        long: {
+          name: 'geoLocation_long',
+          label: 'Geolocalização (long.)',
+          placeHolder: 'Informe coord. de longitude'
+        },
+        lat: {
+          name: 'geoLocation_lat',
+          label: 'Geolocalização (lat.)',
+          placeHolder: 'Informe coord. de latitude'
+        }
+      },
       error: 'Informe valores latitude e longitude',
       APIReturnable: true,
       required: true,

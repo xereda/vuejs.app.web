@@ -309,6 +309,11 @@ export default {
             return moment(doc[index]).format('DD/MM/YYYY HH:mm')
           }
           return ''
+        case 'geo':
+          if ((doc[index] !== undefined) && (doc[index].coordinates !== undefined)) {
+            return doc[index].coordinates
+          }
+          return ''
         default:
           return doc[index]
       }
