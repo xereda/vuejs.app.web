@@ -60,6 +60,8 @@
                          :name="index"
                          type="password"
                          :placeholder="col.placeHolder">
+                   <i v-if="isSimpleInputType(col.type)" :class="col.modal.cssIcon"></i>
+                   <span v-if="isSimpleInputType(col.type)" class="help is-danger">{{ errors.first(index) }}&nbsp;</span>
                 </p>
               </div>
 
@@ -76,7 +78,7 @@
                              :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(col), 'is-danger': errors.has(col.geoDefinitions.long.name) }"
                              :name="col.geoDefinitions.long.name"
                              type="number"
-                             step="any"
+                             step="0.000001"
                              :placeholder="col.geoDefinitions.long.placeHolder">
                       <i v-if="isSimpleInputType(col.type)" :class="col.modal.cssIcon"></i>
                       <span v-if="isSimpleInputType(col.type)" class="help is-danger">{{ errors.first(col.geoDefinitions.long.name) }}&nbsp;</span>
@@ -93,7 +95,7 @@
                              :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(col), 'is-danger': errors.has(col.geoDefinitions.lat.name) }"
                              :name="col.geoDefinitions.lat.name"
                              type="number"
-                             step="any"
+                             step="0.000001"
                              :placeholder="col.geoDefinitions.lat.placeHolder">
                       <i v-if="isSimpleInputType(col.type)" :class="col.modal.cssIcon"></i>
                       <span v-if="isSimpleInputType(col.type)" class="help is-danger">{{ errors.first(col.geoDefinitions.lat.name) }}&nbsp;</span>
@@ -113,15 +115,7 @@
 
             </div>
           </div>
-
-          modalDOC: {{ modalDoc }}
-          <hr>
-          clonedDoc: {{ clonedDoc  }}
-
-          <hr>
-
-          anyOtherFieldDoc: {{ anyOtherFieldDoc }}
-
+          
         </form>
         <dm-modal-audit :mutation-prefix="API.mutationPrefix" :resource="API.resource" :last-doc-update-date="getLastDocUpdateDate()" :document-id="documentId" v-if="isUpdateDocument() "></dm-modal-audit>
       </section>
@@ -181,12 +175,6 @@ export default {
           coordinates: [],
           type: 'Point'
         }
-      },
-      anyOtherFieldDoc: {
-        geoLocation: {
-          coordinates: [],
-          type: 'Point'
-        }
       }
     }
   },
@@ -196,9 +184,11 @@ export default {
     this.$validator.setLocale('pt_BR')
     this.isUpdateDocument() === true ? this.getDoc() : null
     this.clonedDoc = { geoLocation: { coordinates: [], type: 'Point' } }
-    this.anyOtherFieldDoc = _.clone(this.clonedDoc)
   },
   computed: {
+    saoiguais () {
+      return _.isEqual(this.clonedDoc, this.modalDoc)
+    },
     ...mapState({
       config: state => {
         const { config } = state
@@ -303,7 +293,8 @@ export default {
 
       this.$http.get(_uri).then((response) => {
         this.modalDoc = response.body
-        this.clonedDoc = _.clone(this.modalDoc)
+        // this.clonedDoc = _.clone(this.modalDoc)
+        this.clonedDoc = JSON.parse(JSON.stringify(this.modalDoc))
         this.stopLoading(0)
       }, (response) => {
         this.showUserNotifications(response, 'getDoc', 'error')
@@ -333,7 +324,8 @@ export default {
       this.$http.put(_uri, this.modalDoc, { emulateJSON: true }).then((response) => {
         response.body.updatedAt !== undefined ? this.modalDoc.updatedAt = response.body.updatedAt : null
         this.showUserNotifications(response, 'updateDoc', 'success')
-        this.clonedDoc = _.clone(this.modalDoc)
+        // this.clonedDoc = _.clone(this.modalDoc)
+        this.clonedDoc = JSON.parse(JSON.stringify(this.modalDoc))
         this.$emit('set-pag')
         this.stopLoading(500)
       }, (response) => {
@@ -467,6 +459,13 @@ export default {
   watch: {
     documentId (val) {
       this.errors.clear()
+    },
+    'modalDoc.geoLocation.type': {
+      handler (val, oldVal) {
+        console.log('val: ', val)
+        console.log('oldVal: ', oldVal)
+      },
+      deep: true
     }
   },
   props: [

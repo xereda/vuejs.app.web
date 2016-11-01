@@ -1,4 +1,3 @@
-/* eslint no-control-regex: "off" */
 export default {
   general: {
     title: 'Cidades',
@@ -97,7 +96,7 @@ export default {
       required: true,
       modal: {
         // veeValidate: 'regex:^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$', // eslint-disable-line
-        veeValidate: 'decimal:6',
+        veeValidate: 'regex:^[0-9\-\.]*$', // eslint-disable-line
         cssIcon: 'fa fa-map-marker',
         responsiveCSS: 'column is-6'
       },
