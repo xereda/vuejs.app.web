@@ -17,6 +17,12 @@
             </li>
             <li>
               <a>
+                <span class="icon is-small"><i class="fa fa-mobile"></i></span>
+                <span>Dispositivos</span>
+              </a>
+            </li>
+            <li>
+              <a>
                 <span class="icon is-small"><i class="fa fa-link"></i></span>
                 <span>Relações</span>
               </a>
@@ -25,7 +31,7 @@
         </div>
         <form>
           <div class="columns is-multiline">
-            <div :class="col.modal.responsiveCSS" v-if="validColumn(col, index)" v-for="(col, index) in collection">
+            <div :class="'' + col.modal.responsiveCSS + ''" v-if="validColumn(col, index)" v-for="(col, index) in collection">
 
               <div v-if="col.type !== 'geo'">
                 <label class="label" v-if="showTopLabel(col.type)">{{ col.label }}</label>
@@ -102,14 +108,19 @@
                 </div>
               </div>
 
-              <p class="control" v-if="col.type === 'boolean'">
-                <label class="checkbox">
-                  <input type="checkbox"
-                         :class="{ 'checkbox': true, 'is-disabled': isReadOnlyOnUpdate(col) }"
-                         v-model="modalDoc[index]">
-                  {{ col.label }}
-                </label>
-              </p>
+              <div class="columns" v-if="col.type === 'boolean'">
+                <div class="column">
+                  <label class="label is-hidden-mobile">&nbsp;</label>
+                  <p class="control">
+                    <label class="checkbox">
+                      <input type="checkbox"
+                             :class="{ 'checkbox': true, 'is-disabled': isReadOnlyOnUpdate(col) }"
+                             v-model="modalDoc[index]">
+                      {{ col.label }}
+                    </label>
+                  </p>
+                </div>
+              </div>
 
             </div>
           </div>
@@ -193,15 +204,15 @@ export default {
         return config
       },
       API: state => {
-        const { API } = state.cities
+        const { API } = state.people
         return API
       },
       collection: state => {
-        const { collection } = state.cities
+        const { collection } = state.people
         return collection
       },
       general: state => {
-        const { general } = state.cities
+        const { general } = state.people
         return general
       },
       session: state => {
@@ -209,7 +220,7 @@ export default {
         return user
       },
       ux: state => {
-        const { ux } = state.cities
+        const { ux } = state.people
         return ux
       }
     }),

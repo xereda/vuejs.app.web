@@ -83,12 +83,14 @@ export default {
         long: {
           name: 'geoLocation_long',
           label: 'Geolocalização (long.)',
-          placeHolder: 'Informe coord. de longitude'
+          placeHolder: 'Informe coord. de longitude',
+          veeValidate: 'between:-180,179.999999'
         },
         lat: {
           name: 'geoLocation_lat',
           label: 'Geolocalização (lat.)',
-          placeHolder: 'Informe coord. de latitude'
+          placeHolder: 'Informe coord. de latitude',
+          veeValidate: 'between:-85.000001,85.999999'
         }
       },
       error: 'Informe valores latitude e longitude',

@@ -34,9 +34,22 @@ for(x=2; x <= 5000; x++) {
   db.users.insert(user);
 }
 
+db.people.find().snapshot().forEach(
+  function (e) {
+    // update document, using its own properties
+    e.phone = parseInt(e.phone);
+
+    // save the updated document
+    db.people.save(e);
+  }
+)
+
+db.people.find( { $text: { $search: "153035" } } )
+
 
 db.users.update({}, { $set: { createdById: ObjectId('58124f84c5560561f8e2dfc0'), updatedById: ObjectId('58124f84c5560561f8e2dfc0') } }, { multi: true })
 
+db.people.update({}, { $set: { createdById: ObjectId('58124f84c5560561f8e2dfe5'), updatedById: ObjectId('58124f84c5560561f8e2dfe5') } }, { multi: true })
 
 db.users.ensureIndex( { email:1 }, { unique:true, dropDups:true }
 

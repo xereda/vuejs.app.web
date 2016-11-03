@@ -18,7 +18,8 @@ export default {
     modules: [
       { route: '/users', name: 'users', label: 'Usuários' },
       { route: '/healthInsurances', name: 'healthInsurances', label: 'Planos de Saúde' },
-      { route: '/cities', name: 'cities', label: 'Cidades' }
+      { route: '/cities', name: 'cities', label: 'Cidades' },
+      { route: '/people', name: 'people', label: 'Pessoas' }
     ],
     spinner: {
       lines: 11, // The number of lines to draw

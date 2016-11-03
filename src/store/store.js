@@ -8,6 +8,7 @@ import users from '../modules/users/store/store'
 import configurator from '../modules/configurator/store/store'
 import healthInsurances from '../modules/healthInsurances/store/store'
 import cities from '../modules/cities/store/store'
+import people from '../modules/people/store/store'
 
 Vue.use(Vuex)
 
@@ -20,6 +21,7 @@ export default new Vuex.Store({
     users,
     configurator,
     healthInsurances,
-    cities
+    cities,
+    people
   }
 })
