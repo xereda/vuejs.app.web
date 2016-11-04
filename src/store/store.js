@@ -9,6 +9,7 @@ import configurator from '../modules/configurator/store/store'
 import healthInsurances from '../modules/healthInsurances/store/store'
 import cities from '../modules/cities/store/store'
 import people from '../modules/people/store/store'
+import operators from '../modules/operators/store/store'
 
 Vue.use(Vuex)
 
@@ -22,6 +23,7 @@ export default new Vuex.Store({
     configurator,
     healthInsurances,
     cities,
-    people
+    people,
+    operators
   }
 })

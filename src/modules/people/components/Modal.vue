@@ -11,19 +11,19 @@
           <ul>
             <li class="is-active">
               <a>
-                <span class="icon is-small"><i class="fa fa-info-circle"></i></span>
+                <span class="icon"><i class="fa fa-info-circle"></i></span>
                 <span>Geral</span>
               </a>
             </li>
             <li>
               <a>
-                <span class="icon is-small"><i class="fa fa-mobile"></i></span>
+                <span class="icon"><i class="fa fa-mobile"></i></span>
                 <span>Dispositivos</span>
               </a>
             </li>
             <li>
               <a>
-                <span class="icon is-small"><i class="fa fa-link"></i></span>
+                <span class="icon"><i class="fa fa-link"></i></span>
                 <span>Relações</span>
               </a>
             </li>
@@ -124,7 +124,6 @@
 
             </div>
           </div>
-
         </form>
         <dm-modal-audit :mutation-prefix="API.mutationPrefix" :resource="API.resource" :last-doc-update-date="getLastDocUpdateDate()" :document-id="documentId" v-if="isUpdateDocument() "></dm-modal-audit>
       </section>
@@ -174,31 +173,57 @@ export default {
       fadeIn: true,
       fadeOut: false,
       modalDoc: {
-        geoLocation: {
-          coordinates: [],
-          type: 'Point'
-        }
       },
       clonedDoc: {
-        geoLocation: {
-          coordinates: [],
-          type: 'Point'
-        }
       }
     }
   },
+  created () {
+    this.$set(this, 'modalDoc', JSON.parse(JSON.stringify(this.modelFactory)))
+    this.$set(this, 'clonedDoc', JSON.parse(JSON.stringify(this.modelFactory)))
+  },
   mounted () {
-    // topbar.config(this.topbarConfig)
-    // topbar.show()
     this.$validator.setLocale('pt_BR')
     this.isUpdateDocument() === true ? this.getDoc() : null
-    this.clonedDoc = { geoLocation: { coordinates: [], type: 'Point' } }
   },
   computed: {
-    saoiguais () {
-      return _.isEqual(this.clonedDoc, this.modalDoc)
-    },
     ...mapState({
+      modelFactory: state => {
+        const { collection } = state.people
+        const _model = {}
+        Object.keys(collection).forEach((element, index) => {
+          console.log(element, index)
+          switch (collection[element].type) {
+            case 'text':
+              _model[element] = ''
+              break
+            case 'email':
+              _model[element] = ''
+              break
+            case 'date':
+              _model[element] = ''
+              break
+            case 'number':
+              _model[element] = ''
+              break
+            case 'boolean':
+              _model[element] = false
+              break
+            case 'geo':
+              _model[element] = {
+                coordinates: [
+                  '',
+                  ''
+                ],
+                type: 'Point'
+              }
+              break
+            default:
+              null
+          }
+        })
+        return _model
+      },
       config: state => {
         const { config } = state
         return config
@@ -302,8 +327,7 @@ export default {
 
       this.$http.get(_uri).then((response) => {
         this.modalDoc = response.body
-        // this.clonedDoc = _.clone(this.modalDoc)
-        this.clonedDoc = JSON.parse(JSON.stringify(this.modalDoc))
+        this.$set(this, 'clonedDoc', JSON.parse(JSON.stringify(this.modalDoc)))
         this.stopLoading(0)
       }, (response) => {
         this.showUserNotifications(response, 'getDoc', 'error')
@@ -318,8 +342,9 @@ export default {
       this.$http.post(_uri, this.modalDoc, { emulateJSON: true }).then((response) => {
         this.showUserNotifications(response, 'createDoc', 'success')
         this.$emit('set-pag', 1)
+        this.$set(this, 'modalDoc', JSON.parse(JSON.stringify(this.modelFactory)))
+        this.$set(this, 'clonedDoc', JSON.parse(JSON.stringify(this.modelFactory)))
         this.stopLoading(0)
-        this.modalDoc = { geoLocation: { coordinates: [], type: 'Point' } }
       }, (response) => {
         this.showUserNotifications(response, 'createDoc', 'error')
         this.stopLoading(this.config.modal.delayModalSaveButton)
@@ -333,8 +358,7 @@ export default {
       this.$http.put(_uri, this.modalDoc, { emulateJSON: true }).then((response) => {
         response.body.updatedAt !== undefined ? this.modalDoc.updatedAt = response.body.updatedAt : null
         this.showUserNotifications(response, 'updateDoc', 'success')
-        // this.clonedDoc = _.clone(this.modalDoc)
-        this.clonedDoc = JSON.parse(JSON.stringify(this.modalDoc))
+        this.$set(this, 'clonedDoc', JSON.parse(JSON.stringify(this.modalDoc)))
         this.$emit('set-pag')
         this.stopLoading(500)
       }, (response) => {

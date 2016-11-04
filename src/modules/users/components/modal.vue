@@ -11,13 +11,13 @@
           <ul>
             <li class="is-active">
               <a>
-                <span class="icon is-small"><i class="fa fa-info-circle"></i></span>
+                <span class="icon"><i class="fa fa-info-circle"></i></span>
                 <span>Geral</span>
               </a>
             </li>
             <li>
               <a>
-                <span class="icon is-small"><i class="fa fa-link"></i></span>
+                <span class="icon"><i class="fa fa-link"></i></span>
                 <span>Relações</span>
               </a>
             </li>
@@ -75,6 +75,12 @@
 
             </div>
           </div>
+
+          modalDoc: {{ modalDoc }}
+          <hr>
+          clonedDoc: {{ clonedDoc }}
+
+
         </form>
         <dm-modal-audit :mutation-prefix="API.mutationPrefix" :resource="API.resource" :last-doc-update-date="getLastDocUpdateDate()" :document-id="documentId" v-if="isUpdateDocument() "></dm-modal-audit>
       </section>
@@ -126,19 +132,54 @@ export default {
       modalDoc: {
       },
       clonedDoc: {
-
       }
     }
   },
+  created () {
+    this.$set(this, 'modalDoc', JSON.parse(JSON.stringify(this.modelFactory)))
+    this.$set(this, 'clonedDoc', JSON.parse(JSON.stringify(this.modelFactory)))
+  },
   mounted () {
-    // topbar.config(this.topbarConfig)
-    // topbar.show()
     this.$validator.setLocale('pt_BR')
     this.isUpdateDocument() === true ? this.getDoc() : null
-    this.clonedDoc = {}
   },
   computed: {
     ...mapState({
+      modelFactory: state => {
+        const { collection } = state.users
+        const _model = {}
+        Object.keys(collection).forEach((element, index) => {
+          switch (collection[element].type) {
+            case 'text':
+              _model[element] = ''
+              break
+            case 'date':
+              _model[element] = ''
+              break
+            case 'email':
+              _model[element] = ''
+              break
+            case 'number':
+              _model[element] = ''
+              break
+            case 'boolean':
+              _model[element] = false
+              break
+            case 'geo':
+              _model[element] = {
+                coordinates: [
+                  '',
+                  ''
+                ],
+                type: 'Point'
+              }
+              break
+            default:
+              null
+          }
+        })
+        return _model
+      },
       config: state => {
         const { config } = state
         return config
@@ -170,9 +211,6 @@ export default {
     getCSSButtonSave: {
       cache: false,
       get () {
-        // console.log('this.isPristine(): ', this.isPristine())
-        // console.log('this.errors.any(): ', this.errors.any())
-        // console.log('this.isLoading(): ', this.isLoading())
         if ((this.isPristine()) || (this.errors.any() === true) || (this.isLoading())) {
           return 'button is-info is-disabled'
         }
@@ -242,7 +280,7 @@ export default {
 
       this.$http.get(_uri).then((response) => {
         this.modalDoc = response.body
-        this.clonedDoc = _.clone(this.modalDoc)
+        this.$set(this, 'clonedDoc', JSON.parse(JSON.stringify(this.modalDoc)))
         this.stopLoading(0)
       }, (response) => {
         this.showUserNotifications(response, 'getDoc', 'error')
@@ -257,8 +295,9 @@ export default {
       this.$http.post(_uri, this.modalDoc, { emulateJSON: true }).then((response) => {
         this.showUserNotifications(response, 'createDoc', 'success')
         this.$emit('set-pag', 1)
+        this.$set(this, 'clonedDoc', JSON.parse(JSON.stringify(this.modelFactory)))
+        this.$set(this, 'clonedDoc', JSON.parse(JSON.stringify(this.modelFactory)))
         this.stopLoading(0)
-        this.modalDoc = {}
       }, (response) => {
         this.showUserNotifications(response, 'createDoc', 'error')
         this.stopLoading(this.config.modal.delayModalSaveButton)
@@ -272,7 +311,7 @@ export default {
       this.$http.put(_uri, this.modalDoc, { emulateJSON: true }).then((response) => {
         response.body.updatedAt !== undefined ? this.modalDoc.updatedAt = response.body.updatedAt : null
         this.showUserNotifications(response, 'updateDoc', 'success')
-        this.clonedDoc = _.clone(this.modalDoc)
+        this.$set(this, 'clonedDoc', JSON.parse(JSON.stringify(this.modalDoc)))
         this.$emit('set-pag')
         this.stopLoading(500)
       }, (response) => {
@@ -375,7 +414,11 @@ export default {
     },
     confirmeModalClose () {
       const self = this
-      if (this.isDirty()) {
+      console.log('self.isDirty(): ', self.isDirty())
+      console.log('self.isPristine(): ', self.isPristine())
+      console.log('self.changedModalDoc(): ', self.changedModalDoc())
+
+      if (self.isDirty()) {
         swal({ title: 'Deseja sair?',
         text: 'Existem informações não salvas no formulário. \n Deseja realmente sair sem salvar?',
         type: 'warning',
