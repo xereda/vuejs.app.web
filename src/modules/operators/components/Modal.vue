@@ -44,7 +44,7 @@
             <div :class="collection['healthInsurance'].modal.responsiveCSS">
               <label class="label">{{ collection['healthInsurance'].label }}</label>
               <p class="control has-icon">
-                <input v-model="modalDoc.healthInsurance"
+                <!-- <input v-model="modalDoc.healthInsurance"
                        v-validate
                        :data-rules="getDataRules(collection['healthInsurance'])"
                        :data-as="collection['healthInsurance'].label"
@@ -52,9 +52,37 @@
                        :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(collection['healthInsurance']), 'is-danger': errors.has('healthInsurance') }"
                        name="healthInsurance"
                        type="text"
-                       :placeholder="collection['healthInsurance'].placeHolder">
+                       :placeholder="collection['healthInsurance'].placeHolder"> -->
+                 <input v-model="modalDoc.healthInsurance"
+                        v-validate
+                        :data-rules="getDataRules(collection['healthInsurance'])"
+                        :data-as="collection['healthInsurance'].label"
+                        name="healthInsurance"
+                        class="is-hidden"
+                        type="text">
+
+                 <multiselect
+                   :value="vueSelect.HI.selectedObject"
+                   :options="vueSelect.HI.list"
+                   select-label="[enter] para selecionar"
+                   selected-label="selecionado"
+                   deselect-label="[enter] para remover"
+                   placeholder="Selecione um plano de saúde"
+                   :loading="vueSelect.HI.isLoading"
+                   :local-search="false"
+                   @search-change="vueSelectAsyncFind"
+                   :searchable="true"
+                   track-by="_id"
+                   label="name"
+                   class="vueSelect"
+                   @input="vueSelectUpdateSelected">
+                 </multiselect>
+
                 <i :class="collection['healthInsurance'].modal.cssIcon"></i>
-                <span class="help is-danger">{{ errors.first('healthInsurance') }}&nbsp;</span>
+                <span class="help is-danger" v-if="modalDoc.healthInsurance === ''">{{ errors.first('healthInsurance') }}&nbsp;</span>
+                <span class="help is-danger" v-else>&nbsp;</span>
+
+
               </p>
             </div>
             <div :class="collection['ANSCode'].modal.responsiveCSS">
@@ -150,7 +178,9 @@
           <hr>
           clonedDoc: {{ clonedDoc }}
           <hr>
-          modelFactory: {{ modelFactory }} -->
+          modelFactory: {{ modelFactory }}
+          <hr>
+          vueSelect: {{ vueSelect }} -->
         </form>
         <dm-modal-audit :mutation-prefix="API.mutationPrefix" :resource="API.resource" :last-doc-update-date="getLastDocUpdateDate()" :document-id="documentId" v-if="isUpdateDocument() "></dm-modal-audit>
       </section>
@@ -189,13 +219,20 @@ import topbar from 'topbar'
 import dmModalAudit from '../../ui/auditInfo.vue'
 import 'animate.css/animate.min.css'
 import showMessage from '../../ui/message/message'
+import Multiselect from 'vue-multiselect'
 
 const SIMPLE_INPUT_TYPES = [ 'text', 'email', 'password', 'date', 'geo' ]
 
 export default {
   data () {
     return {
-      modelo: 'opa la',
+      vueSelect: {
+        HI: {
+          isLoading: false,
+          selectedObject: null,
+          list: []
+        }
+      },
       loading: false,
       fadeIn: true,
       fadeOut: false,
@@ -210,6 +247,7 @@ export default {
     this.$set(this, 'clonedDoc', JSON.parse(JSON.stringify(this.modelFactory)))
   },
   mounted () {
+    this.vueSelectAsyncFind('')
     this.$validator.setLocale('pt_BR')
     this.isUpdateDocument() === true ? this.getDoc() : null
   },
@@ -218,7 +256,6 @@ export default {
       modelFactory: state => {
         const { collection } = state.operators
         const _model = {}
-        console.log('dentro da modelFactory')
         Object.keys(collection).forEach((element, index) => {
           if (collection[element].parentObject !== undefined) {
             const _objTemp = {}
@@ -226,7 +263,6 @@ export default {
               _objTemp[collection[element].parentObject.propertieName] = false
             } else {
               _objTemp[collection[element].parentObject.propertieName] = ''
-              console.log('_objTemp: ', _objTemp)
             }
             _model[collection[element].parentObject.objectName] = _.assign(_model[collection[element].parentObject.objectName], _objTemp)
           } else {
@@ -245,7 +281,6 @@ export default {
             }
           }
         })
-        console.log('_model: ', _model)
         return _model
       },
       config: state => {
@@ -288,6 +323,24 @@ export default {
   },
   methods: {
     ...mapActions([]),
+    vueSelectUpdateSelected (newSelected) {
+      this.vueSelect.HI.selectedObject = newSelected
+    },
+    vueSelectAsyncFind (query) {
+      query !== '' ? query = '&name=/' + query + '/i' : null
+      this.healthInsurances = []
+      this.vueSelect.HI.isLoading = true
+      console.log(query)
+      const _uri = this.config.APIURIBase + 'healthInsurances/?_fields=name' + query
+      console.log('_uri: ', _uri)
+      this.$http.get(_uri).then((response) => {
+        this.vueSelect.HI.list = response.body
+        this.vueSelect.HI.isLoading = false
+      }, (response) => {
+        console.log('deu erro no select: ', response)
+        this.vueSelect.HI.isLoading = false
+      })
+    },
     isPristine () {
       return !this.changedModalDoc()
     },
@@ -344,10 +397,15 @@ export default {
     },
     getDoc () {
       this.startLoading()
-      const _uri = this.config.APIURIBase + this.API.resource + '/' + this.documentId
-      console.log('_uri: ', _uri)
+      const _uri = this.config.APIURIBase + this.API.resource + '/' + this.documentId + '/?_populate=healthInsurance'
       this.$http.get(_uri).then((response) => {
         this.modalDoc = response.body
+        const _selectedObjectHI = {
+          _id: response.body.healthInsurance._id,
+          name: response.body.healthInsurance.name
+        }
+        this.$set(this.vueSelect.HI, 'selectedObject', _selectedObjectHI)
+        this.$set(this.modalDoc, 'healthInsurance', response.body.healthInsurance._id)
         this.$set(this, 'clonedDoc', JSON.parse(JSON.stringify(this.modalDoc)))
         this.stopLoading(0)
       }, (response) => {
@@ -508,7 +566,8 @@ export default {
     }
   },
   components: {
-    dmModalAudit
+    dmModalAudit,
+    Multiselect
   },
   watch: {
     documentId (val) {
@@ -516,10 +575,16 @@ export default {
     },
     'modalDoc.geoLocation.type': {
       handler (val, oldVal) {
-        console.log('val: ', val)
-        console.log('oldVal: ', oldVal)
       },
       deep: true
+    },
+    'vueSelect.HI.selectedObject': {
+      deep: true,
+      handler (val, oldVal) {
+        console.log('oldVal: ', oldVal)
+        console.log('val: ', val)
+        val === null ? this.$set(this.modalDoc, 'healthInsurance', '') : this.$set(this.modalDoc, 'healthInsurance', val._id)
+      }
     }
   },
   props: [

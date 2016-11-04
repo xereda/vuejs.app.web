@@ -25,7 +25,7 @@ export default {
       APIReturnable: true,
       required: true,
       modal: {
-        veeValidate: 'min:3|regex:^[a-zA-Z\\s]*$',
+        veeValidate: 'min:3|alpha_spaces',
         cssIcon: 'fa fa-heartbeat',
         responsiveCSS: 'column is-6'
       },
@@ -37,16 +37,17 @@ export default {
       }
     },
     healthInsurance: {
-      type: 'text',
+      type: 'vueSelect',
       label: 'Plano de Saúde',
       placeHolder: 'Relacione o plano de saúde',
-      error: 'Informe pelo menos 3 caracteres',
-      filter: true,
-      APIReturnable: true,
-      required: true,
+      error: '',
+      filter: false,
+      APIReturnable: false,
+      required: false, // tem bug no vee-validate, por isso esta como false
       modal: {
         veeValidate: 'ignore',
-        cssIcon: 'fa fa-heartbeat',
+        // cssIcon: 'fa fa-heartbeat',
+        cssIcon: '', // sem icone, ate que possamos customizar o visual do vueSelect
         responsiveCSS: 'column is-6'
       },
       table: {
@@ -107,7 +108,7 @@ export default {
       error: 'Informe corretamente a url do serviço',
       filter: false,
       APIReturnable: true,
-      required: false,
+      required: true,
       modal: {
         veeValidate: 'url',
         cssIcon: 'fa fa-heartbeat',
@@ -131,7 +132,7 @@ export default {
       error: 'Informe corretamente o nome do usuário',
       filter: false,
       APIReturnable: true,
-      required: false,
+      required: true,
       modal: {
         veeValidate: 'min:3',
         cssIcon: 'fa fa-heartbeat',
@@ -153,7 +154,7 @@ export default {
       label: 'WS Senha',
       placeHolder: 'Informe a senha do usuário WS',
       error: 'Informe corretamente o nome do usuário WS',
-      required: false,
+      required: true,
       modal: {
         veeValidate: 'min:3',
         cssIcon: 'fa fa-heartbeat',

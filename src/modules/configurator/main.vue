@@ -5,89 +5,74 @@
       <h2 class="subtitle">{{ general.subTitle }}</h2>
       <hr>
 
-      <collapse accordion is-fullwidth>
-         <collapse-item title="Components">
-           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris. @bulmaio. #css #responsive
-         </collapse-item>
-         <collapse-item title="Elements">
-           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris. @bulmaio. #css #responsive
-         </collapse-item>
-         <collapse-item title="Nests" selected>
-         <collapse>
-           <collapse-item title="Nest Child" selected>
-             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris. @bulmaio. #css #responsive
-           </collapse-item>
-         </collapse>
-       </collapse-item>
-     </collapse>
+      selected: {{ selected }}
 
-     <ul style="list-style-type:disc">
-       <li>Coffee</li>
-       <li>Tea</li>
-       <li>Milk</li>
-     </ul>
+      <hr>
+
+      <multiselect
+        :value="selected"
+        :options="healthInsurances"
+        select-label="[enter] para selecionar"
+        selected-label="selecionado"
+        deselect-label="[enter] para remover"
+        :loading="isLoading"
+        :local-search="false"
+        @search-change="asyncFind"
+        :searchable="true"
+        track-by="_id"
+        label="name"
+        @input="updateSelected">
+      </multiselect>
 
     </div>
   </section>
 </template>
 
 <script>
-import Vue from 'vue'
 import { mapState } from 'vuex'
 
-import Collapse from 'xereda-vue-bulma-collapse/src/Collapse.vue'
-import CollapseItem from 'xereda-vue-bulma-collapse/src/Item.vue'
-
-import Notification from '../ui/notification/Notification.vue'
-const NotificationComponent = Vue.extend(Notification)
-const openNotification = (propsData = {
-  title: '',
-  message: '',
-  type: '',
-  direction: '',
-  duration: 4500,
-  container: '.notifications'
-}) => {
-  return new NotificationComponent({
-    el: document.createElement('div'),
-    propsData
-  })
-}
+import Multiselect from 'vue-multiselect'
 
 export default {
   data () {
     return {
-      modalDoc: {
-        admin: false
-      }
+      isLoading: false,
+      selected: null,
+      healthInsurances: []
     }
   },
   components: {
-    Notification,
-    Collapse,
-    CollapseItem
+    Multiselect
   },
   mounted () {
-    openNotification({
-      message: 'Success lorem ipsum dolor sit amet, consectetur adipiscing elit lorem ipsum dolor sit amet, consectetur adipiscing elit',
-      type: 'success',
-      duration: 2000
-    })
+    this.asyncFind('')
   },
   methods: {
-    updateValue (val) {
-      this.modalDoc.admin = val
+    updateSelected (newSelected) {
+      this.selected = newSelected
     },
-    openNotificationWithType (type) {
-      openNotification({
-        title: 'This is a title',
-        message: 'This is the message.',
-        type: type
+    asyncFind (query) {
+      query !== '' ? query = '&name=/' + query + '/i' : null
+      this.healthInsurances = []
+      this.isLoading = true
+      console.log(query)
+      const _uri = this.config.APIURIBase + 'healthInsurances/?_fields=name' + query
+      console.log('_uri: ', _uri)
+      this.$http.get(_uri).then((response) => {
+        this.healthInsurances = response.body
+        this.isLoading = false
+      }, (response) => {
+        console.log('deu erro no select: ', response)
+        this.isLoading = false
       })
     }
   },
   computed: {
     ...mapState({
+      config: state => {
+        const { config } = state
+        return config
+      },
       general: state => {
         const { general } = state.configurator
         return general

@@ -25,7 +25,7 @@ export default {
       APIReturnable: true,
       required: true,
       modal: {
-        veeValidate: 'min:3|regex:^[a-zA-Z\\s]*$',
+        veeValidate: 'min:3',
         cssIcon: 'fa fa-globe',
         responsiveCSS: 'column is-6'
       },
@@ -106,6 +106,22 @@ export default {
         header: {
           visible: true,
           class: ''
+        }
+      }
+    },
+    active: {
+      type: 'boolean',
+      label: 'Ativo',
+      filter: true,
+      APIReturnable: true,
+      required: true,
+      modal: {
+        responsiveCSS: 'column is-2'
+      },
+      table: {
+        header: {
+          visible: true,
+          class: 'is-hidden-mobile'
         }
       }
     }

@@ -113,6 +113,13 @@
 
             </div>
           </div>
+
+          modalDoc: {{ modalDoc }}
+          <hr>
+          clonedDoc: {{ clonedDoc }}
+          <hr>
+          modelFactory: {{ modelFactory }}
+
         </form>
         <dm-modal-audit :mutation-prefix="API.mutationPrefix" :resource="API.resource" :last-doc-update-date="getLastDocUpdateDate()" :document-id="documentId" v-if="isUpdateDocument() "></dm-modal-audit>
       </section>
@@ -182,21 +189,21 @@ export default {
       modelFactory: state => {
         const { collection } = state.cities
         const _model = {}
+        console.log('dentro da modelFactory')
         Object.keys(collection).forEach((element, index) => {
-          switch (collection[element].type) {
-            case 'text':
-              _model[element] = ''
-              break
-            case 'date':
-              _model[element] = ''
-              break
-            case 'number':
-              _model[element] = ''
-              break
-            case 'boolean':
+          if (collection[element].parentObject !== undefined) {
+            const _objTemp = {}
+            if (collection[element].type === 'boolean') {
+              _objTemp[collection[element].parentObject.propertieName] = false
+            } else {
+              _objTemp[collection[element].parentObject.propertieName] = ''
+              console.log('_objTemp: ', _objTemp)
+            }
+            _model[collection[element].parentObject.objectName] = _.assign(_model[collection[element].parentObject.objectName], _objTemp)
+          } else {
+            if (collection[element].type === 'boolean') {
               _model[element] = false
-              break
-            case 'geo':
+            } else if (collection[element].type === 'geo') {
               _model[element] = {
                 coordinates: [
                   '',
@@ -204,11 +211,12 @@ export default {
                 ],
                 type: 'Point'
               }
-              break
-            default:
-              null
+            } else {
+              _model[element] = ''
+            }
           }
         })
+        console.log('_model: ', _model)
         return _model
       },
       config: state => {
