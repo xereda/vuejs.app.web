@@ -16,6 +16,8 @@ export default {
   config: {
     adminUserId: '58124f84c5560561f8e2dfbf',
     modules: [
+      { route: '/professionalActivities', name: 'professionalActivities', label: 'Ramos de Atividade' },
+      { route: '/specialties', name: 'specialties', label: 'Especializações' },
       { route: '/users', name: 'users', label: 'Usuários' },
       { route: '/healthInsurances', name: 'healthInsurances', label: 'Planos de Saúde' },
       { route: '/operators', name: 'operators', label: 'Operadoras' },

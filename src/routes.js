@@ -10,6 +10,8 @@ import HealthInsurances from './modules/healthInsurances/route'
 import Cities from './modules/cities/route'
 import People from './modules/people/route'
 import Operators from './modules/operators/route'
+import ProfessionalActivities from './modules/professionalActivities/route'
+import Specialties from './modules/specialties/route'
 
 const routes = [ ...Users,
                  ...Dashboard,
@@ -17,7 +19,9 @@ const routes = [ ...Users,
                  ...HealthInsurances,
                  ...Cities,
                  ...People,
-                 ...Operators
+                 ...Operators,
+                 ...ProfessionalActivities,
+                 ...Specialties
                ]
 const router = new Router({ routes })
 

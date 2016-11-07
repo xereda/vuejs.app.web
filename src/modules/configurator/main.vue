@@ -30,8 +30,10 @@
 
 <script>
 import { mapState } from 'vuex'
-
 import Multiselect from 'vue-multiselect'
+
+import { CPF } from 'cpf_cnpj'
+console.log('validacao cpf: ', CPF.isValid('11651232903'))
 
 export default {
   data () {

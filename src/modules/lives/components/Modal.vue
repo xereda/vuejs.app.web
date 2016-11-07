@@ -41,131 +41,60 @@
                 <span class="help is-danger">{{ errors.first('name') }}&nbsp;</span>
               </p>
             </div>
-            <div :class="collection['healthInsurance'].modal.responsiveCSS">
-              <label class="label">{{ collection['healthInsurance'].label }}</label>
+            <div :class="collection['registrationCode'].modal.responsiveCSS">
+              <label class="label">{{ collection['registrationCode'].label }}</label>
               <p class="control has-icon">
-                <!-- <input v-model="modalDoc.healthInsurance"
+                <input v-model="modalDoc.registrationCode"
                        v-validate
-                       :data-rules="getDataRules(collection['healthInsurance'])"
-                       :data-as="collection['healthInsurance'].label"
+                       :data-rules="getDataRules(collection['registrationCode'])"
+                       :data-as="collection['registrationCode'].label"
                        :data-delay="config.delayApplyRule"
-                       :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(collection['healthInsurance']), 'is-danger': errors.has('healthInsurance') }"
-                       name="healthInsurance"
+                       :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(collection['registrationCode']), 'is-danger': errors.has('registrationCode') }"
+                       name="registrationCode"
                        type="text"
-                       :placeholder="collection['healthInsurance'].placeHolder"> -->
-                 <input v-model="modalDoc.healthInsurance"
+                       :placeholder="collection['registrationCode'].placeHolder">
+                <i :class="collection['registrationCode'].modal.cssIcon"></i>
+                <span class="help is-danger">{{ errors.first('registrationCode') }}&nbsp;</span>
+              </p>
+            </div>
+            <div :class="collection['professionalActivity'].modal.responsiveCSS">
+              <label class="label">{{ collection['professionalActivity'].label }}</label>
+              <p class="control has-icon">
+
+
+                 <input v-model="modalDoc.professionalActivity"
                         v-validate
-                        :data-rules="getDataRules(collection['healthInsurance'])"
-                        :data-as="collection['healthInsurance'].label"
-                        name="healthInsurance"
+                        :data-rules="getDataRules(collection['professionalActivity'])"
+                        :data-as="collection['professionalActivity'].label"
+                        name="professionalActivity"
                         class="is-hidden"
                         type="text">
 
                  <multiselect
-                   :value="vueSelect.HI.selectedObject"
-                   :options="vueSelect.HI.list"
+                   :value="vueSelect.PA.selectedObject"
+                   :options="vueSelect.PA.list"
                    select-label="[enter] para selecionar"
                    selected-label="selecionado"
                    deselect-label="[enter] para remover"
-                   placeholder="Selecione um plano de saúde"
-                   :loading="vueSelect.HI.isLoading"
+                   placeholder="Selecione um ramo de atividade"
+                   :loading="vueSelect.PA.isLoading"
                    :local-search="false"
                    @search-change="vueSelectAsyncFind"
                    :searchable="true"
                    track-by="_id"
                    label="name"
-                   class="vueSelect"
                    @input="vueSelectUpdateSelected">
                  </multiselect>
 
-                <i :class="collection['healthInsurance'].modal.cssIcon"></i>
-                <span class="help is-danger" v-if="modalDoc.healthInsurance === ''">{{ errors.first('healthInsurance') }}&nbsp;</span>
+                <i :class="collection['professionalActivity'].modal.cssIcon"></i>
+                <span class="help is-danger" v-if="modalDoc.professionalActivity === ''">{{ errors.first('professionalActivity') }}&nbsp;</span>
                 <span class="help is-danger" v-else>&nbsp;</span>
 
 
               </p>
             </div>
-            <div :class="collection['ANSCode'].modal.responsiveCSS">
-              <label class="label">{{ collection['ANSCode'].label }}</label>
-              <p class="control has-icon">
-                <input v-model="modalDoc.ANSCode"
-                       v-validate
-                       :data-rules="getDataRules(collection['ANSCode'])"
-                       :data-as="collection['ANSCode'].label"
-                       :data-delay="config.delayApplyRule"
-                       :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(collection['ANSCode']), 'is-danger': errors.has('ANSCode') }"
-                       name="ANSCode"
-                       type="text"
-                       :placeholder="collection['ANSCode'].placeHolder">
-                <i :class="collection['ANSCode'].modal.cssIcon"></i>
-                <span class="help is-danger">{{ errors.first('ANSCode') }}&nbsp;</span>
-              </p>
-            </div>
-            <div :class="collection['internalCode'].modal.responsiveCSS">
-              <label class="label">{{ collection['internalCode'].label }}</label>
-              <p class="control has-icon">
-                <input v-model="modalDoc.internalCode"
-                       v-validate
-                       :data-rules="getDataRules(collection['internalCode'])"
-                       :data-as="collection['internalCode'].label"
-                       :data-delay="config.delayApplyRule"
-                       :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(collection['internalCode']), 'is-danger': errors.has('internalCode') }"
-                       name="internalCode"
-                       type="text"
-                       :placeholder="collection['internalCode'].placeHolder">
-                <i :class="collection['internalCode'].modal.cssIcon"></i>
-                <span class="help is-danger">{{ errors.first('internalCode') }}&nbsp;</span>
-              </p>
-            </div>
-            <div :class="collection['webService.uri'].modal.responsiveCSS">
-              <label class="label">{{ collection['webService.uri'].label }}</label>
-              <p class="control has-icon">
-                <input v-model="modalDoc.webService.uri"
-                       v-validate
-                       :data-rules="getDataRules(collection['webService.uri'])"
-                       :data-as="collection['webService.uri'].label"
-                       :data-delay="config.delayApplyRule"
-                       :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(collection['webService.uri']), 'is-danger': errors.has('webService_uri') }"
-                       name="webService_uri"
-                       type="text"
-                       :placeholder="collection['webService.uri'].placeHolder">
-                <i :class="collection['webService.uri'].modal.cssIcon"></i>
-                <span class="help is-danger">{{ errors.first('webService_uri') }}&nbsp;</span>
-              </p>
-            </div>
-            <div :class="collection['webService.user'].modal.responsiveCSS">
-              <label class="label">{{ collection['webService.user'].label }}</label>
-              <p class="control has-icon">
-                <input v-model="modalDoc.webService.user"
-                       v-validate
-                       :data-rules="getDataRules(collection['webService.user'])"
-                       :data-as="collection['webService.user'].label"
-                       :data-delay="config.delayApplyRule"
-                       :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(collection['webService.user']), 'is-danger': errors.has('webService_user') }"
-                       name="webService_user"
-                       type="text"
-                       :placeholder="collection['webService.user'].placeHolder">
-                <i :class="collection['webService.user'].modal.cssIcon"></i>
-                <span class="help is-danger">{{ errors.first('webService_user') }}&nbsp;</span>
-              </p>
-            </div>
-            <div :class="collection['webService.password'].modal.responsiveCSS">
-              <label class="label">{{ collection['webService.password'].label }}</label>
-              <p class="control has-icon">
-                <input v-model="modalDoc.webService.password"
-                       v-validate
-                       :data-rules="getDataRules(collection['webService.password'])"
-                       :data-as="collection['webService.password'].label"
-                       :data-delay="config.delayApplyRule"
-                       :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(collection['webService.password']), 'is-danger': errors.has('webService_password') }"
-                       name="webService_password"
-                       type="password"
-                       :placeholder="collection['webService.password'].placeHolder">
-                <i :class="collection['webService.password'].modal.cssIcon"></i>
-                <span class="help is-danger">{{ errors.first('webService_password') }}&nbsp;</span>
-              </p>
-            </div>
             <div :class="collection['active'].modal.responsiveCSS">
+              <label class="label is-hidden-mobile">&nbsp;</label>
               <label class="checkbox">
                 <input type="checkbox"
                        :class="{ 'checkbox': true, 'is-disabled': isReadOnlyOnUpdate(collection['active']) }"
@@ -227,7 +156,7 @@ export default {
   data () {
     return {
       vueSelect: {
-        HI: {
+        PA: {
           isLoading: false,
           selectedObject: null,
           list: []
@@ -254,7 +183,7 @@ export default {
   computed: {
     ...mapState({
       modelFactory: state => {
-        const { collection } = state.operators
+        const { collection } = state.specialties
         const _model = {}
         Object.keys(collection).forEach((element, index) => {
           if (collection[element].parentObject !== undefined) {
@@ -288,15 +217,15 @@ export default {
         return config
       },
       API: state => {
-        const { API } = state.operators
+        const { API } = state.specialties
         return API
       },
       collection: state => {
-        const { collection } = state.operators
+        const { collection } = state.specialties
         return collection
       },
       general: state => {
-        const { general } = state.operators
+        const { general } = state.specialties
         return general
       },
       session: state => {
@@ -304,7 +233,7 @@ export default {
         return user
       },
       ux: state => {
-        const { ux } = state.operators
+        const { ux } = state.specialties
         return ux
       }
     }),
@@ -324,20 +253,20 @@ export default {
   methods: {
     ...mapActions([]),
     vueSelectUpdateSelected (newSelected) {
-      this.vueSelect.HI.selectedObject = newSelected
+      this.vueSelect.PA.selectedObject = newSelected
     },
     vueSelectAsyncFind (query) {
       query !== '' ? query = '&name=/' + query + '/i' : null
-      this.vueSelect.HI.isLoading = true
+      this.vueSelect.PA.isLoading = true
       console.log(query)
-      const _uri = this.config.APIURIBase + 'healthInsurances/?_fields=name' + query
+      const _uri = this.config.APIURIBase + 'professionalActivities/?_fields=name' + query
       console.log('_uri: ', _uri)
       this.$http.get(_uri).then((response) => {
-        this.vueSelect.HI.list = response.body
-        this.vueSelect.HI.isLoading = false
+        this.vueSelect.PA.list = response.body
+        this.vueSelect.PA.isLoading = false
       }, (response) => {
         console.log('deu erro no select: ', response)
-        this.vueSelect.HI.isLoading = false
+        this.vueSelect.PA.isLoading = false
       })
     },
     isPristine () {
@@ -353,7 +282,7 @@ export default {
       return col.modal.readOnlyOnUpdate && this.isUpdateDocument()
     },
     isHiddenOnUpdate (col) {
-      return col.modal.hiddenOnUpdate && this.isUpdateDocument()
+      return col.modal.PAddenOnUpdate && this.isUpdateDocument()
     },
     getModalState () {
       return this.modalState
@@ -396,15 +325,15 @@ export default {
     },
     getDoc () {
       this.startLoading()
-      const _uri = this.config.APIURIBase + this.API.resource + '/' + this.documentId + '/?_populate=healthInsurance'
+      const _uri = this.config.APIURIBase + this.API.resource + '/' + this.documentId + '/?_populate=professionalActivity'
       this.$http.get(_uri).then((response) => {
         this.modalDoc = response.body
-        const _selectedObjectHI = {
-          _id: response.body.healthInsurance._id,
-          name: response.body.healthInsurance.name
+        const _selectedObjectPA = {
+          _id: response.body.professionalActivity._id,
+          name: response.body.professionalActivity.name
         }
-        this.$set(this.vueSelect.HI, 'selectedObject', _selectedObjectHI)
-        this.$set(this.modalDoc, 'healthInsurance', response.body.healthInsurance._id)
+        this.$set(this.vueSelect.PA, 'selectedObject', _selectedObjectPA)
+        this.$set(this.modalDoc, 'professionalActivity', response.body.professionalActivity._id)
         this.$set(this, 'clonedDoc', JSON.parse(JSON.stringify(this.modalDoc)))
         this.stopLoading(0)
       }, (response) => {
@@ -422,9 +351,10 @@ export default {
         this.$emit('set-pag', 1)
         this.$set(this, 'clonedDoc', JSON.parse(JSON.stringify(this.modelFactory)))
         this.$set(this, 'modalDoc', JSON.parse(JSON.stringify(this.modelFactory)))
-        this.vueSelect.HI.selectedObject = null
+        this.vueSelect.PA.selectedObject = null
         this.stopLoading(0)
       }, (response) => {
+        console.log('response: ', response)
         this.showUserNotifications(response, 'createDoc', 'error')
         this.stopLoading(this.config.modal.delayModalSaveButton)
       })
@@ -578,12 +508,12 @@ export default {
       },
       deep: true
     },
-    'vueSelect.HI.selectedObject': {
+    'vueSelect.PA.selectedObject': {
       deep: true,
       handler (val, oldVal) {
         console.log('oldVal: ', oldVal)
         console.log('val: ', val)
-        val === null ? this.$set(this.modalDoc, 'healthInsurance', '') : this.$set(this.modalDoc, 'healthInsurance', val._id)
+        val === null ? this.$set(this.modalDoc, 'professionalActivity', '') : this.$set(this.modalDoc, 'professionalActivity', val._id)
       }
     }
   },
@@ -603,6 +533,8 @@ export default {
 }
 .custom {
   width: 80% !important;
+  min-height: 70% !important;
 }
+
 
 </style>

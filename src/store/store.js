@@ -10,6 +10,8 @@ import healthInsurances from '../modules/healthInsurances/store/store'
 import cities from '../modules/cities/store/store'
 import people from '../modules/people/store/store'
 import operators from '../modules/operators/store/store'
+import professionalActivities from '../modules/professionalActivities/store/store'
+import specialties from '../modules/specialties/store/store'
 
 Vue.use(Vuex)
 
@@ -24,6 +26,8 @@ export default new Vuex.Store({
     healthInsurances,
     cities,
     people,
-    operators
+    operators,
+    professionalActivities,
+    specialties
   }
 })

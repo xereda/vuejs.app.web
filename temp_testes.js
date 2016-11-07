@@ -51,6 +51,8 @@ db.users.update({}, { $set: { createdById: ObjectId('58124f84c5560561f8e2dfc0'),
 
 db.people.update({}, { $set: { createdById: ObjectId('58124f84c5560561f8e2dfe5'), updatedById: ObjectId('58124f84c5560561f8e2dfe5') } }, { multi: true })
 
+db.specialties.update({}, { $set: { createdById: ObjectId('58124f84c5560561f8e2dfe5'), updatedById: ObjectId('58124f84c5560561f8e2dfe5') } }, { multi: true })
+
 db.users.ensureIndex( { email:1 }, { unique:true, dropDups:true }
 
 mongoimport --db docmob --collection users --file docmob.users.json
