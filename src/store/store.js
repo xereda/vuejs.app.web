@@ -12,6 +12,7 @@ import people from '../modules/people/store/store'
 import operators from '../modules/operators/store/store'
 import professionalActivities from '../modules/professionalActivities/store/store'
 import specialties from '../modules/specialties/store/store'
+import holidays from '../modules/holidays/store/store'
 
 Vue.use(Vuex)
 
@@ -28,6 +29,7 @@ export default new Vuex.Store({
     people,
     operators,
     professionalActivities,
-    specialties
+    specialties,
+    holidays
   }
 })

@@ -22,7 +22,8 @@ export default {
       { route: '/healthInsurances', name: 'healthInsurances', label: 'Planos de Saúde' },
       { route: '/operators', name: 'operators', label: 'Operadoras' },
       { route: '/cities', name: 'cities', label: 'Cidades' },
-      { route: '/people', name: 'people', label: 'Pessoas' }
+      { route: '/people', name: 'people', label: 'Pessoas' },
+      { route: '/holidays', name: 'holidays', label: 'Feriados' }
     ],
     spinner: {
       lines: 11, // The number of lines to draw

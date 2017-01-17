@@ -5,24 +5,7 @@
       <h2 class="subtitle">{{ general.subTitle }}</h2>
       <hr>
 
-      selected: {{ selected }}
-
-      <hr>
-
-      <multiselect
-        :value="selected"
-        :options="healthInsurances"
-        select-label="[enter] para selecionar"
-        selected-label="selecionado"
-        deselect-label="[enter] para remover"
-        :loading="isLoading"
-        :local-search="false"
-        @search-change="asyncFind"
-        :searchable="true"
-        track-by="_id"
-        label="name"
-        @input="updateSelected">
-      </multiselect>
+      <full-calendar :events="fcEvents" lang="en"></full-calendar>
 
     </div>
   </section>
@@ -30,44 +13,26 @@
 
 <script>
 import { mapState } from 'vuex'
-import Multiselect from 'vue-multiselect'
-
-import { CPF } from 'cpf_cnpj'
-console.log('validacao cpf: ', CPF.isValid('11651232903'))
+import fullCalendar from 'vue-fullcalendar'
 
 export default {
   data () {
     return {
-      isLoading: false,
-      selected: null,
-      healthInsurances: []
+      fcEvents: [
+        { title: 'Consulta 1', start: '2016-11-29', end: '2016-11-29' },
+        { title: 'Consulta 1', start: '2016-11-29', end: '2016-11-29' },
+        { title: 'Consulta 1', start: '2016-11-29', end: '2016-11-29' },
+        { title: 'Consulta 1', start: '2016-11-29', end: '2016-11-29' },
+        { title: 'Consulta 1', start: '2016-11-29', end: '2016-11-29' }
+      ]
     }
   },
   components: {
-    Multiselect
+    fullCalendar
   },
   mounted () {
-    this.asyncFind('')
   },
   methods: {
-    updateSelected (newSelected) {
-      this.selected = newSelected
-    },
-    asyncFind (query) {
-      query !== '' ? query = '&name=/' + query + '/i' : null
-      this.healthInsurances = []
-      this.isLoading = true
-      console.log(query)
-      const _uri = this.config.APIURIBase + 'healthInsurances/?_fields=name' + query
-      console.log('_uri: ', _uri)
-      this.$http.get(_uri).then((response) => {
-        this.healthInsurances = response.body
-        this.isLoading = false
-      }, (response) => {
-        console.log('deu erro no select: ', response)
-        this.isLoading = false
-      })
-    }
   },
   computed: {
     ...mapState({

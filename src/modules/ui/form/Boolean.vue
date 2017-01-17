@@ -1,0 +1,43 @@
+<template lang="html">
+<div>
+  <el-switch v-model="selectedValue" on-color="#13ce66" on-text="Sim" off-text="Não" off-color="#ff4949"></el-switch>
+</div>
+</template>
+
+<script>
+  import Vue from 'vue'
+  import ElementUI from 'element-ui'
+  import locale from 'element-ui/lib/locale/lang/pt-br'
+  Vue.use(ElementUI, { locale })
+
+  export default {
+    name: 'dmFormBoolean',
+    data () {
+      return {
+        selectedValue: ''
+      }
+    },
+    mounted () {
+      (this.checked === undefined) ? this.checked = false : null
+      this.selectedValue = this.checked
+      console.log(this.checked)
+    },
+    methods: {
+    },
+    watch: {
+      selectedValue (val, oldValue) {
+        this.$emit('event', { fieldName: this.fieldName, fieldValue: val })
+      }
+    },
+    props: [
+      'field-name',
+      'checked'
+    ]
+  }
+</script>
+
+<style lang="css" scoped>
+
+  @import "~element-ui/lib/theme-default/index.css";
+
+</style>

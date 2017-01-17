@@ -43,7 +43,7 @@ export default {
       error: 'Informe corretamente o acrônomo',
       filter: true,
       APIReturnable: true,
-      required: true,
+      required: false,
       modal: {
         veeValidate: 'min:2|max:7|alpha',
         cssIcon: 'fa fa-list',
