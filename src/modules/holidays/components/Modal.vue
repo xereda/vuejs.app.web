@@ -22,7 +22,7 @@
           <div class="columns is-multiline">
             <div class="column is-3">
               <label class="label">Data</label>
-              <dm-form-date format="dd/MM" placeholder="DD/MM" @event="getValueField" field-name="date" value="12/2/2019"></dm-form-date>
+              <dm-form-date format="dd/MMMM" placeholder="DD/MM" @event="getValueField" field-name="date" value="12/2/2019"></dm-form-date>
             </div>
             <div class="column is-7">
               <label class="label">Feriado</label>

@@ -14,17 +14,19 @@ import ProfessionalActivities from './modules/professionalActivities/route'
 import Specialties from './modules/specialties/route'
 import Holidays from './modules/holidays/route'
 
-const routes = [ ...Users,
-                 ...Dashboard,
-                 ...Configurator,
-                 ...HealthInsurances,
-                 ...Cities,
-                 ...People,
-                 ...Operators,
-                 ...ProfessionalActivities,
-                 ...Specialties,
-                 ...Holidays
-               ]
+const routes = [
+  ...Users,
+  ...Dashboard,
+  ...Configurator,
+  ...HealthInsurances,
+  ...Cities,
+  ...People,
+  ...Operators,
+  ...ProfessionalActivities,
+  ...Specialties,
+  ...Holidays
+]
+
 const router = new Router({ routes })
 
 export default router
