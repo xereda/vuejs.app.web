@@ -185,6 +185,7 @@ export default {
       'pa_addSortColumn'
     ]),
     newDocument () {
+      console.log('newDocument')
       this.control.modal.documentId = ''
       this.setModalState('new')
       this.setModalOpened()
@@ -226,7 +227,9 @@ export default {
       return this.control.modal.state
     },
     setModalState (state) {
+      console.log('dentro da setModalState')
       this.control.modal.state = state
+      console.log('dentro da setModalState - passou')
     },
     modalIsOpened () {
       return this.control.modal.show === true

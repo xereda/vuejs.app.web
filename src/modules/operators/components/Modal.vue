@@ -30,9 +30,9 @@
               <p class="control has-icon">
                 <input v-model="modalDoc.name"
                        v-validate
-                       :data-rules="getDataRules(collection['name'])"
-                       :data-as="collection['name'].label"
-                       :data-delay="config.delayApplyRule"
+                       :data-vv-rules="getDataRules(collection['name'])"
+                       :data-vv-as="collection['name'].label"
+                       :data-vv-delay="config.delayApplyRule"
                        :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(collection['name']), 'is-danger': errors.has('name') }"
                        name="name"
                        type="text"
@@ -46,17 +46,17 @@
               <p class="control has-icon">
                 <!-- <input v-model="modalDoc.healthInsurance"
                        v-validate
-                       :data-rules="getDataRules(collection['healthInsurance'])"
-                       :data-as="collection['healthInsurance'].label"
-                       :data-delay="config.delayApplyRule"
+                       :data-vv-rules="getDataRules(collection['healthInsurance'])"
+                       :data-vv-as="collection['healthInsurance'].label"
+                       :data-vv-delay="config.delayApplyRule"
                        :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(collection['healthInsurance']), 'is-danger': errors.has('healthInsurance') }"
                        name="healthInsurance"
                        type="text"
                        :placeholder="collection['healthInsurance'].placeHolder"> -->
                  <input v-model="modalDoc.healthInsurance"
                         v-validate
-                        :data-rules="getDataRules(collection['healthInsurance'])"
-                        :data-as="collection['healthInsurance'].label"
+                        :data-vv-rules="getDataRules(collection['healthInsurance'])"
+                        :data-vv-as="collection['healthInsurance'].label"
                         name="healthInsurance"
                         class="is-hidden"
                         type="text">
@@ -90,9 +90,9 @@
               <p class="control has-icon">
                 <input v-model="modalDoc.ANSCode"
                        v-validate
-                       :data-rules="getDataRules(collection['ANSCode'])"
-                       :data-as="collection['ANSCode'].label"
-                       :data-delay="config.delayApplyRule"
+                       :data-vv-rules="getDataRules(collection['ANSCode'])"
+                       :data-vv-as="collection['ANSCode'].label"
+                       :data-vv-delay="config.delayApplyRule"
                        :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(collection['ANSCode']), 'is-danger': errors.has('ANSCode') }"
                        name="ANSCode"
                        type="text"
@@ -106,9 +106,9 @@
               <p class="control has-icon">
                 <input v-model="modalDoc.internalCode"
                        v-validate
-                       :data-rules="getDataRules(collection['internalCode'])"
-                       :data-as="collection['internalCode'].label"
-                       :data-delay="config.delayApplyRule"
+                       :data-vv-rules="getDataRules(collection['internalCode'])"
+                       :data-vv-as="collection['internalCode'].label"
+                       :data-vv-delay="config.delayApplyRule"
                        :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(collection['internalCode']), 'is-danger': errors.has('internalCode') }"
                        name="internalCode"
                        type="text"
@@ -122,9 +122,9 @@
               <p class="control has-icon">
                 <input v-model="modalDoc.webService.uri"
                        v-validate
-                       :data-rules="getDataRules(collection['webService.uri'])"
-                       :data-as="collection['webService.uri'].label"
-                       :data-delay="config.delayApplyRule"
+                       :data-vv-rules="getDataRules(collection['webService.uri'])"
+                       :data-vv-as="collection['webService.uri'].label"
+                       :data-vv-delay="config.delayApplyRule"
                        :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(collection['webService.uri']), 'is-danger': errors.has('webService_uri') }"
                        name="webService_uri"
                        type="text"
@@ -138,9 +138,9 @@
               <p class="control has-icon">
                 <input v-model="modalDoc.webService.user"
                        v-validate
-                       :data-rules="getDataRules(collection['webService.user'])"
-                       :data-as="collection['webService.user'].label"
-                       :data-delay="config.delayApplyRule"
+                       :data-vv-rules="getDataRules(collection['webService.user'])"
+                       :data-vv-as="collection['webService.user'].label"
+                       :data-vv-delay="config.delayApplyRule"
                        :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(collection['webService.user']), 'is-danger': errors.has('webService_user') }"
                        name="webService_user"
                        type="text"
@@ -154,9 +154,9 @@
               <p class="control has-icon">
                 <input v-model="modalDoc.webService.password"
                        v-validate
-                       :data-rules="getDataRules(collection['webService.password'])"
-                       :data-as="collection['webService.password'].label"
-                       :data-delay="config.delayApplyRule"
+                       :data-vv-rules="getDataRules(collection['webService.password'])"
+                       :data-vv-as="collection['webService.password'].label"
+                       :data-vv-delay="config.delayApplyRule"
                        :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(collection['webService.password']), 'is-danger': errors.has('webService_password') }"
                        name="webService_password"
                        type="password"

@@ -30,9 +30,9 @@
               <p class="control has-icon">
                 <input v-model="modalDoc.name"
                        v-validate
-                       :data-rules="getDataRules(collection['name'])"
-                       :data-as="collection['name'].label"
-                       :data-delay="config.delayApplyRule"
+                       :data-vv-rules="getDataRules(collection['name'])"
+                       :data-vv-as="collection['name'].label"
+                       :data-vv-delay="config.delayApplyRule"
                        :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(collection['name']), 'is-danger': errors.has('name') }"
                        name="name"
                        type="text"
@@ -46,9 +46,9 @@
               <p class="control has-icon">
                 <input v-model="modalDoc.registrationCode"
                        v-validate
-                       :data-rules="getDataRules(collection['registrationCode'])"
-                       :data-as="collection['registrationCode'].label"
-                       :data-delay="config.delayApplyRule"
+                       :data-vv-rules="getDataRules(collection['registrationCode'])"
+                       :data-vv-as="collection['registrationCode'].label"
+                       :data-vv-delay="config.delayApplyRule"
                        :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(collection['registrationCode']), 'is-danger': errors.has('registrationCode') }"
                        name="registrationCode"
                        type="text"
@@ -64,8 +64,8 @@
 
                  <input v-model="modalDoc.professionalActivity"
                         v-validate
-                        :data-rules="getDataRules(collection['professionalActivity'])"
-                        :data-as="collection['professionalActivity'].label"
+                        :data-vv-rules="getDataRules(collection['professionalActivity'])"
+                        :data-vv-as="collection['professionalActivity'].label"
                         name="professionalActivity"
                         class="is-hidden"
                         type="text">

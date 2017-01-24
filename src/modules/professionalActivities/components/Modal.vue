@@ -33,9 +33,9 @@
                   <input v-if="[ 'text', 'date' ].indexOf(col.type) > -1"
                          v-model="modalDoc[index]"
                          v-validate
-                         :data-rules="getDataRules(col)"
-                         :data-as="col.label"
-                         :data-delay="config.delayApplyRule"
+                         :data-vv-rules="getDataRules(col)"
+                         :data-vv-as="col.label"
+                         :data-vv-delay="config.delayApplyRule"
                          :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(col), 'is-danger': errors.has(index) }"
                          :name="index"
                          type="text"
@@ -43,9 +43,9 @@
                   <input v-if="col.type === 'email'"
                          v-model="modalDoc[index]"
                          v-validate
-                         :data-rules="getDataRules(col)"
-                         :data-as="col.label"
-                         :data-delay="config.delayApplyRule"
+                         :data-vv-rules="getDataRules(col)"
+                         :data-vv-as="col.label"
+                         :data-vv-delay="config.delayApplyRule"
                          :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(col), 'is-danger': errors.has(index) }"
                          :name="index"
                          type="email"
@@ -53,9 +53,9 @@
                   <input v-if="col.type === 'password'"
                          v-model="modalDoc[index]"
                          v-validate
-                         :data-rules="getDataRules(col)"
-                         :data-as="col.label"
-                         :data-delay="config.delayApplyRule"
+                         :data-vv-rules="getDataRules(col)"
+                         :data-vv-as="col.label"
+                         :data-vv-delay="config.delayApplyRule"
                          :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(col), 'is-danger': errors.has(index) }"
                          :name="index"
                          type="password"
@@ -72,9 +72,9 @@
                     <p class="control has-icon">
                       <input v-model="modalDoc[index].coordinates[0]"
                              v-validate
-                             :data-rules="col.geoDefinitions.long.veeValidate"
-                             :data-as="col.geoDefinitions.long.label"
-                             :data-delay="config.delayApplyRule"
+                             :data-vv-rules="col.geoDefinitions.long.veeValidate"
+                             :data-vv-as="col.geoDefinitions.long.label"
+                             :data-vv-delay="config.delayApplyRule"
                              :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(col), 'is-danger': errors.has(col.geoDefinitions.long.name) }"
                              :name="col.geoDefinitions.long.name"
                              type="text"
@@ -88,9 +88,9 @@
                     <p class="control has-icon">
                       <input v-model="modalDoc[index].coordinates[1]"
                              v-validate
-                             :data-rules="col.geoDefinitions.lat.veeValidate"
-                             :data-as="col.geoDefinitions.lat.label"
-                             :data-delay="config.delayApplyRule"
+                             :data-vv-rules="col.geoDefinitions.lat.veeValidate"
+                             :data-vv-as="col.geoDefinitions.lat.label"
+                             :data-vv-delay="config.delayApplyRule"
                              :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(col), 'is-danger': errors.has(col.geoDefinitions.lat.name) }"
                              :name="col.geoDefinitions.lat.name"
                              type="text"
@@ -168,14 +168,17 @@ export default {
     }
   },
   created () {
+    console.log('dentro da created da modal')
     this.$set(this, 'modalDoc', JSON.parse(JSON.stringify(this.modelFactory)))
     this.$set(this, 'clonedDoc', JSON.parse(JSON.stringify(this.modelFactory)))
   },
   mounted () {
+    console.log('dentro da mouted - inicio ')
     // topbar.config(this.topbarConfig)
     // topbar.show()
     this.$validator.setLocale('pt_BR')
     this.isUpdateDocument() === true ? this.getDoc() : null
+    console.log('dentro da mouted - fim ')
   },
   computed: {
     ...mapState({
@@ -184,6 +187,7 @@ export default {
         const _model = {}
         console.log('dentro da modelFactory')
         Object.keys(collection).forEach((element, index) => {
+          console.log('dentro da foreach de campos da collection: ', element, index)
           if (collection[element].parentObject !== undefined) {
             const _objTemp = {}
             if (collection[element].type === 'boolean') {
@@ -238,14 +242,17 @@ export default {
       }
     }),
     title () {
+      console.log('dentro da title() - inicio ')
       return (this.isUpdateDocument()) ? this.general.modal.titleUpdateDocument : this.general.modal.titleNewDocument
     },
     getCSSButtonSave: {
       cache: false,
       get () {
         if ((this.isPristine()) || (this.errors.any() === true) || (this.isLoading())) {
+          console.log('computed - getCSSButtonSave - deixa o botao de salvar desabilidado')
           return 'button is-info is-disabled'
         }
+        console.log('computed - getCSSButtonSave - deixa o botao de salvar habilitado')
         return 'button is-info'
       }
     }
@@ -418,6 +425,7 @@ export default {
       this.showAlerts(_obj)
     },
     getDataRules (col) {
+      console.log('dentro da getDataRules - inicio: ', col.label)
       if ((col.required === true) && (col.modal.veeValidate !== undefined)) {
         return 'required|' + col.modal.veeValidate
       } else if (col.required === true) {
