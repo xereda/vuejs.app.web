@@ -1,53 +1,55 @@
 <template lang="html">
 <div>
 
-  <el-date-picker
-    v-model="selectedValue"
-    type="date"
-    :format="format"
-    :placeholder="placeholder">
-  </el-date-picker>
+<Flatpickr v-model="selectedValue" :options="fpOptions" class="input"></Flatpickr>
 
 </div>
 </template>
 
 <script>
   import Vue from 'vue'
-  import ElementUI from 'element-ui'
-  import locale from 'element-ui/lib/locale/lang/pt-br'
-  Vue.use(ElementUI, { locale })
+  import VueFlatpickr from 'vue-flatpickr'
+  import { pt } from 'flatpickr/dist/l10n/pt.js'
+
+  Vue.use(VueFlatpickr)
 
   export default {
-    name: 'dmFormDate',
+    name: 'dmFormName',
     data () {
       return {
-        selectedValue: ''
-      }
-    },
-    mounted () {
-      console.log(this.value, this.value === undefined, this.value === null, this.value === '')
-      if ((this.value !== '') && (this.value !== undefined)) {
-        this.selectedValue = this.value
+        selectedValue: '',
+        fpOptions: {
+          locale: pt,
+          dateFormat: this.format,
+          altFormat: this.inputFormat,
+          altInput: true
+        }
       }
     },
     methods: {
     },
     watch: {
       selectedValue (val, oldValue) {
+        console.log('mudou o valor: ', val, oldValue)
         this.$emit('event', { fieldName: this.fieldName, fieldValue: val })
       }
     },
     props: [
-      'format',
       'placeholder',
       'field-name',
-      'value'
+      'value',
+      'format',
+      'inputFormat'
     ]
   }
 </script>
 
-<style lang="css" scoped>
+<style lang="css">
 
-  @import "~element-ui/lib/theme-default/index.css";
+  @import '~vue-flatpickr/theme/flatpickr.min.css';
+
+  .flatpickr-calendar {
+    z-index: 999999 !important;
+  }
 
 </style>

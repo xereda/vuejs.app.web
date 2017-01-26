@@ -1,6 +1,6 @@
 <template lang="html">
 <div>
-  <input :placeholder="placeholder" v-model="selectedValue" :value="value" class="input"></input>
+  <input v-model="selectedValue" class="input"></input>
 </div>
 </template>
 
@@ -27,6 +27,6 @@
   }
 </script>
 
-<style lang="css" scoped>
+<style lang="css">
 
 </style>

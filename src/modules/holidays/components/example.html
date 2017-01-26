@@ -1,0 +1,28 @@
+<template lang="html">
+  <transition name="fade">
+    <div id="modal" class="modal is-active">
+      <div class="modal-background"></div>
+      <div class="modal-card custom">
+
+        <header class="modal-card-head">
+          <!-- Here are the title -->
+        </header>
+
+        <section class="modal-card-body">
+          <form>
+            <div class="columns is-multiline">
+              <div class="column is-3">
+                <label class="label">Cidade</label>
+                <dm-form-select @event="getValueField" field-name="city"></dm-form-select>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <footer class="modal-card-foot">
+      <!-- Here are the buttons -->
+      </footer>
+    </div>
+  </div>
+  </transition>
+</template>
