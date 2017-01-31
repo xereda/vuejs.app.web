@@ -12,6 +12,7 @@
                :options-limit="optionsLimit"
                :disabled="disabled"
                :block-keys="['Tab']"
+               @input="$emit('input', $event)"
                select-label="Enter para selecionar"
                selected-label="Selecionado"
                deselect-label="Enter para remover"

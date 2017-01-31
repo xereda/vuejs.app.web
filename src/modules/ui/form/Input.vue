@@ -1,6 +1,6 @@
 <template lang="html">
 <div>
-  <input v-model="selectedValue" class="input"></input>
+  <input v-model="selectedValue"  @input="$emit('input', $event)" class="input"></input>
 </div>
 </template>
 

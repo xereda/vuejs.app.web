@@ -30,9 +30,6 @@
               <label class="label">Feriado</label>
               <dm-form-name @input="$v.formFields['name'].$touch()" placeholder="Informe o nome do feriado" @event="getValueField" field-name="name"></dm-form-name>
               <span v-if="!$v.formFields['name'].required && $v.formFields['name'].$dirty" class="help is-danger">Informe o feriado!</span>
-              <pre>
-                {{ $v.formFields['name'] }}
-              </pre>
             </div>
             <div class="column is-3">
               <label class="label">Recorrente</label>
@@ -47,21 +44,18 @@
             <div class="column is-4">
               <label class="label">Cidade</label>
               <dm-form-select @event="getValueField" field-name="city" api-resource="cities" :disabled="!formFields.regional"></dm-form-select>
+              <span v-if="!formFields['regional'] && formFields['city'] === null" class="help is-danger">Selecione a cidade do feriado!</span>
+              <pre>
+                {{ $v.formFields }}
+              </pre>
             </div>
-            <!-- <div class="column is-4">
-              <label class="label">campo teste</label>
-              <input type="text" v-model.trim="formFields.teste" @input="$v.formFields['teste'].$touch()">
-              <span v-if="!$v.formFields['teste'].required">erro requerido</span>
-              <span v-if="!$v.formFields['teste'].minLength">pelo menos 3 caracteres</span>
-              <pre>teste: {{ $v.formFields['teste'] }}</pre>
-            </div> -->
           </div>
         </form>
       </section>
 
       <footer class="modal-card-foot">
 
-        <a :class="'button is-info'">
+        <a :class="{ 'button': true, 'is-info': true, 'is-disabled': !saveButtonState }">
           <span class="icon is-small">
             <i class="fa fa-check"></i>
           </span>
@@ -146,7 +140,10 @@ export default {
         const { general } = state.holidays
         return general
       }
-    })
+    }),
+    saveButtonState () {
+      return !this.$v.formFields.$invalid && ((this.formFields['regional'] && this.formFields['city'] !== '') || (!this.formFields['regional']))
+    }
   },
   props: [
     'control',
