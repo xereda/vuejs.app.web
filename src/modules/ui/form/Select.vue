@@ -1,68 +1,110 @@
 <template lang="html">
 <div>
-  <!-- <multiselect v-model="selectedValue" :multiple="false" :taggable="true" :options="options"></multiselect> -->
+  <!-- <multiselect v-model="selectedValue" :options="list"></multiselect> -->
   <multiselect v-model="selectedValue"
-               id="ajax"
                label="name"
-               track-by="id"
-               placeholder="Pesquisar..."
+               track-by="_id"
+               :placeholder="placeholder"
                :options="dataList"
-               :multiple="true"
-               :searchable="true"
                :loading="isLoading"
-               :internal-search="false"
-               :clear-on-select="false"
-               :close-on-select="false"
-               :options-limit="300"
-               :limit="3"
-               :limit-text="limitText"
+               :internal-search="true"
+               :close-on-select="true"
+               :options-limit="optionsLimit"
+               :disabled="disabled"
+               :block-keys="['Tab']"
+               select-label="Enter para selecionar"
+               selected-label="Selecionado"
+               deselect-label="Enter para remover"
                @search-change="asyncFind">
-    <span slot="noResult">Sem resultados na pesquisa.</span>
+    <span slot="noResult">Sem retorno com o filtro.</span>
   </multiselect>
 </div>
 </template>
 
 <script>
+  import { mapState } from 'vuex'
   import Multiselect from 'vue-multiselect'
+  import axios from 'axios'
 
   export default {
-    name: 'dmFormName',
+    name: 'dmFormSelect',
     data () {
       return {
         isLoading: false,
-        selectedValue: '',
+        selectedValue: {},
         dataList: []
       }
+    },
+    mounted () {
+      console.log('entrou no mounted')
+      this.asyncFind('')
     },
     components: {
       Multiselect
     },
     methods: {
-      limitText (count) {
-        return `and ${count} other countries`
-      },
       asyncFind (query) {
-        console.log('aqui vai chamar a api', query)
-        const _list = [
-          { id: 1, name: 'item 1' },
-          { id: 2, name: 'item 2' },
-          { id: 3, name: 'item 3' },
-          { id: 4, name: 'item 4' },
-          { id: 5, name: 'item 5' }
-        ]
-        this.dataList = _list
+        this.isLoading = true
+        let _search = ''
+        if (query !== '') {
+          _search = 'name=/' + query + '/i'
+        }
+        const _uri = this.APIURIBase + this.apiResource + '/?_limit=' + this.optionsLimit + '&_fields=_id,name&' + _search
+        console.log(_uri)
+        axios.get(_uri)
+        .then((response) => {
+          this.dataList = response.data
+          this.isLoading = false
+        })
+        .catch((error) => {
+          console.log(error)
+          this.isLoading = false
+        })
       }
     },
     watch: {
-      selectedValue (val, oldValue) {
+      selectedValue (val, oldVal) {
+        console.log(val, oldVal)
+        if (val === null) {
+          val = ''
+        } else if (val._id !== undefined) {
+          val = val._id
+        }
         this.$emit('event', { fieldName: this.fieldName, fieldValue: val })
       }
     },
-    props: [
-      'placeholder',
-      'field-name',
-      'value'
-    ]
+    computed: {
+      ...mapState({
+        APIURIBase: state => {
+          const { config } = state
+          return config.APIURIBase
+        }
+      })
+    },
+    props: {
+      placeholder: {
+        type: String,
+        default: 'Pesquisar...'
+      },
+      fieldName: {
+        type: String,
+        required: true
+      },
+      value: {
+        type: ['String', 'Number']
+      },
+      apiResource: {
+        type: String,
+        required: true
+      },
+      optionsLimit: {
+        type: Number,
+        default: 10
+      },
+      disabled: {
+        type: Boolean
+      }
+    }
   }
 </script>
 

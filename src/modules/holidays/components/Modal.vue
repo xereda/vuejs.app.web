@@ -22,11 +22,17 @@
           <div class="columns is-multiline">
             <div class="column is-2">
               <label class="label">Data</label>
-              <dm-form-date format="d/m/Y" input-format="d/F" placeholder="DD/MM" @event="getValueField" field-name="date" value="12/2/2019"></dm-form-date>
+              <!-- <dm-form-date format="d/m/Y" input-format="d/F" placeholder="DD/MM" @event="getValueField" field-name="date" value="12/2/2019"></dm-form-date> -->
+              <dm-form-date @input="$v.formFields['date'].$touch()" format="Y-m-d" input-format="d/F" placeholder="DD/MM" @event="getValueField" field-name="date" value="12/2/2019"></dm-form-date>
+              <span v-if="!$v.formFields['date'].required && $v.formFields['date'].$dirty" class="help is-danger">Data é requerida!</span>
             </div>
             <div class="column is-7">
               <label class="label">Feriado</label>
-              <dm-form-name placeholder="Informe o nome do feriado" @event="getValueField" field-name="name" value="jackson"></dm-form-name>
+              <dm-form-name @input="$v.formFields['name'].$touch()" placeholder="Informe o nome do feriado" @event="getValueField" field-name="name"></dm-form-name>
+              <span v-if="!$v.formFields['name'].required && $v.formFields['name'].$dirty" class="help is-danger">Informe o feriado!</span>
+              <pre>
+                {{ $v.formFields['name'] }}
+              </pre>
             </div>
             <div class="column is-3">
               <label class="label">Recorrente</label>
@@ -38,10 +44,17 @@
               <label class="label">Regional</label>
               <dm-form-boolean @event="getValueField" field-name="regional" :checked="false"></dm-form-boolean>
             </div>
-            <div class="column is-3">
+            <div class="column is-4">
               <label class="label">Cidade</label>
-              <dm-form-select @event="getValueField" field-name="city"></dm-form-select>
+              <dm-form-select @event="getValueField" field-name="city" api-resource="cities" :disabled="!formFields.regional"></dm-form-select>
             </div>
+            <!-- <div class="column is-4">
+              <label class="label">campo teste</label>
+              <input type="text" v-model.trim="formFields.teste" @input="$v.formFields['teste'].$touch()">
+              <span v-if="!$v.formFields['teste'].required">erro requerido</span>
+              <span v-if="!$v.formFields['teste'].minLength">pelo menos 3 caracteres</span>
+              <pre>teste: {{ $v.formFields['teste'] }}</pre>
+            </div> -->
           </div>
         </form>
       </section>
@@ -69,7 +82,7 @@
           <span>Excluir</span>
         </a>
 
-        {{ formFields }}
+        {{ formFields }} - {{ modalState }}
 
       </footer>
     </div>
@@ -84,6 +97,11 @@ import dmFormName from '../../ui/form/Name.vue'
 import dmFormBoolean from '../../ui/form/Boolean.vue'
 import dmFormSelect from '../../ui/form/Select.vue'
 
+import Vue from 'vue'
+import Vuelidate from 'vuelidate'
+Vue.use(Vuelidate)
+import { required } from 'vuelidate/lib/validators'
+
 export default {
   data () {
     return {
@@ -92,7 +110,18 @@ export default {
         name: '',
         recurrent: false,
         regional: false,
-        city: ''
+        city: '',
+        teste: ''
+      }
+    }
+  },
+  validations: {
+    formFields: {
+      date: {
+        required
+      },
+      name: {
+        required
       }
     }
   },
@@ -123,7 +152,12 @@ export default {
     'control',
     'documentId',
     'modalState'
-  ]
+  ],
+  watch: {
+    'formFields.regional' (val, oldVal) {
+      console.log('entrou aqui: ', val, oldVal)
+    }
+  }
 }
 </script>
 

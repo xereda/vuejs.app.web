@@ -19,6 +19,7 @@
       return {
         selectedValue: '',
         fpOptions: {
+          utc: true,
           locale: pt,
           dateFormat: this.format,
           altFormat: this.inputFormat,
