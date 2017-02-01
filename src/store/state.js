@@ -64,6 +64,15 @@ export default {
       delayApplyRule: 250,
       delayModalSaveButton: 800,
       messagePresentationTime: 4000
+    },
+    fullCalendar: {
+      locales: {
+        ptbr: {
+          weekNames: [ 'Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab' ],
+          monthNames: [ 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro' ],
+          titleFormat: 'MMMM/yyyy'
+        }
+      }
     }
   }
 }

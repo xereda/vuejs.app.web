@@ -77,7 +77,7 @@
         <div class="container">
           <ul>
             <li :class="($route.name === 'dashboard') ? 'is-active' : ''"><router-link to="/dashboard">Dashboard</router-link></li>
-            <li :class="($route.name === 'schedule') ? 'is-active' : ''"><router-link to="/schedule">Agenda</router-link></li>
+            <li :class="($route.name === 'schedules') ? 'is-active' : ''"><router-link to="/schedules">Agenda</router-link></li>
             <li :class="($route.name === 'attendance') ? 'is-active' : ''"><router-link to="/attendance">Atendimento</router-link></li>
             <li :class="($route.name === 'administrative') ? 'is-active' : ''"><router-link to="/administrative">Administração</router-link></li>
             <li :class="($route.name === 'configurator') ? 'is-active' : ''"><router-link to="/configurator">Configuração</router-link></li>
