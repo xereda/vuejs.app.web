@@ -22,7 +22,6 @@
           <div class="columns is-multiline">
             <div class="column is-2">
               <label class="label">Data</label>
-              <!-- <dm-form-date format="d/m/Y" input-format="d/F" placeholder="DD/MM" @event="getValueField" field-name="date" value="12/2/2019"></dm-form-date> -->
               <dm-form-date @input="$v.formFields['date'].$touch()" format="Y-m-d" input-format="d/F" placeholder="DD/MM" @event="getValueField" field-name="date" value="12/2/2019"></dm-form-date>
               <span v-if="!$v.formFields['date'].required && $v.formFields['date'].$dirty" class="help is-danger">Data é requerida!</span>
             </div>
@@ -39,46 +38,24 @@
           <div class="columns is-multiline">
             <div class="column is-2">
               <label class="label">Regional</label>
-              <dm-form-boolean @event="getValueField" field-name="regional" :checked="false"></dm-form-boolean>
+              <dm-form-boolean @change="$v.formFields['regional'].$touch()" @event="getValueField" field-name="regional" :checked="false"></dm-form-boolean>
             </div>
             <div class="column is-4">
               <label class="label">Cidade</label>
               <dm-form-select @event="getValueField" field-name="city" api-resource="cities" :disabled="!formFields.regional"></dm-form-select>
               <span v-if="!formFields['regional'] && formFields['city'] === null" class="help is-danger">Selecione a cidade do feriado!</span>
-              <pre>
-                {{ $v.formFields }}
-              </pre>
+              <!-- <pre>
+                {{ $v }} - {{ isDirty }}
+              </pre> -->
             </div>
           </div>
         </form>
       </section>
-
-      <footer class="modal-card-foot">
-
-        <a :class="{ 'button': true, 'is-info': true, 'is-disabled': !saveButtonState }">
-          <span class="icon is-small">
-            <i class="fa fa-check"></i>
-          </span>
-          <span>Salvar</span>
-        </a>
-
-        <a :class="'button'" @click="modalClose()">
-          <span class="icon is-small">
-            <i class="fa fa-ban"></i>
-          </span>
-          <span>Cancelar</span>
-        </a>
-
-        <a :class="'button is-danger'">
-          <span class="icon is-small">
-            <i class="fa fa-trash"></i>
-          </span>
-          <span>Excluir</span>
-        </a>
-
-        {{ formFields }} - {{ modalState }}
-
-      </footer>
+      <dm-modal-footer :save-button-off="saveButtonOff"
+                       :request-confirm="isDirty"
+                       @close-modal="modalClose"
+                       del-button-off="true"
+                       @save-doc="saveDoc"></dm-modal-footer>
     </div>
   </div>
   </transition>
@@ -86,6 +63,8 @@
 
 <script>
 import { mapState } from 'vuex'
+import axios from 'axios'
+import dmModalFooter from './modalFooter.vue'
 import dmFormDate from '../../ui/form/Date.vue'
 import dmFormName from '../../ui/form/Name.vue'
 import dmFormBoolean from '../../ui/form/Boolean.vue'
@@ -116,10 +95,14 @@ export default {
       },
       name: {
         required
+      },
+      regional: {
+        required
       }
     }
   },
   components: {
+    dmModalFooter,
     dmFormDate,
     dmFormName,
     dmFormBoolean,
@@ -130,8 +113,19 @@ export default {
       this.$emit('close-modal')
     },
     getValueField (fieldObj) {
-      console.log('emitiu um evento para executar este metodo getValueField(): ', fieldObj)
       this.formFields[fieldObj.fieldName] = fieldObj.fieldValue
+    },
+    saveDoc () {
+      console.log('doc a ser salvo: ', this.formFields)
+      const _uri = this.APIURIBase + this.API.resoure
+      console.log(_uri)
+      axios.post(_uri, this.formFields)
+      .then((response) => {
+        console.log(response)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
     }
   },
   computed: {
@@ -139,10 +133,17 @@ export default {
       general: state => {
         const { general } = state.holidays
         return general
+      },
+      API: state => {
+        const { API } = state.holidays
+        return API
       }
     }),
-    saveButtonState () {
-      return !this.$v.formFields.$invalid && ((this.formFields['regional'] && this.formFields['city'] !== '') || (!this.formFields['regional']))
+    isDirty () {
+      return this.$v.formFields['date'].$dirty || this.$v.formFields['name'].$dirty
+    },
+    saveButtonOff () {
+      return this.$v.formFields.$invalid || ((this.formFields['regional'] && this.formFields['city'] === ''))
     }
   },
   props: [
@@ -163,11 +164,15 @@ export default {
 
   .custom {
     width: 80% !important;
+    max-width: 950px !important;
     overflow: visible !important;
   }
   .modal-card-body {
     overflow: visible !important;
   }
+
+
+
 
 
 </style>

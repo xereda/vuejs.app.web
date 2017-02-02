@@ -1,6 +1,6 @@
 <template lang="html">
 <div>
-  <el-switch v-model="selectedValue" on-color="#13ce66" on-text="Sim" off-text="Não" off-color="#ff4949"></el-switch>
+  <el-switch v-model="selectedValue" @change="$emit('change', $event)" on-color="#13ce66" on-text="Sim" off-text="Não" off-color="#ff4949"></el-switch>
 </div>
 </template>
 

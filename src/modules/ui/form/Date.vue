@@ -1,8 +1,6 @@
 <template lang="html">
 <div>
-
-<Flatpickr v-model="selectedValue" :options="fpOptions" @input="$emit('input', $event)" class="input"></Flatpickr>
-
+  <Flatpickr v-model="selectedValue" :options="fpOptions" @input="$emit('input', $event)" class="input"></Flatpickr>
 </div>
 </template>
 

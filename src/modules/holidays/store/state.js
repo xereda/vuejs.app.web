@@ -17,18 +17,13 @@ export default {
       APIReturnable: true
     },
     date: {
-      type: 'text',
-      label: 'Dia/Mês',
-      placeHolder: 'dd/mm',
+      type: 'date',
+      label: 'Data Feriado',
+      placeHolder: 'Selecione a data do feriado',
       error: 'Informe uma data válida',
       filter: false,
       APIReturnable: true,
       required: true,
-      modal: {
-        veeValidate: 'date_format:DD/MM',
-        cssIcon: 'fa fa-calendar',
-        responsiveCSS: 'column is-6'
-      },
       table: {
         header: {
           visible: true,
@@ -53,7 +48,7 @@ export default {
       table: {
         header: {
           visible: true,
-          class: 'is-hidden-mobile'
+          class: ''
         }
       }
     },
@@ -92,7 +87,7 @@ export default {
     city: {
       type: 'text',
       label: 'Cidade',
-      filter: true,
+      filter: false,
       APIReturnable: true,
       required: false,
       modal: {

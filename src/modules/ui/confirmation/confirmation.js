@@ -14,6 +14,19 @@ const removeOne = (obj) => {
     })
 }
 
+const modalClose = (callback) => {
+  swal({ title: 'Deseja sair?',
+    text: 'Existem informações não salvas no formulário. \n Deseja realmente sair sem salvar?',
+    type: 'warning',
+    showCancelButton: true,
+    showLoaderOnConfirm: true,
+    confirmButtonColor: '#DD6B55',
+    confirmButtonText: 'Sim, desejo sair!',
+    cancelButtonText: 'Voltar',
+    closeOnConfirm: true },
+  () => setTimeout(() => callback()))
+}
 export default {
-  removeOne
+  removeOne,
+  modalClose
 }

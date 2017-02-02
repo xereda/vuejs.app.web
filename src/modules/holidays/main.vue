@@ -292,6 +292,9 @@ export default {
           return 'Sim'
         case 'text':
           if (doc[index] !== undefined) {
+            if (index === 'city') {
+              return doc[index].name
+            }
             if (doc[index].length > this.config.grid.textCropLength) {
               return doc[index].substring(0, this.config.grid.textCropLength - 3) + '...'
             }
@@ -306,7 +309,11 @@ export default {
           return doc[index]
         case 'date':
           if (doc[index] !== undefined) {
-            return moment(doc[index]).format('DD/MM/YYYY HH:mm')
+            let _format = 'DD/MMMM/YYYY'
+            if (doc['recurrent']) {
+              _format = 'DD/MMMM'
+            }
+            return moment(doc[index]).format(_format)
           }
           return ''
         case 'geo':
@@ -397,7 +404,7 @@ export default {
       _params += '&_pag=' + _pag
 
       // GET /someUrl
-      const _uri = this.config.APIURIBase + this.API.resource + '/?_fields=' + _fields + _params + '&_sort=' + _sort
+      const _uri = this.config.APIURIBase + this.API.resource + '/?_populate=city&_fields=' + _fields + _params + '&_sort=' + _sort
       this.$http.get(_uri).then((response) => {
         this.holidays_updateTotalDocs(response.headers.get('X-Total-Count'))
         this.docs = response.body
