@@ -55,7 +55,7 @@ export default {
       shadowBlur: 7,
       shadowColor: 'rgba(0, 0, 0, .99)'
     },
-    APIURIBase: 'http://localhost:5000/',
+    APIURIBase: 'http://192.168.25.29:5000/',
     grid: {
       delayLoading: 250,
       textCropLength: 40

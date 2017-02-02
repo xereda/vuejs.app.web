@@ -2,7 +2,7 @@
   <transition name="fade">
   <div id="modal" :class="{ 'modal': true, 'is-active': control }">
     <div class="modal-background"></div>
-    <div class="modal-card custom">
+    <div class="modal-card">
       <header class="modal-card-head">
         <p class="modal-card-title">{{ general.modal.titleNewDocument }}</p>
         <button class="delete" @click="modalClose()"></button>
@@ -160,19 +160,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import '../../../scss/config.scss';
-
-  .custom {
-    width: 80% !important;
-    max-width: 950px !important;
-    overflow: visible !important;
-  }
-  .modal-card-body {
-    overflow: visible !important;
-  }
-
-
-
-
 
 </style>

@@ -1,6 +1,7 @@
 <template>
   <div>
-    <dm-header title="titulo do site"></dm-header>
+    <dm-header></dm-header>
+    <dm-sub-menu></dm-sub-menu>
     <router-view></router-view>
     <dm-footer></dm-footer>
   </div>
@@ -14,6 +15,7 @@ import 'sweetalert/dist/sweetalert.css'
 import 'font-awesome/css/font-awesome.css'
 
 import dmHeader from './modules/ui/Header.vue'
+import dmSubMenu from './modules/ui/SubMenu.vue'
 import dmFooter from './modules/ui/Footer.vue'
 
 export default {
@@ -26,6 +28,7 @@ export default {
   },
   components: {
     dmHeader,
+    dmSubMenu,
     dmFooter
   },
   computed: {
@@ -42,5 +45,16 @@ export default {
 <style lang="scss">
   @import './scss/config';
   @import '~bulma';
+
+  .modal-card {
+    width: 80% !important;
+    max-width: 950px !important;
+    max-height: 90% !important;
+    overflow: visible !important;
+  }
+  .modal-card-body {
+    overflow: visible !important;
+  }
+
 
 </style>
