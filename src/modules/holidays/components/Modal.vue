@@ -117,7 +117,7 @@ export default {
     },
     saveDoc () {
       console.log('doc a ser salvo: ', this.formFields)
-      const _uri = this.APIURIBase + this.API.resoure
+      const _uri = this.APIURIBase + this.API.resource
       console.log(_uri)
       axios.post(_uri, this.formFields)
       .then((response) => {

@@ -216,7 +216,7 @@
 import { mapState, mapActions } from 'vuex'
 import _ from 'lodash'
 import topbar from 'topbar'
-import dmModalAudit from '../../ui/auditInfo.vue'
+import dmModalAudit from '../../ui/AuditInfo.vue'
 import 'animate.css/animate.min.css'
 import showMessage from '../../ui/message/message'
 import Multiselect from 'vue-multiselect'

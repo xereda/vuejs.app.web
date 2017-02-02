@@ -1,32 +1,32 @@
 <template lang="html">
   <collapse accordion is-fullwidth class="margem" @on-click="changeCollapseState">
-     <collapse-item :selected="userDecisions.modal.auditInfo.collapseOpened" title="Informações de auditoria">
+     <collapse-item :selected="userDecisions.modal.AuditInfo.collapseOpened" title="Informações de auditoria">
        <div class="columns is-multiline">
          <div class="column is-3">
            <label class="label">Criado em:</label>
            <p class="control has-icon">
-             <input type="text" :value="auditInfo.createdBy.date" class="input is-disabled" />
+             <input type="text" :value="AuditInfo.createdBy.date" class="input is-disabled" />
              <i class="fa fa-calendar"></i>
            </p>
          </div>
          <div class="column is-3">
            <label class="label">Criado por:</label>
            <p class="control has-icon">
-             <input type="text" :value="auditInfo.createdBy.name" class="input is-disabled" />
+             <input type="text" :value="AuditInfo.createdBy.name" class="input is-disabled" />
              <i class="fa fa-user"></i>
            </p>
          </div>
          <div class="column is-3">
            <label class="label">Alterado em:</label>
            <p class="control has-icon">
-             <input type="text" :value="auditInfo.updatedBy.date" class="input is-disabled" />
+             <input type="text" :value="AuditInfo.updatedBy.date" class="input is-disabled" />
              <i class="fa fa-calendar"></i>
            </p>
          </div>
          <div class="column is-3">
            <label class="label">Alterado por:</label>
            <p class="control has-icon">
-             <input type="text" :value="auditInfo.updatedBy.name" class="input is-disabled" />
+             <input type="text" :value="AuditInfo.updatedBy.name" class="input is-disabled" />
              <i class="fa fa-user"></i>
            </p>
          </div>
@@ -54,7 +54,7 @@ import CollapseItem from './collapse/Item.vue'
 export default {
   data () {
     return {
-      auditInfo: {
+      AuditInfo: {
         createdBy: {
           name: '',
           date: ''
@@ -100,10 +100,10 @@ export default {
     },
     showAuditInfo (data) {
       if (data !== undefined) {
-        this.auditInfo.createdBy.name = data.createdById.name
-        this.auditInfo.createdBy.date = moment(data.createdAt).format('DD/MM/YYYY HH:mm')
-        this.auditInfo.updatedBy.name = data.updatedById.name
-        this.auditInfo.updatedBy.date = moment(data.updatedAt).format('DD/MM/YYYY HH:mm')
+        this.AuditInfo.createdBy.name = data.createdById.name
+        this.AuditInfo.createdBy.date = moment(data.createdAt).format('DD/MM/YYYY HH:mm')
+        this.AuditInfo.updatedBy.name = data.updatedById.name
+        this.AuditInfo.updatedBy.date = moment(data.updatedAt).format('DD/MM/YYYY HH:mm')
       }
     }
   },
