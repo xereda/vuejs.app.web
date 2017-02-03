@@ -6,6 +6,7 @@ import actions from './actions'
 import getters from './getters'
 import users from '../modules/users/store/store'
 import configurator from '../modules/configurator/store/store'
+import administrative from '../modules/administrative/store/store'
 import healthInsurances from '../modules/healthInsurances/store/store'
 import cities from '../modules/cities/store/store'
 import people from '../modules/people/store/store'
@@ -25,6 +26,7 @@ export default new Vuex.Store({
   modules: {
     users,
     configurator,
+    administrative,
     healthInsurances,
     cities,
     people,

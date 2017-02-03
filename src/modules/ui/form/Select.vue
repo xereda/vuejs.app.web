@@ -1,6 +1,5 @@
 <template lang="html">
 <div>
-  <!-- <multiselect v-model="selectedValue" :options="list"></multiselect> -->
   <multiselect v-model="selectedValue"
                label="name"
                track-by="_id"
@@ -32,13 +31,20 @@
     data () {
       return {
         isLoading: false,
-        selectedValue: {},
+        selectedValue: { _id: '', name: '' },
         dataList: []
       }
     },
     mounted () {
       console.log('entrou no mounted')
       this.asyncFind('')
+      setTimeout(() => {
+        this.selectedValue = { _id: this.defaultValue._id, name: this.defaultValue.name }
+        console.log('===================================================')
+        console.log('selectedValue: ', this.selectedValue)
+        console.log('defaultValue -> : ', this.defaultValue, this.defaultValue.name)
+        console.log('===================================================')
+      }, 100)
     },
     components: {
       Multiselect
@@ -65,7 +71,7 @@
     },
     watch: {
       selectedValue (val, oldVal) {
-        console.log(val, oldVal)
+        console.log('dentro do watch do selectedValue: ', val, oldVal)
         if (val === null) {
           val = ''
         } else if (val._id !== undefined) {
@@ -83,6 +89,8 @@
       })
     },
     props: {
+      defaultValue: {
+      },
       placeholder: {
         type: String,
         default: 'Pesquisar...'

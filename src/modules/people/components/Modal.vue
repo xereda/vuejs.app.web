@@ -16,6 +16,12 @@
               </a>
             </li>
             <li>
+              <a @click="alerta()">
+                <span class="icon"><i class="fa fa-user"></i></span>
+                <span>Vidas</span>
+              </a>
+            </li>
+            <li>
               <a>
                 <span class="icon"><i class="fa fa-mobile"></i></span>
                 <span>Dispositivos</span>
@@ -157,6 +163,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import iziToast from 'iziToast'
 import _ from 'lodash'
 import topbar from 'topbar'
 import dmModalAudit from '../../ui/AuditInfo.vue'
@@ -266,6 +273,11 @@ export default {
     }
   },
   methods: {
+    alerta () {
+      iziToast.warning({ title: 'Caution', message: 'Refilling process not yet finalized.' })
+      iziToast.error({ title: 'Error', message: 'Synchronize the new component model, please.' })
+      iziToast.info({ title: 'Info', message: 'VueJS offers tools for this work.' })
+    },
     ...mapActions([]),
     isPristine () {
       return !this.changedModalDoc()
@@ -510,6 +522,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~iziToast/dist/css/iziToast.min.css';
 @import '../../../scss/config.scss';
 
 #modal {

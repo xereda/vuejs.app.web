@@ -25,11 +25,15 @@
     methods: {
     },
     watch: {
-      selectedValue (val, oldValue) {
+      selectedValue (val, oldVal) {
         this.$emit('event', { fieldName: this.fieldName, fieldValue: val })
+      },
+      defaultValue (val, oldVal) {
+        this.selectedValue = val
       }
     },
     props: [
+      'default-value',
       'field-name',
       'checked'
     ]

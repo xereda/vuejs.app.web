@@ -50,11 +50,18 @@ export default {
     width: 80% !important;
     max-width: 950px !important;
     max-height: 90% !important;
-    overflow: visible !important;
+    // overflow: visible !important;
   }
   .modal-card-body {
-    overflow: visible !important;
+    // overflow: visible !important;
+    // min-height: 400px !important;
   }
-
+  @media screen and (-webkit-min-device-pixel-ratio:0) {
+    select,
+    textarea,
+    input {
+      font-size: 16px;
+    }
+  }
 
 </style>

@@ -1,7 +1,7 @@
 <template lang="html">
-<div>
-  <Flatpickr v-model="selectedValue" :options="fpOptions" @input="$emit('input', $event)" class="input"></Flatpickr>
-</div>
+  <div>
+    <Flatpickr v-model="selectedValue" :options="fpOptions" @input="$emit('input', $event)" class="input"></Flatpickr>
+  </div>
 </template>
 
 <script>
@@ -21,24 +21,42 @@
           locale: pt,
           dateFormat: this.format,
           altFormat: this.inputFormat,
-          altInput: true
+          altInput: true,
+          defaultDate: this.selectedValue,
+          clickOpens: !this.readonly
         }
       }
+    },
+    mounted () {
+      // this.fpOptions.clickOpens = !this.readonly
     },
     methods: {
     },
     watch: {
-      selectedValue (val, oldValue) {
-        console.log('mudou o valor: ', val, oldValue)
+      selectedValue (val, oldVal) {
+        console.log('mudou o valor: ', val, oldVal)
         this.$emit('event', { fieldName: this.fieldName, fieldValue: val })
+      },
+      defaultValue (val, oldVal) {
+        console.log('mudou o valor do date: ', val, oldVal)
+        if (val === '') {
+          this.selectedValue = null
+        } else {
+          this.selectedValue = val
+        }
+      },
+      inputFormat (val, oldVal) {
+        this.fpOptions.altFormat = val
       }
     },
     props: [
+      'default-value',
       'placeholder',
       'field-name',
       'value',
       'format',
-      'inputFormat'
+      'inputFormat',
+      'readonly'
     ]
   }
 </script>

@@ -7,7 +7,7 @@
             <li :class="($route.name === 'dashboard') ? 'is-active' : ''"><router-link to="/dashboard">Dashboard</router-link></li>
             <li :class="($route.name === 'schedules') ? 'is-active' : ''"><router-link to="/schedules">Agenda</router-link></li>
             <li :class="($route.name === 'attendance') ? 'is-active' : ''"><router-link to="/attendance">Atendimento</router-link></li>
-            <li :class="($route.name === 'administrative') ? 'is-active' : ''"><router-link to="/administrative">Administração</router-link></li>
+            <li :class="(isAdministrativeRoute) ? 'is-active' : ''"><router-link to="/administrative">Administração</router-link></li>
             <li :class="($route.name === 'configurator') ? 'is-active' : ''"><router-link to="/configurator">Configuração</router-link></li>
           </ul>
         </div>
@@ -28,6 +28,17 @@ export default {
   mounted () {
   },
   computed: {
+    isAdministrativeRoute () {
+      return ((this.$route.name === 'administrative') ||
+      (this.$route.name === 'professionalActivities') ||
+      (this.$route.name === 'specialties') ||
+      (this.$route.name === 'users') ||
+      (this.$route.name === 'healthInsurances') ||
+      (this.$route.name === 'operators') ||
+      (this.$route.name === 'people') ||
+      (this.$route.name === 'holidays') ||
+      (this.$route.name === 'cities'))
+    },
     ...mapState({
       general: state => {
         const { general } = state.healthInsurances

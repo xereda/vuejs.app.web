@@ -19,7 +19,8 @@ module.exports = {
       'vue': 'vue/dist/vue',
       'src': path.resolve(__dirname, '../src'),
       'assets': path.resolve(__dirname, '../src/assets'),
-      'components': path.resolve(__dirname, '../src/components')
+      'components': path.resolve(__dirname, '../src/components'),
+			'vue-flatpickr': '@jacobmischka/vue-flatpickr',
     }
   },
   resolveLoader: {

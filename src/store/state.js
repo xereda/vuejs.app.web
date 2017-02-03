@@ -5,7 +5,7 @@ export default {
     email: '',
     workplace: {
       _id: '',
-      name: 'Clínica Salute'
+      name: 'Administrador (DocMob)'
     },
     provider: {
       _id: '',

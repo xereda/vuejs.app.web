@@ -313,7 +313,7 @@ export default {
             if (doc['recurrent']) {
               _format = 'DD/MMMM'
             }
-            return moment(doc[index]).format(_format)
+            return (index === 'date') ? moment.utc(doc[index]).format(_format) : moment(doc[index]).format(_format)
           }
           return ''
         case 'geo':
