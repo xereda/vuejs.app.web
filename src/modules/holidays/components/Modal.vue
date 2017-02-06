@@ -71,7 +71,7 @@
 import { mapState } from 'vuex'
 import axios from 'axios'
 import izitoast from 'izitoast'
-import dmModalFooter from './modalFooter.vue'
+import dmModalFooter from './ModalFooter.vue'
 import dmFormDate from '../../ui/form/Date.vue'
 import dmFormName from '../../ui/form/Name.vue'
 import dmFormBoolean from '../../ui/form/Boolean.vue'
