@@ -163,7 +163,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import iziToast from 'iziToast'
+import izitoast from 'izitoast'
 import _ from 'lodash'
 import topbar from 'topbar'
 import dmModalAudit from '../../ui/AuditInfo.vue'
@@ -274,9 +274,9 @@ export default {
   },
   methods: {
     alerta () {
-      iziToast.warning({ title: 'Caution', message: 'Refilling process not yet finalized.' })
-      iziToast.error({ title: 'Error', message: 'Synchronize the new component model, please.' })
-      iziToast.info({ title: 'Info', message: 'VueJS offers tools for this work.' })
+      izitoast.warning({ title: 'Caution', message: 'Refilling process not yet finalized.' })
+      izitoast.error({ title: 'Error', message: 'Synchronize the new component model, please.' })
+      izitoast.info({ title: 'Info', message: 'VueJS offers tools for this work.' })
     },
     ...mapActions([]),
     isPristine () {
@@ -522,7 +522,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~iziToast/dist/css/iziToast.min.css';
+@import '~izitoast/dist/css/izitoast.min.css';
 @import '../../../scss/config.scss';
 
 #modal {

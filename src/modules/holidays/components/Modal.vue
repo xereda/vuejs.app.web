@@ -70,7 +70,7 @@
 <script>
 import { mapState } from 'vuex'
 import axios from 'axios'
-import iziToast from 'iziToast'
+import izitoast from 'izitoast'
 import dmModalFooter from './modalFooter.vue'
 import dmFormDate from '../../ui/form/Date.vue'
 import dmFormName from '../../ui/form/Name.vue'
@@ -171,12 +171,12 @@ export default {
     },
     showErrors (_res) {
       if (_res.data.err.errmsg !== undefined) {
-        iziToast.error({ title: 'Erro', message: _res.data.err.errmsg })
+        izitoast.error({ title: 'Erro', message: _res.data.err.errmsg })
       } else if (_res.data.error !== undefined) {
-        iziToast.error({ title: 'Erro', message: _res.data.error })
+        izitoast.error({ title: 'Erro', message: _res.data.error })
       } else {
         _.forEach(_res.data.err.errors, (value, key) => {
-          iziToast.error({ title: 'Erro', message: value.message })
+          izitoast.error({ title: 'Erro', message: value.message })
         })
       }
     },
@@ -193,7 +193,7 @@ export default {
         _data.createdById = this.userSession._id
         axios.post(_uri, _data)
         .then((response) => {
-          iziToast.success({ title: 'OK', message: 'Feriado criado com sucesso!' })
+          izitoast.success({ title: 'OK', message: 'Feriado criado com sucesso!' })
           this.$emit('set-pag', 1)
           this.clearFields()
         })
@@ -206,7 +206,7 @@ export default {
         _data.updatedById = this.userSession._id
         axios.put(_uri, _data)
         .then((response) => {
-          iziToast.success({ title: 'OK', message: 'Feriado atualizado com sucesso!' })
+          izitoast.success({ title: 'OK', message: 'Feriado atualizado com sucesso!' })
           this.$emit('set-pag')
           setTimeout(() => {
             this.$v.formFields.$reset()
@@ -272,6 +272,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import '~iziToast/dist/css/iziToast.min.css';
+  @import '~izitoast/dist/css/izitoast.min.css';
 
 </style>

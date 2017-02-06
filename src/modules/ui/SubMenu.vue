@@ -18,14 +18,14 @@
 
 <script>
 import { mapState } from 'vuex'
-import iziToast from 'iziToast'
+import izitoast from 'izitoast'
 
 export default {
   methods: {
     alerta () {
-      iziToast.warning({ title: 'Caution', message: 'Refactoring process started. Global modules are missing. Documentation available on the VueJS website.' })
-      iziToast.error({ title: 'Error', message: 'Synchronize the new component model, please.' })
-      iziToast.info({ title: 'Info', message: 'VueJS offers tools for this work.' })
+      izitoast.warning({ title: 'Caution', message: 'Refactoring process started. Global modules are missing. Documentation available on the VueJS website.' })
+      izitoast.error({ title: 'Error', message: 'Synchronize the new component model, please.' })
+      izitoast.info({ title: 'Info', message: 'VueJS offers tools for this work.' })
     }
   },
   computed: {
