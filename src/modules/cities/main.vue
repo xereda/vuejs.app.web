@@ -170,10 +170,17 @@ export default {
     dmModal
   },
   mounted () {
-    moment().locale('pt-BR', localePTBR)
-    topbar.config(this.topbarConfig)
-    spinner = new Spinner(this.spinnerConfig)
-    this.getAll()
+    try {
+      console.log('dentro do try')
+      moment().locale('pt-BR', localePTBR)
+      topbar.config(this.topbarConfig)
+      spinner = new Spinner(this.spinnerConfig)
+      this.getAll()
+    } catch (e) {
+      console.log(e)
+    } finally {
+      console.log('dentro do finally do try')
+    }
   },
   methods: {
     ...mapActions([
