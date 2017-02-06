@@ -124,6 +124,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import moment from 'moment'
 import localePTBR from 'moment/locale/pt-br'
 
