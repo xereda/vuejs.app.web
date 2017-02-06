@@ -170,17 +170,15 @@ export default {
     dmModal
   },
   mounted () {
-    try {
-      console.log('dentro do try')
-      moment().locale('pt-BR', localePTBR)
-      topbar.config(this.topbarConfig)
-      spinner = new Spinner(this.spinnerConfig)
-      this.getAll()
-    } catch (e) {
-      console.log(e)
-    } finally {
-      console.log('dentro do finally do try')
-    }
+    console.log(1)
+    moment().locale('pt-BR', localePTBR)
+    console.log(2)
+    topbar.config(this.topbarConfig)
+    console.log(3)
+    spinner = new Spinner(this.spinnerConfig)
+    console.log(4)
+    this.getAll()
+    console.log(5)
   },
   methods: {
     ...mapActions([
@@ -374,12 +372,14 @@ export default {
       return ''
     },
     getAll () {
+      console.log('dentro da getAll: ', 1)
       const startProcess = setTimeout(() => {
         if (this.isLoading() === false) {
           this.startLoading()
         }
       }, this.config.grid.delayLoading)
 
+      console.log('dentro da getAll: ', 2)
       const _boolean = this.filters.boolean
       const _search = this.filters.search
       const _limit = this.pagination.limit
@@ -387,6 +387,7 @@ export default {
       let _params = ''
       const _fields = this.returnableColumnFields.join() + ',createdAt,createdById,updatedAt,updatedById'
       const _sort = this.sort.join()
+      console.log('dentro da getAll: ', 3)
 
       if (_search.state === 'applied') {
         _params += '&' + _search.fieldName + '='
@@ -397,6 +398,8 @@ export default {
         }
       }
 
+      console.log('dentro da getAll: ', 4)
+
       _boolean.forEach((element, index) => {
         _params += '&' + element + '=true'
       })
@@ -404,17 +407,26 @@ export default {
       _params += '&_limit=' + _limit
       _params += '&_pag=' + _pag
 
+      console.log('dentro da getAll: ', 5)
+
       // GET /someUrl
       const _uri = this.config.APIURIBase + this.API.resource + '/?_fields=' + _fields + _params + '&_sort=' + _sort
+
+      console.log('dentro da getAll: ', 6)
+
       this.$http.get(_uri).then((response) => {
         this.cities_updateTotalDocs(response.headers.get('X-Total-Count'))
         this.docs = response.body
         this.stopLoading()
         clearTimeout(startProcess)
+        console.log('dentro da getAll: ', 7)
       }, (response) => {
         // error callback
+        console.log('dentro da getAll: ', 8)
         this.stopLoading()
+        console.log('dentro da getAll: ', 9)
         clearTimeout(startProcess)
+        console.log('dentro da getAll: ', 10)
         this.showError(response)
       })
     },
