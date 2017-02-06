@@ -68,6 +68,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import { mapState } from 'vuex'
 import axios from 'axios'
 import izitoast from 'izitoast'
