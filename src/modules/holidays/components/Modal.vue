@@ -272,6 +272,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import '~izitoast/dist/css/izitoast.min.css';
+  @import '~izitoast/dist/css/iziToast.min.css';
 
 </style>
