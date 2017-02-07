@@ -34,11 +34,9 @@
     },
     watch: {
       selectedValue (val, oldVal) {
-        console.log('mudou o valor: ', val, oldVal)
         this.$emit('event', { fieldName: this.fieldName, fieldValue: val })
       },
       defaultValue (val, oldVal) {
-        console.log('mudou o valor do date: ', val, oldVal)
         if (val === '') {
           this.selectedValue = null
         } else {

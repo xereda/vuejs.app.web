@@ -19,7 +19,6 @@
         this.$emit('event', { fieldName: this.fieldName, fieldValue: val })
       },
       defaultValue (val, oldVal) {
-        console.log('dentro da computed defaultValue: ', val, oldVal)
         this.selectedValue = val
       }
     },

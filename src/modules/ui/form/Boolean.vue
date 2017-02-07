@@ -20,7 +20,6 @@
     mounted () {
       (this.checked === undefined) ? this.checked = false : null
       this.selectedValue = this.checked
-      console.log(this.checked)
     },
     methods: {
     },

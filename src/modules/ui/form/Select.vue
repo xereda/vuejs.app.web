@@ -36,14 +36,10 @@
       }
     },
     mounted () {
-      console.log('entrou no mounted')
       this.asyncFind('')
       setTimeout(() => {
         this.selectedValue = { _id: this.defaultValue._id, name: this.defaultValue.name }
-        console.log('===================================================')
-        console.log('selectedValue: ', this.selectedValue)
-        console.log('defaultValue -> : ', this.defaultValue, this.defaultValue.name)
-        console.log('===================================================')
+        console.log('passou os valores default para o this.selectedValue: ', this.selectedValue, this.defaultValue)
       }, 100)
     },
     components: {
@@ -57,10 +53,11 @@
           _search = 'name=/' + query + '/i'
         }
         const _uri = this.APIURIBase + this.apiResource + '/?_limit=' + this.optionsLimit + '&_fields=_id,name&' + _search
-        console.log(_uri)
+        console.log('_uri do select: ', _uri)
         axios.get(_uri)
         .then((response) => {
           this.dataList = response.data
+          console.log('dataList - object de retorno: ', this.dataList)
           this.isLoading = false
         })
         .catch((error) => {
@@ -71,7 +68,6 @@
     },
     watch: {
       selectedValue (val, oldVal) {
-        console.log('dentro do watch do selectedValue: ', val, oldVal)
         if (val === null) {
           val = ''
         } else if (val._id !== undefined) {

@@ -104,13 +104,10 @@ export default {
   created () {
   },
   mounted () {
-    console.log('mounted...')
     if (this.modalState === 'update') {
       const _uri = this.config.APIURIBase + this.API.resource + '/' + this.documentId + '/?_populate=city'
-      console.log('_uri: ', _uri)
       axios.get(_uri)
       .then((response) => {
-        console.log(response.data)
         this.formFields._id = response.data._id
         this.formFields.name = response.data.name
         this.formFields.date = response.data.date
@@ -123,11 +120,9 @@ export default {
         setTimeout(() => {
           this.$v.formFields.$reset()
         }, 100)
-        console.log(JSON.stringify(this.$v.formFields))
         // this.formFields.date = response.data.date.split('T')[0]
       })
       .catch((error) => {
-        console.log('qual o erro que vai sair: ', error, error.response)
         this.showErrors(error.response)
       })
     }
@@ -176,7 +171,6 @@ export default {
     },
     showErrors (_res) {
       if ((_res === undefined) || (_res.data === undefined)) {
-        console.log('_res: ', _res)
         return false
       }
       if (_res.data.err.errmsg !== undefined) {
@@ -207,7 +201,6 @@ export default {
           this.clearFields()
         })
         .catch((error) => {
-          console.log('error: ', error.response)
           this.showErrors(error.response)
         })
       } else {
@@ -222,7 +215,6 @@ export default {
           }, 100)
         })
         .catch((error) => {
-          console.log('error: ', error.response)
           this.showErrors(error.response)
         })
       }
@@ -267,12 +259,9 @@ export default {
   ],
   watch: {
     'formFields.regional' (val, oldVal) {
-      console.log('mudou o check regional: ', val, oldVal)
     },
     'formFields.city' (val, oldVal) {
-      console.log('mudou o city: ', val, oldVal)
       if (val === '') {
-        console.log('vai zerar o objeto defaultValueSelect: ')
         this.defaultValueSelect = { _id: '', name: '' }
       }
     }
