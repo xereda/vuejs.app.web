@@ -15,7 +15,7 @@
         <span>Cancelar</span>
       </a>
 
-      <a :class="{ 'button': true, 'is-danger': true, 'is-disabled': delButtonOff }">
+      <a :class="{ 'button': true, 'is-danger': true, 'is-disabled': delButtonOff }" @click="delDoc()">
         <span class="icon is-small">
           <i class="fa fa-trash"></i>
         </span>
@@ -38,6 +38,9 @@ export default {
   methods: {
     saveDoc () {
       this.$emit('save-doc')
+    },
+    delDoc () {
+      this.$emit('del-doc')
     },
     modalClose () {
       this.$emit('close-modal')

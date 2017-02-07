@@ -60,7 +60,8 @@
       <dm-modal-footer :save-button-off="saveButtonOff"
                        :request-confirm="isDirty"
                        @close-modal="modalClose"
-                       del-button-off="true"
+                       @del-doc="delDoc"
+                       :del-button-off="modalState === 'new'"
                        @save-doc="saveDoc"></dm-modal-footer>
     </div>
   </div>
@@ -158,6 +159,9 @@ export default {
     modalClose () {
       this.$emit('close-modal')
     },
+    delDoc () {
+      this.$emit('remove-document', { documentId: this.documentId, documentIdentify: this.formFields.name })
+    },
     getValueField (fieldObj) {
       this.formFields[fieldObj.fieldName] = fieldObj.fieldValue
     },
@@ -171,6 +175,10 @@ export default {
       this.$v.formFields.$reset()
     },
     showErrors (_res) {
+      if ((_res === undefined) || (_res.data === undefined)) {
+        console.log('_res: ', _res)
+        return false
+      }
       if (_res.data.err.errmsg !== undefined) {
         izitoast.error({ title: 'Erro', message: _res.data.err.errmsg })
       } else if (_res.data.error !== undefined) {

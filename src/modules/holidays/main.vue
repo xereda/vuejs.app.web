@@ -296,10 +296,9 @@ export default {
           return 'Sim'
         case 'text':
           if (doc[index] !== undefined) {
-            if (index === 'city') {
+            if ((index === 'city') && (doc[index].name !== undefined)) {
               return doc[index].name
-            }
-            if (doc[index].length > this.config.grid.textCropLength) {
+            } else if (doc[index].length > this.config.grid.textCropLength) {
               return doc[index].substring(0, this.config.grid.textCropLength - 3) + '...'
             }
           }
@@ -409,6 +408,7 @@ export default {
 
       // GET /someUrl
       const _uri = this.config.APIURIBase + this.API.resource + '/?_populate=city&_fields=' + _fields + _params + '&_sort=' + _sort
+      console.log('_uri: ', _uri)
       this.$http.get(_uri).then((response) => {
         this.holidays_updateTotalDocs(response.headers.get('X-Total-Count'))
         this.docs = response.body
