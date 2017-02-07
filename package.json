@@ -1,7 +1,7 @@
 {
-  "name": "docmob.portal.vuejs2.0",
+  "name": "agendamob.portal",
   "version": "1.0.0",
-  "description": "A Vue.js project",
+  "description": "Portal AgendaMob",
   "author": "xereda <jacksonrs@gmail.com>",
   "private": true,
   "scripts": {
