@@ -49,7 +49,7 @@
           </div>
           <!-- Right side -->
           <div class="level-right">
-            <p class="level-item" v-if="!_.isEmpty(booleanColumns)"><a :class="getCSSState()" @click="lives_removeAllBooleanFilter([])"><strong>Todos</strong></a></p>
+            <p class="level-item" v-if="isNotEmpty(booleanColumns)"><a :class="getCSSState()" @click="lives_removeAllBooleanFilter([])"><strong>Todos</strong></a></p>
             <p class="level-item"
                v-for="(col, index) in booleanColumns">
               <a :class="getCSSState()" @click="localAddBooleanFilter(index)" v-if="isBooleanApplied(index) === false">{{ col.label }}</a>
@@ -176,6 +176,9 @@ export default {
     this.getAll()
   },
   methods: {
+    isNotEmpty (_booleanColumns) {
+      return !_.isEmpty(_booleanColumns)
+    },
     ...mapActions([
       'lives_updateCurrentPag',
       'lives_updateTotalDocs',
