@@ -314,7 +314,12 @@ export default {
       })
     },
     formSubmit () {
-      this.$validator.validateAll()
+      this.$validator.validateAll().then(() => {
+        // success stuff
+      }).catch(() => {
+        // fail stuff
+      })
+
       if (this.errors.any() === false) {
         if (this.isUpdateDocument()) {
           this.updateDoc()

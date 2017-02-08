@@ -49,7 +49,7 @@
           </div>
           <!-- Right side -->
           <div class="level-right">
-            <p class="level-item" v-if="isNotEmpty(booleanColumns)"><a :class="getCSSState()" @click="lives_removeAllBooleanFilter([])"><strong>Todos</strong></a></p>
+            <p class="level-item" v-if="isNotEmpty(booleanColumns)"><a :class="getCSSState()" @click="cities_removeAllBooleanFilter([])"><strong>Todos</strong></a></p>
             <p class="level-item"
                v-for="(col, index) in booleanColumns">
               <a :class="getCSSState()" @click="localAddBooleanFilter(index)" v-if="isBooleanApplied(index) === false">{{ col.label }}</a>
@@ -142,7 +142,7 @@ import showNotification from '../ui/notification/notification'
 import showMessage from '../ui/message/message'
 
 export default {
-  name: 'dmLives',
+  name: 'dmCities',
   data () {
     return {
       transitionTable: false,
@@ -170,23 +170,28 @@ export default {
     dmModal
   },
   mounted () {
+    console.log(1)
     moment().locale('pt-BR', localePTBR)
+    console.log(2)
     topbar.config(this.topbarConfig)
+    console.log(3)
     spinner = new Spinner(this.spinnerConfig)
+    console.log(4)
     this.getAll()
+    console.log(5)
   },
   methods: {
     isNotEmpty (_booleanColumns) {
       return !_.isEmpty(_booleanColumns)
     },
     ...mapActions([
-      'lives_updateCurrentPag',
-      'lives_updateTotalDocs',
-      'lives_updateFiltersSearch',
-      'lives_addBooleanFilter',
-      'lives_removeBooleanFilter',
-      'lives_removeAllBooleanFilter',
-      'lives_addSortColumn'
+      'cities_updateCurrentPag',
+      'cities_updateTotalDocs',
+      'cities_updateFiltersSearch',
+      'cities_addBooleanFilter',
+      'cities_removeBooleanFilter',
+      'cities_removeAllBooleanFilter',
+      'cities_addSortColumn'
     ]),
     newDocument () {
       this.control.modal.documentId = ''
@@ -249,13 +254,13 @@ export default {
     },
     localUpdateSearchFilters () {
       const _search = this.control.filters.search
-      this.lives_updateFiltersSearch({ text: _search.text, fieldName: _search.fieldName, state: 'applied' })
+      this.cities_updateFiltersSearch({ text: _search.text, fieldName: _search.fieldName, state: 'applied' })
     },
     localRemoveBooleanFilter (field) {
-      this.lives_removeBooleanFilter(field)
+      this.cities_removeBooleanFilter(field)
     },
     localAddBooleanFilter (field) {
-      this.lives_addBooleanFilter(field)
+      this.cities_addBooleanFilter(field)
     },
     isBooleanApplied (index) {
       const _boolean = this.filters.boolean
@@ -267,11 +272,11 @@ export default {
     clearSearchFields () {
       const _obj = { text: '', fieldName: 'q', state: '' } // defino o objeto para zerar as propriedades
       this.control.filters.search = _.clone(_obj) // esta em meu data
-      this.lives_updateFiltersSearch(_obj) // eh uma mutations invocada por uma action no vuex
+      this.cities_updateFiltersSearch(_obj) // eh uma mutations invocada por uma action no vuex
     },
     changePag (pag) {
       if (pag !== undefined) {
-        this.lives_updateCurrentPag(pag)
+        this.cities_updateCurrentPag(pag)
       }
       this.getAll()
     },
@@ -349,7 +354,7 @@ export default {
     localAddSortColumn (column) {
       if (this.isLoading() === false) {
         this.control.disableSortColumns = true
-        this.lives_addSortColumn({ field: column, sort: this.getSortColumnState(column) })
+        this.cities_addSortColumn({ field: column, sort: this.getSortColumnState(column) })
         this.changePag(1)
       }
     },
@@ -370,12 +375,14 @@ export default {
       return ''
     },
     getAll () {
+      console.log('dentro da getAll: ', 1)
       const startProcess = setTimeout(() => {
         if (this.isLoading() === false) {
           this.startLoading()
         }
       }, this.config.grid.delayLoading)
 
+      console.log('dentro da getAll: ', 2)
       const _boolean = this.filters.boolean
       const _search = this.filters.search
       const _limit = this.pagination.limit
@@ -383,6 +390,7 @@ export default {
       let _params = ''
       const _fields = this.returnableColumnFields.join() + ',createdAt,createdById,updatedAt,updatedById'
       const _sort = this.sort.join()
+      console.log('dentro da getAll: ', 3)
 
       if (_search.state === 'applied') {
         _params += '&' + _search.fieldName + '='
@@ -393,6 +401,8 @@ export default {
         }
       }
 
+      console.log('dentro da getAll: ', 4)
+
       _boolean.forEach((element, index) => {
         _params += '&' + element + '=true'
       })
@@ -400,18 +410,26 @@ export default {
       _params += '&_limit=' + _limit
       _params += '&_pag=' + _pag
 
+      console.log('dentro da getAll: ', 5)
+
       // GET /someUrl
       const _uri = this.config.APIURIBase + this.API.resource + '/?_fields=' + _fields + _params + '&_sort=' + _sort
-      console.log('_uri: ', _uri)
+
+      console.log('dentro da getAll: ', 6)
+
       this.$http.get(_uri).then((response) => {
-        this.lives_updateTotalDocs(response.headers.get('X-Total-Count'))
+        this.cities_updateTotalDocs(response.headers.get('X-Total-Count'))
         this.docs = response.body
         this.stopLoading()
         clearTimeout(startProcess)
+        console.log('dentro da getAll: ', 7)
       }, (response) => {
         // error callback
+        console.log('dentro da getAll: ', 8)
         this.stopLoading()
+        console.log('dentro da getAll: ', 9)
         clearTimeout(startProcess)
+        console.log('dentro da getAll: ', 10)
         this.showError(response)
       })
     },
@@ -437,19 +455,19 @@ export default {
   computed: {
     ...mapState({
       general: state => {
-        const { general } = state.lives
+        const { general } = state.cities
         return general
       },
       API: state => {
-        const { API } = state.lives
+        const { API } = state.cities
         return API
       },
       collection: state => {
-        const { collection } = state.lives
+        const { collection } = state.cities
         return collection
       },
       booleanColumns: state => {
-        const { collection } = state.lives
+        const { collection } = state.cities
         let _obj = {}
         Object.keys(collection).forEach((element, index) => {
           if (collection[element].type === 'boolean') {
@@ -460,7 +478,7 @@ export default {
         return _obj
       },
       returnableColumnFields: state => {
-        const { collection } = state.lives
+        const { collection } = state.cities
         let _arr = []
         Object.keys(collection).forEach((element) => {
           if (collection[element].APIReturnable === true) {
@@ -482,16 +500,16 @@ export default {
         return config.spinner
       },
       pagination: state => {
-        const { pagination } = state.lives
+        const { pagination } = state.cities
         return pagination
       },
       filters: state => {
-        const { filters } = state.lives
+        const { filters } = state.cities
         return filters
       },
       sort: state => {
         let _arr = []
-        const { sort } = state.lives
+        const { sort } = state.cities
         sort.forEach((element, index) => {
           element['sort'] === 'desc' ? _arr.push('-' + element['field']) : _arr.push(element['field'])
         })
@@ -508,11 +526,11 @@ export default {
   },
   watch: {
     'filters.search.state' (val, oldVal) {
-      this.lives_updateCurrentPag(1)
+      this.cities_updateCurrentPag(1)
       this.getAll()
     },
     'filters.boolean' (val, oldVal) {
-      this.lives_updateCurrentPag(1)
+      this.cities_updateCurrentPag(1)
       this.getAll()
     }
   }

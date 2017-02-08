@@ -1,7 +1,7 @@
 <template lang="html">
   <nav class="nav has-shadow">
     <div class="container">
-      <div class="nav-center">
+      <div class="nav-left">
         <a :class="{ 'nav-item': true, 'is-tab': true, 'is-active': ($route.name === module.name) }" v-for="module in config.modules">
           <router-link :to="module.route">{{ module.label }}</router-link>
         </a>

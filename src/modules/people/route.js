@@ -1,4 +1,4 @@
-import Module from './main.vue'
+import Module from './Main.vue'
 
 export default [
   {

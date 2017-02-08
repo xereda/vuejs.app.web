@@ -49,7 +49,7 @@
           </div>
           <!-- Right side -->
           <div class="level-right">
-            <p class="level-item" v-if="isNotEmpty(booleanColumns)"><a :class="getCSSState()" @click="lives_removeAllBooleanFilter([])"><strong>Todos</strong></a></p>
+            <p class="level-item" v-if="isNotEmpty(booleanColumns)"><a :class="getCSSState()" @click="holidays_removeAllBooleanFilter([])"><strong>Todos</strong></a></p>
             <p class="level-item"
                v-for="(col, index) in booleanColumns">
               <a :class="getCSSState()" @click="localAddBooleanFilter(index)" v-if="isBooleanApplied(index) === false">{{ col.label }}</a>
@@ -142,7 +142,7 @@ import showNotification from '../ui/notification/notification'
 import showMessage from '../ui/message/message'
 
 export default {
-  name: 'dmLives',
+  name: 'dmHolidays',
   data () {
     return {
       transitionTable: false,
@@ -180,13 +180,13 @@ export default {
       return !_.isEmpty(_booleanColumns)
     },
     ...mapActions([
-      'lives_updateCurrentPag',
-      'lives_updateTotalDocs',
-      'lives_updateFiltersSearch',
-      'lives_addBooleanFilter',
-      'lives_removeBooleanFilter',
-      'lives_removeAllBooleanFilter',
-      'lives_addSortColumn'
+      'holidays_updateCurrentPag',
+      'holidays_updateTotalDocs',
+      'holidays_updateFiltersSearch',
+      'holidays_addBooleanFilter',
+      'holidays_removeBooleanFilter',
+      'holidays_removeAllBooleanFilter',
+      'holidays_addSortColumn'
     ]),
     newDocument () {
       this.control.modal.documentId = ''
@@ -201,10 +201,10 @@ export default {
     removeDocumentCallback (obj) {
       const _uri = this.config.APIURIBase + this.API.resource + '/' + obj.documentId
       this.$http.delete(_uri).then((response) => {
-        // get status
-        console.log(response.status)
-        // get status text
-        console.log(response.statusText)
+        // // get status
+        // console.log(response.status)
+        // // get status text
+        // console.log(response.statusText)
         setTimeout(() => swal('Removido!', `O documento "${obj.documentIdentify}" foi removido com sucesso!`, 'success'))
         this.setModalClosed()
         this.changePag()
@@ -249,13 +249,13 @@ export default {
     },
     localUpdateSearchFilters () {
       const _search = this.control.filters.search
-      this.lives_updateFiltersSearch({ text: _search.text, fieldName: _search.fieldName, state: 'applied' })
+      this.holidays_updateFiltersSearch({ text: _search.text, fieldName: _search.fieldName, state: 'applied' })
     },
     localRemoveBooleanFilter (field) {
-      this.lives_removeBooleanFilter(field)
+      this.holidays_removeBooleanFilter(field)
     },
     localAddBooleanFilter (field) {
-      this.lives_addBooleanFilter(field)
+      this.holidays_addBooleanFilter(field)
     },
     isBooleanApplied (index) {
       const _boolean = this.filters.boolean
@@ -267,11 +267,11 @@ export default {
     clearSearchFields () {
       const _obj = { text: '', fieldName: 'q', state: '' } // defino o objeto para zerar as propriedades
       this.control.filters.search = _.clone(_obj) // esta em meu data
-      this.lives_updateFiltersSearch(_obj) // eh uma mutations invocada por uma action no vuex
+      this.holidays_updateFiltersSearch(_obj) // eh uma mutations invocada por uma action no vuex
     },
     changePag (pag) {
       if (pag !== undefined) {
-        this.lives_updateCurrentPag(pag)
+        this.holidays_updateCurrentPag(pag)
       }
       this.getAll()
     },
@@ -296,7 +296,9 @@ export default {
           return 'Sim'
         case 'text':
           if (doc[index] !== undefined) {
-            if (doc[index].length > this.config.grid.textCropLength) {
+            if ((index === 'city') && (doc[index].name !== undefined)) {
+              return doc[index].name
+            } else if (doc[index].length > this.config.grid.textCropLength) {
               return doc[index].substring(0, this.config.grid.textCropLength - 3) + '...'
             }
           }
@@ -310,7 +312,11 @@ export default {
           return doc[index]
         case 'date':
           if (doc[index] !== undefined) {
-            return moment(doc[index]).format('DD/MM/YYYY HH:mm')
+            let _format = 'DD/MMMM/YYYY'
+            if (doc['recurrent']) {
+              _format = 'DD/MMMM'
+            }
+            return (index === 'date') ? moment.utc(doc[index]).format(_format) : moment(doc[index]).format(_format)
           }
           return ''
         case 'geo':
@@ -349,7 +355,7 @@ export default {
     localAddSortColumn (column) {
       if (this.isLoading() === false) {
         this.control.disableSortColumns = true
-        this.lives_addSortColumn({ field: column, sort: this.getSortColumnState(column) })
+        this.holidays_addSortColumn({ field: column, sort: this.getSortColumnState(column) })
         this.changePag(1)
       }
     },
@@ -401,10 +407,9 @@ export default {
       _params += '&_pag=' + _pag
 
       // GET /someUrl
-      const _uri = this.config.APIURIBase + this.API.resource + '/?_fields=' + _fields + _params + '&_sort=' + _sort
-      console.log('_uri: ', _uri)
+      const _uri = this.config.APIURIBase + this.API.resource + '/?_populate=city&_fields=' + _fields + _params + '&_sort=' + _sort
       this.$http.get(_uri).then((response) => {
-        this.lives_updateTotalDocs(response.headers.get('X-Total-Count'))
+        this.holidays_updateTotalDocs(response.headers.get('X-Total-Count'))
         this.docs = response.body
         this.stopLoading()
         clearTimeout(startProcess)
@@ -437,30 +442,29 @@ export default {
   computed: {
     ...mapState({
       general: state => {
-        const { general } = state.lives
+        const { general } = state.holidays
         return general
       },
       API: state => {
-        const { API } = state.lives
+        const { API } = state.holidays
         return API
       },
       collection: state => {
-        const { collection } = state.lives
+        const { collection } = state.holidays
         return collection
       },
       booleanColumns: state => {
-        const { collection } = state.lives
+        const { collection } = state.holidays
         let _obj = {}
         Object.keys(collection).forEach((element, index) => {
           if (collection[element].type === 'boolean') {
-            console.log('element: ', element, index, collection[element].type)
             _obj[element] = collection[element]
           }
         })
         return _obj
       },
       returnableColumnFields: state => {
-        const { collection } = state.lives
+        const { collection } = state.holidays
         let _arr = []
         Object.keys(collection).forEach((element) => {
           if (collection[element].APIReturnable === true) {
@@ -482,16 +486,16 @@ export default {
         return config.spinner
       },
       pagination: state => {
-        const { pagination } = state.lives
+        const { pagination } = state.holidays
         return pagination
       },
       filters: state => {
-        const { filters } = state.lives
+        const { filters } = state.holidays
         return filters
       },
       sort: state => {
         let _arr = []
-        const { sort } = state.lives
+        const { sort } = state.holidays
         sort.forEach((element, index) => {
           element['sort'] === 'desc' ? _arr.push('-' + element['field']) : _arr.push(element['field'])
         })
@@ -508,11 +512,11 @@ export default {
   },
   watch: {
     'filters.search.state' (val, oldVal) {
-      this.lives_updateCurrentPag(1)
+      this.holidays_updateCurrentPag(1)
       this.getAll()
     },
     'filters.boolean' (val, oldVal) {
-      this.lives_updateCurrentPag(1)
+      this.holidays_updateCurrentPag(1)
       this.getAll()
     }
   }

@@ -37,10 +37,10 @@
                       ref="searchTextField"
                        v-focus
                        v-model="control.filters.search.text"
-                       @keyup.enter="(control.filters.search.text.length > 3) ? localUpdateSearchFilters() : null"
+                       @keyup.enter="(control.filters.search.text.length > 2) ? localUpdateSearchFilters() : null"
                        placeholder="Filtrar o resultado">
                 <button class="button is-info"
-                        :disabled="control.filters.search.text.length <= 3"
+                        :disabled="control.filters.search.text.length <= 2"
                         @click="localUpdateSearchFilters">
                   Filtrar
                 </button>
@@ -49,7 +49,7 @@
           </div>
           <!-- Right side -->
           <div class="level-right">
-            <p class="level-item" v-if="isNotEmpty(booleanColumns)"><a :class="getCSSState()" @click="lives_removeAllBooleanFilter([])"><strong>Todos</strong></a></p>
+            <p class="level-item" v-if="isNotEmpty(booleanColumns)"><a :class="getCSSState()" @click="pa_removeAllBooleanFilter([])"><strong>Todos</strong></a></p>
             <p class="level-item"
                v-for="(col, index) in booleanColumns">
               <a :class="getCSSState()" @click="localAddBooleanFilter(index)" v-if="isBooleanApplied(index) === false">{{ col.label }}</a>
@@ -142,7 +142,7 @@ import showNotification from '../ui/notification/notification'
 import showMessage from '../ui/message/message'
 
 export default {
-  name: 'dmLives',
+  name: 'dmProfessionalActivities',
   data () {
     return {
       transitionTable: false,
@@ -180,15 +180,16 @@ export default {
       return !_.isEmpty(_booleanColumns)
     },
     ...mapActions([
-      'lives_updateCurrentPag',
-      'lives_updateTotalDocs',
-      'lives_updateFiltersSearch',
-      'lives_addBooleanFilter',
-      'lives_removeBooleanFilter',
-      'lives_removeAllBooleanFilter',
-      'lives_addSortColumn'
+      'pa_updateCurrentPag',
+      'pa_updateTotalDocs',
+      'pa_updateFiltersSearch',
+      'pa_addBooleanFilter',
+      'pa_removeBooleanFilter',
+      'pa_removeAllBooleanFilter',
+      'pa_addSortColumn'
     ]),
     newDocument () {
+      console.log('newDocument')
       this.control.modal.documentId = ''
       this.setModalState('new')
       this.setModalOpened()
@@ -230,7 +231,9 @@ export default {
       return this.control.modal.state
     },
     setModalState (state) {
+      console.log('dentro da setModalState')
       this.control.modal.state = state
+      console.log('dentro da setModalState - passou')
     },
     modalIsOpened () {
       return this.control.modal.show === true
@@ -249,13 +252,13 @@ export default {
     },
     localUpdateSearchFilters () {
       const _search = this.control.filters.search
-      this.lives_updateFiltersSearch({ text: _search.text, fieldName: _search.fieldName, state: 'applied' })
+      this.pa_updateFiltersSearch({ text: _search.text, fieldName: _search.fieldName, state: 'applied' })
     },
     localRemoveBooleanFilter (field) {
-      this.lives_removeBooleanFilter(field)
+      this.pa_removeBooleanFilter(field)
     },
     localAddBooleanFilter (field) {
-      this.lives_addBooleanFilter(field)
+      this.pa_addBooleanFilter(field)
     },
     isBooleanApplied (index) {
       const _boolean = this.filters.boolean
@@ -267,11 +270,11 @@ export default {
     clearSearchFields () {
       const _obj = { text: '', fieldName: 'q', state: '' } // defino o objeto para zerar as propriedades
       this.control.filters.search = _.clone(_obj) // esta em meu data
-      this.lives_updateFiltersSearch(_obj) // eh uma mutations invocada por uma action no vuex
+      this.pa_updateFiltersSearch(_obj) // eh uma mutations invocada por uma action no vuex
     },
     changePag (pag) {
       if (pag !== undefined) {
-        this.lives_updateCurrentPag(pag)
+        this.pa_updateCurrentPag(pag)
       }
       this.getAll()
     },
@@ -349,7 +352,7 @@ export default {
     localAddSortColumn (column) {
       if (this.isLoading() === false) {
         this.control.disableSortColumns = true
-        this.lives_addSortColumn({ field: column, sort: this.getSortColumnState(column) })
+        this.pa_addSortColumn({ field: column, sort: this.getSortColumnState(column) })
         this.changePag(1)
       }
     },
@@ -402,9 +405,8 @@ export default {
 
       // GET /someUrl
       const _uri = this.config.APIURIBase + this.API.resource + '/?_fields=' + _fields + _params + '&_sort=' + _sort
-      console.log('_uri: ', _uri)
       this.$http.get(_uri).then((response) => {
-        this.lives_updateTotalDocs(response.headers.get('X-Total-Count'))
+        this.pa_updateTotalDocs(response.headers.get('X-Total-Count'))
         this.docs = response.body
         this.stopLoading()
         clearTimeout(startProcess)
@@ -437,19 +439,19 @@ export default {
   computed: {
     ...mapState({
       general: state => {
-        const { general } = state.lives
+        const { general } = state.professionalActivities
         return general
       },
       API: state => {
-        const { API } = state.lives
+        const { API } = state.professionalActivities
         return API
       },
       collection: state => {
-        const { collection } = state.lives
+        const { collection } = state.professionalActivities
         return collection
       },
       booleanColumns: state => {
-        const { collection } = state.lives
+        const { collection } = state.professionalActivities
         let _obj = {}
         Object.keys(collection).forEach((element, index) => {
           if (collection[element].type === 'boolean') {
@@ -460,7 +462,7 @@ export default {
         return _obj
       },
       returnableColumnFields: state => {
-        const { collection } = state.lives
+        const { collection } = state.professionalActivities
         let _arr = []
         Object.keys(collection).forEach((element) => {
           if (collection[element].APIReturnable === true) {
@@ -482,16 +484,16 @@ export default {
         return config.spinner
       },
       pagination: state => {
-        const { pagination } = state.lives
+        const { pagination } = state.professionalActivities
         return pagination
       },
       filters: state => {
-        const { filters } = state.lives
+        const { filters } = state.professionalActivities
         return filters
       },
       sort: state => {
         let _arr = []
-        const { sort } = state.lives
+        const { sort } = state.professionalActivities
         sort.forEach((element, index) => {
           element['sort'] === 'desc' ? _arr.push('-' + element['field']) : _arr.push(element['field'])
         })
@@ -508,11 +510,11 @@ export default {
   },
   watch: {
     'filters.search.state' (val, oldVal) {
-      this.lives_updateCurrentPag(1)
+      this.pa_updateCurrentPag(1)
       this.getAll()
     },
     'filters.boolean' (val, oldVal) {
-      this.lives_updateCurrentPag(1)
+      this.pa_updateCurrentPag(1)
       this.getAll()
     }
   }

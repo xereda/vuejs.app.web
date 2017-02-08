@@ -49,7 +49,7 @@
           </div>
           <!-- Right side -->
           <div class="level-right">
-            <p class="level-item" v-if="isNotEmpty(booleanColumns)"><a :class="getCSSState()" @click="lives_removeAllBooleanFilter([])"><strong>Todos</strong></a></p>
+            <p class="level-item" v-if="isNotEmpty(booleanColumns)"><a :class="getCSSState()" @click="specialties_removeAllBooleanFilter([])"><strong>Todos</strong></a></p>
             <p class="level-item"
                v-for="(col, index) in booleanColumns">
               <a :class="getCSSState()" @click="localAddBooleanFilter(index)" v-if="isBooleanApplied(index) === false">{{ col.label }}</a>
@@ -142,7 +142,7 @@ import showNotification from '../ui/notification/notification'
 import showMessage from '../ui/message/message'
 
 export default {
-  name: 'dmLives',
+  name: 'dmSpecialties',
   data () {
     return {
       transitionTable: false,
@@ -180,13 +180,13 @@ export default {
       return !_.isEmpty(_booleanColumns)
     },
     ...mapActions([
-      'lives_updateCurrentPag',
-      'lives_updateTotalDocs',
-      'lives_updateFiltersSearch',
-      'lives_addBooleanFilter',
-      'lives_removeBooleanFilter',
-      'lives_removeAllBooleanFilter',
-      'lives_addSortColumn'
+      'specialties_updateCurrentPag',
+      'specialties_updateTotalDocs',
+      'specialties_updateFiltersSearch',
+      'specialties_addBooleanFilter',
+      'specialties_removeBooleanFilter',
+      'specialties_removeAllBooleanFilter',
+      'specialties_addSortColumn'
     ]),
     newDocument () {
       this.control.modal.documentId = ''
@@ -249,13 +249,13 @@ export default {
     },
     localUpdateSearchFilters () {
       const _search = this.control.filters.search
-      this.lives_updateFiltersSearch({ text: _search.text, fieldName: _search.fieldName, state: 'applied' })
+      this.specialties_updateFiltersSearch({ text: _search.text, fieldName: _search.fieldName, state: 'applied' })
     },
     localRemoveBooleanFilter (field) {
-      this.lives_removeBooleanFilter(field)
+      this.specialties_removeBooleanFilter(field)
     },
     localAddBooleanFilter (field) {
-      this.lives_addBooleanFilter(field)
+      this.specialties_addBooleanFilter(field)
     },
     isBooleanApplied (index) {
       const _boolean = this.filters.boolean
@@ -267,11 +267,11 @@ export default {
     clearSearchFields () {
       const _obj = { text: '', fieldName: 'q', state: '' } // defino o objeto para zerar as propriedades
       this.control.filters.search = _.clone(_obj) // esta em meu data
-      this.lives_updateFiltersSearch(_obj) // eh uma mutations invocada por uma action no vuex
+      this.specialties_updateFiltersSearch(_obj) // eh uma mutations invocada por uma action no vuex
     },
     changePag (pag) {
       if (pag !== undefined) {
-        this.lives_updateCurrentPag(pag)
+        this.specialties_updateCurrentPag(pag)
       }
       this.getAll()
     },
@@ -349,7 +349,7 @@ export default {
     localAddSortColumn (column) {
       if (this.isLoading() === false) {
         this.control.disableSortColumns = true
-        this.lives_addSortColumn({ field: column, sort: this.getSortColumnState(column) })
+        this.specialties_addSortColumn({ field: column, sort: this.getSortColumnState(column) })
         this.changePag(1)
       }
     },
@@ -404,7 +404,7 @@ export default {
       const _uri = this.config.APIURIBase + this.API.resource + '/?_fields=' + _fields + _params + '&_sort=' + _sort
       console.log('_uri: ', _uri)
       this.$http.get(_uri).then((response) => {
-        this.lives_updateTotalDocs(response.headers.get('X-Total-Count'))
+        this.specialties_updateTotalDocs(response.headers.get('X-Total-Count'))
         this.docs = response.body
         this.stopLoading()
         clearTimeout(startProcess)
@@ -437,19 +437,19 @@ export default {
   computed: {
     ...mapState({
       general: state => {
-        const { general } = state.lives
+        const { general } = state.specialties
         return general
       },
       API: state => {
-        const { API } = state.lives
+        const { API } = state.specialties
         return API
       },
       collection: state => {
-        const { collection } = state.lives
+        const { collection } = state.specialties
         return collection
       },
       booleanColumns: state => {
-        const { collection } = state.lives
+        const { collection } = state.specialties
         let _obj = {}
         Object.keys(collection).forEach((element, index) => {
           if (collection[element].type === 'boolean') {
@@ -460,7 +460,7 @@ export default {
         return _obj
       },
       returnableColumnFields: state => {
-        const { collection } = state.lives
+        const { collection } = state.specialties
         let _arr = []
         Object.keys(collection).forEach((element) => {
           if (collection[element].APIReturnable === true) {
@@ -482,16 +482,16 @@ export default {
         return config.spinner
       },
       pagination: state => {
-        const { pagination } = state.lives
+        const { pagination } = state.specialties
         return pagination
       },
       filters: state => {
-        const { filters } = state.lives
+        const { filters } = state.specialties
         return filters
       },
       sort: state => {
         let _arr = []
-        const { sort } = state.lives
+        const { sort } = state.specialties
         sort.forEach((element, index) => {
           element['sort'] === 'desc' ? _arr.push('-' + element['field']) : _arr.push(element['field'])
         })
@@ -508,11 +508,11 @@ export default {
   },
   watch: {
     'filters.search.state' (val, oldVal) {
-      this.lives_updateCurrentPag(1)
+      this.specialties_updateCurrentPag(1)
       this.getAll()
     },
     'filters.boolean' (val, oldVal) {
-      this.lives_updateCurrentPag(1)
+      this.specialties_updateCurrentPag(1)
       this.getAll()
     }
   }

@@ -55,8 +55,8 @@ export default {
       shadowBlur: 7,
       shadowColor: 'rgba(0, 0, 0, .99)'
     },
-    // APIURIBase: 'http://docmob.com.br:5000/',
-    APIURIBase: 'http://localhost:5000/',
+    APIURIBase: 'http://homologa.docmob.com.br:5000/',
+    // APIURIBase: 'http://localhost:5000/',
     grid: {
       delayLoading: 250,
       textCropLength: 40
