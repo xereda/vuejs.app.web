@@ -301,6 +301,13 @@ export default {
             }
           }
           return doc[index]
+        case 'vueSelect':
+          if (doc[index] !== undefined) {
+            if ((index === 'professionalActivity') && (doc[index].name !== undefined)) {
+              return doc[index].name
+            }
+          }
+          return doc[index]
         case 'email':
           if (doc[index] !== undefined) {
             if (doc[index].length > this.config.grid.textCropLength) {
@@ -401,7 +408,7 @@ export default {
       _params += '&_pag=' + _pag
 
       // GET /someUrl
-      const _uri = this.config.APIURIBase + this.API.resource + '/?_fields=' + _fields + _params + '&_sort=' + _sort
+      const _uri = this.config.APIURIBase + this.API.resource + '/?_populate=professionalActivity&_fields=' + _fields + _params + '&_sort=' + _sort
       console.log('_uri: ', _uri)
       this.$http.get(_uri).then((response) => {
         this.specialties_updateTotalDocs(response.headers.get('X-Total-Count'))

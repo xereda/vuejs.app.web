@@ -62,7 +62,7 @@ export default {
       placeHolder: 'Relacione o Ramo de Atividade',
       error: '',
       filter: false,
-      APIReturnable: false,
+      APIReturnable: true,
       required: false,
       modal: {
         veeValidate: 'ignore',
@@ -72,7 +72,7 @@ export default {
       },
       table: {
         header: {
-          visible: false,
+          visible: true,
           class: 'is-hidden-mobile'
         }
       }
