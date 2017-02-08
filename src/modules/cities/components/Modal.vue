@@ -70,7 +70,7 @@
                   <div class="column">
                     <label class="label" v-if="showTopLabel(col.type)">{{ col.geoDefinitions.long.label }}</label>
                     <p class="control has-icon">
-                      <input v-model="modalDoc[index].coordinates[0]"
+                      <input v-model="modalDoc.geoLocation.coordinates[0]"
                              v-validate
                              :data-vv-rules="col.geoDefinitions.long.veeValidate"
                              :data-vv-as="col.geoDefinitions.long.label"
@@ -86,7 +86,7 @@
                   <div class="column">
                     <label class="label" v-if="showTopLabel(col.type)">{{ col.geoDefinitions.lat.label }}</label>
                     <p class="control has-icon">
-                      <input v-model="modalDoc[index].coordinates[1]"
+                      <input v-model="modalDoc.geoLocation.coordinates[1]"
                              v-validate
                              :data-vv-rules="col.geoDefinitions.lat.veeValidate"
                              :data-vv-as="col.geoDefinitions.lat.label"
@@ -364,9 +364,9 @@ export default {
     },
     formSubmit () {
       this.$validator.validateAll().then(() => {
-        // success stuff
+        console.log('esta validando o form!!???')
       }).catch(() => {
-        // fail stuff
+        console.log('deu erro')
       })
 
       if (this.errors.any() === false) {
