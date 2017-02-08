@@ -25,7 +25,7 @@ export default {
       APIReturnable: true,
       required: true,
       modal: {
-        veeValidate: 'min:3|alpha_spaces',
+        veeValidate: 'min:3',
         cssIcon: 'fa fa-stethoscope',
         responsiveCSS: 'column is-6'
       },
