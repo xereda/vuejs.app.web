@@ -437,7 +437,11 @@ export default {
             _obj.message += res.data.err.errors[element].message + '<br />'
           })
         } else {
-          _obj.message += res.data.err.errmsg
+          if (res.data.err.errmsg.indexOf('E11000 duplicate key error index: docmob.specialties.$name_1') > -1) {
+            _obj.message += 'Especialidade já existe no cadastro!'
+          } else {
+            _obj.message += res.data.err.errmsg
+          }
         }
       }
       this.showAlerts(_obj)
