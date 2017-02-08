@@ -440,7 +440,12 @@ export default {
             _obj.message += res.data.err.errors[element].message + '<br />'
           })
         } else {
-          _obj.message += res.data.err.errmsg
+          if (res.data.err.errmsg.indexOf('E11000 duplicate key error index: docmob.people.$email_1') > -1) {
+            _obj.message += 'E-mail informado já existe no cadastro!'
+            // E11000 duplicate key error index: docmob.people.$email_1 dup key: { : "jacksonrs@gmail.com" }
+          } else {
+            _obj.message += res.data.err.errmsg
+          }
         }
       }
       this.showAlerts(_obj)
