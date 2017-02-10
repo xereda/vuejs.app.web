@@ -1,15 +1,13 @@
 <template lang="html">
   <div>
-    <Flatpickr v-model="selectedValue" :options="fpOptions" @input="$emit('input', $event)" :class="{ 'input': true, 'is-disabled': readonly }"></Flatpickr>
+    <input v-model="selectedValue" ref="flatpickr" @input="$emit('input', $event)" :class="{ 'input': true, 'is-disabled': readonly }">
   </div>
 </template>
 
 <script>
-  import Vue from 'vue'
-  import VueFlatpickr from 'vue-flatpickr'
+  import Flatpickr from 'flatpickr'
   import { pt } from 'flatpickr/dist/l10n/pt.js'
-
-  Vue.use(VueFlatpickr)
+  // flatpickr/dist/themes/base16_flat.css
 
   export default {
     name: 'dmFormName',
@@ -28,9 +26,12 @@
       }
     },
     mounted () {
-      // this.fpOptions.clickOpens = !this.readonly
+      this.flatPickerInit()
     },
     methods: {
+      flatPickerInit () {
+        return new Flatpickr(this.$refs.flatpickr, this.fpOptions)
+      }
     },
     watch: {
       selectedValue (val, oldVal) {
@@ -61,7 +62,7 @@
 
 <style lang="css">
 
-  @import '~vue-flatpickr/theme/flatpickr.min.css';
+  @import '~flatpickr/dist/flatpickr.css';
 
   .flatpickr-calendar {
     z-index: 999999 !important;
