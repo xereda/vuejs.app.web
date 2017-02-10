@@ -259,7 +259,7 @@ export default {
       query !== '' ? query = '&name=/' + query + '/i' : null
       this.vueSelect.PA.isLoading = true
       console.log(query)
-      const _uri = this.config.APIURIBase + 'professionalActivities/?_fields=name' + query
+      const _uri = this.config.APIURIBase + 'professionalActivities/?_fields=name' + query + '&active=true'
       console.log('_uri: ', _uri)
       this.$http.get(_uri).then((response) => {
         this.vueSelect.PA.list = response.body

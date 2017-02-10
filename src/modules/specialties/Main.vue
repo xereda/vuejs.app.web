@@ -302,12 +302,12 @@ export default {
           }
           return doc[index]
         case 'vueSelect':
-          if (doc[index] !== undefined) {
-            if ((index === 'professionalActivity') && (doc[index].name !== undefined)) {
+          if ((doc[index] !== undefined) && (doc[index] !== null)) {
+            if ((index === 'professionalActivity') && (doc[index] !== undefined) && (doc[index].name !== undefined)) {
               return doc[index].name
             }
           }
-          return doc[index]
+          return ''
         case 'email':
           if (doc[index] !== undefined) {
             if (doc[index].length > this.config.grid.textCropLength) {
