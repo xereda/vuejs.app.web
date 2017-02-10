@@ -1,15 +1,28 @@
-#!/bin/bash
-echo "================================================"
-echo "          BUILD INICIADO - HOMOLOGACAO          "
-echo "================================================"
-npm run build
-echo "================================================"
-echo "         BUILD FINALIZADO - HOMOLOGACAO         "
-echo "================================================"
-echo "================================================"
-echo "       COPIANDO ARQUIVOS PARA O SERVIDOR        "
-echo "================================================"
-scp -r ./dist docmob@docmob.com.br:/home/docmob/desenvolvimento/repositorios/agendamob.portal
-echo "================================================"
-echo "        COPIA FINALIZADA EM HOMOLOGACAO         "
-echo "================================================"
+#!/usr/bin/expect -f
+send_user "================================================\n"
+send_user "          BUILD INICIADO - HOMOLOGACAO          \n"
+send_user "================================================\n"
+spawn npm run build
+interact
+send_user "================================================\n"
+send_user "         BUILD FINALIZADO - HOMOLOGACAO         \n"
+send_user "================================================\n"
+send_user "================================================\n"
+send_user "       COPIANDO ARQUIVOS PARA O SERVIDOR        \n"
+send_user "================================================\n"
+# connect via scp
+    spawn scp -C -r ./dist docmob@docmob.com.br:/home/docmob/desenvolvimento/repositorios/agendamob.portal
+#######################
+expect {
+-re ".*es.*o.*" {
+    exp_send "yes\r"
+    exp_continue
+}
+-re ".*sword.*" {
+    exp_send "suce\$\$0?\r"
+}
+}
+interact
+send_user "================================================\n"
+send_user "        COPIA FINALIZADA EM HOMOLOGACAO         \n"
+send_user "================================================\n"

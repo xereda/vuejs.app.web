@@ -24,8 +24,8 @@ export default {
   methods: {
     alerta () {
       izitoast.warning({ title: 'Caution', message: 'Refactoring process started. Global modules are missing. Documentation available on the VueJS website.' })
-      izitoast.error({ title: 'Error', message: 'Synchronize the new component model, please.' })
-      izitoast.info({ title: 'Info', message: 'VueJS offers tools for this work.' })
+      // izitoast.error({ title: 'Error', message: 'Synchronize the new component model, please.' })
+      // izitoast.info({ title: 'Info', message: 'VueJS offers tools for this work.' })
     }
   },
   computed: {

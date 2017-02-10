@@ -13,14 +13,12 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs"
   },
   "dependencies": {
-    "@jacobmischka/vue-flatpickr": "^2.2.11",
     "animate.css": "^3.5.2",
     "animejs": "^1.1.1",
     "axios": "^0.15.3",
     "bulma": "^0.2.3",
     "cpf_cnpj": "^0.2.0",
     "element-ui": "^1.1.6",
-    "flatpickr": "^2.3.4",
     "font-awesome": "^4.6.3",
     "izitoast": "^1.1.1",
     "lodash": "^4.16.4",

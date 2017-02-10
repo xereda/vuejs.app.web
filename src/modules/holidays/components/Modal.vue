@@ -72,7 +72,6 @@
 import _ from 'lodash'
 import { mapState } from 'vuex'
 import axios from 'axios'
-import izitoast from 'izitoast'
 import dmModalFooter from './ModalFooter.vue'
 import dmFormDate from '../../ui/form/Date.vue'
 import dmFormName from '../../ui/form/Name.vue'
@@ -83,6 +82,8 @@ import Vue from 'vue'
 import Vuelidate from 'vuelidate'
 Vue.use(Vuelidate)
 import { required } from 'vuelidate/lib/validators'
+
+import { showAPIErrors, showAPISuccess } from '../../services/messenger/main'
 
 export default {
   data () {
@@ -102,6 +103,7 @@ export default {
     }
   },
   created () {
+    showAPIErrors()
   },
   mounted () {
     if (this.modalState === 'update') {
@@ -170,18 +172,7 @@ export default {
       this.$v.formFields.$reset()
     },
     showErrors (_res) {
-      if ((_res === undefined) || (_res.data === undefined)) {
-        return false
-      }
-      if (_res.data.err.errmsg !== undefined) {
-        izitoast.error({ title: 'Erro', message: _res.data.err.errmsg })
-      } else if (_res.data.error !== undefined) {
-        izitoast.error({ title: 'Erro', message: _res.data.error })
-      } else {
-        _.forEach(_res.data.err.errors, (value, key) => {
-          izitoast.error({ title: 'Erro', message: value.message })
-        })
-      }
+      showAPIErrors(_res)
     },
     saveDoc () {
       const _data = _.clone(this.formFields)
@@ -196,7 +187,7 @@ export default {
         _data.createdById = this.userSession._id
         axios.post(_uri, _data)
         .then((response) => {
-          izitoast.success({ title: 'OK', message: 'Feriado criado com sucesso!' })
+          showAPISuccess({ title: 'OK', message: 'Feriado cadastrado com sucesso!' })
           this.$emit('set-pag', 1)
           this.clearFields()
         })
@@ -208,7 +199,7 @@ export default {
         _data.updatedById = this.userSession._id
         axios.put(_uri, _data)
         .then((response) => {
-          izitoast.success({ title: 'OK', message: 'Feriado atualizado com sucesso!' })
+          showAPISuccess({ title: 'OK', message: 'Feriado atualizado com sucesso!' })
           this.$emit('set-pag')
           setTimeout(() => {
             this.$v.formFields.$reset()
