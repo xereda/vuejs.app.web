@@ -124,7 +124,12 @@
 </template>
 
 <script>
+// import Vue from 'vue'
+// import VueFilter from 'vue-filter'
+// Vue.use(VueFilter)
+
 import _ from 'lodash'
+
 import moment from 'moment'
 import localePTBR from 'moment/locale/pt-br'
 
@@ -300,10 +305,10 @@ export default {
         case 'text':
           if (doc[index] !== undefined) {
             if (doc[index].length > this.config.grid.textCropLength) {
-              return doc[index].substring(0, this.config.grid.textCropLength - 3) + '...'
+              return doc[index].substring(0, this.config.grid.textCropLength - 3).toUpperCase() + '...'
             }
           }
-          return doc[index]
+          return doc[index].toUpperCase()
         case 'email':
           if (doc[index] !== undefined) {
             if (doc[index].length > this.config.grid.textCropLength) {

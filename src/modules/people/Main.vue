@@ -297,10 +297,10 @@ export default {
         case 'text':
           if (doc[index] !== undefined) {
             if (doc[index].length > this.config.grid.textCropLength) {
-              return doc[index].substring(0, this.config.grid.textCropLength - 3) + '...'
+              return doc[index].substring(0, this.config.grid.textCropLength - 3).toUpperCase() + '...'
             }
           }
-          return doc[index]
+          return doc[index].toUpperCase()
         case 'email':
           if (doc[index] !== undefined) {
             if (doc[index].length > this.config.grid.textCropLength) {
