@@ -412,7 +412,7 @@ export default {
       const _uri = this.config.APIURIBase + this.API.resource + '/?_populate=city&_fields=' + _fields + _params + '&_sort=' + _sort
       this.$http.get(_uri).then((response) => {
         this.holidays_updateTotalDocs(response.headers.get('X-Total-Count'))
-        this.docs = response.body
+        response.body[0]._id !== undefined ? this.docs = response.body : this.docs = []
         this.stopLoading()
         clearTimeout(startProcess)
       }, (response) => {

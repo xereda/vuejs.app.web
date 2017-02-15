@@ -293,6 +293,7 @@ export default {
       return false
     },
     getValueField (doc, col, index) {
+      console.log('dentro da getValueField: ', doc === Array, col, index)
       switch (col.type) {
         case 'boolean':
           if ((doc[index] === undefined) || (doc[index] === false)) {
@@ -419,7 +420,8 @@ export default {
 
       this.$http.get(_uri).then((response) => {
         this.cities_updateTotalDocs(response.headers.get('X-Total-Count'))
-        this.docs = response.body
+        console.log('response.body: ', response.body)
+        response.body[0]._id !== undefined ? this.docs = response.body : this.docs = []
         this.stopLoading()
         clearTimeout(startProcess)
         console.log('dentro da getAll: ', 7)

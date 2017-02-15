@@ -412,7 +412,7 @@ export default {
       console.log('_uri: ', _uri)
       this.$http.get(_uri).then((response) => {
         this.specialties_updateTotalDocs(response.headers.get('X-Total-Count'))
-        this.docs = response.body
+        response.body[0]._id !== undefined ? this.docs = response.body : this.docs = []
         this.stopLoading()
         clearTimeout(startProcess)
       }, (response) => {
