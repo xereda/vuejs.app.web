@@ -64,4 +64,12 @@ export default {
     }
   }
 
+  .to-upper-case {
+    text-transform: uppercase;
+  }
+
+  .to-lower-case {
+    text-transform: lowercase;
+  }
+
 </style>

@@ -33,7 +33,7 @@
                        :data-vv-rules="getDataRules(collection['name'])"
                        :data-vv-as="collection['name'].label"
                        :data-vv-delay="config.delayApplyRule"
-                       :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(collection['name']), 'is-danger': errors.has('name') }"
+                       :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(collection['name']), 'is-danger': errors.has('name'), 'to-upper-case': true }"
                        name="name"
                        type="text"
                        :placeholder="collection['name'].placeHolder">
@@ -93,7 +93,7 @@
                        :data-vv-rules="getDataRules(collection['ANSCode'])"
                        :data-vv-as="collection['ANSCode'].label"
                        :data-vv-delay="config.delayApplyRule"
-                       :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(collection['ANSCode']), 'is-danger': errors.has('ANSCode') }"
+                       :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(collection['ANSCode']), 'is-danger': errors.has('ANSCode'), 'to-upper-case': true }"
                        name="ANSCode"
                        type="text"
                        :placeholder="collection['ANSCode'].placeHolder">
@@ -109,7 +109,7 @@
                        :data-vv-rules="getDataRules(collection['internalCode'])"
                        :data-vv-as="collection['internalCode'].label"
                        :data-vv-delay="config.delayApplyRule"
-                       :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(collection['internalCode']), 'is-danger': errors.has('internalCode') }"
+                       :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(collection['internalCode']), 'is-danger': errors.has('internalCode'), 'to-upper-case': true }"
                        name="internalCode"
                        type="text"
                        :placeholder="collection['internalCode'].placeHolder">

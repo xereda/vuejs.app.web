@@ -209,7 +209,7 @@ export default {
         this.setModalClosed()
         this.changePag()
       }, (response) => {
-        setTimeout(() => swal('Erro!', `Não foi possível remover o documento "${obj.documentIdentify}"`, 'error'))
+        setTimeout(() => swal('Erro!', `Não foi possível remover o documento "${obj.documentIdentify}"\n\n${JSON.stringify(response.body.error)}`, 'error'))
       })
       // setTimeout(() => swal('Removido!', 'O registro selecionado foi removido com sucesso!', 'success'), 1000)
     },
@@ -297,12 +297,14 @@ export default {
         case 'text':
           if (doc[index] !== undefined) {
             if ((index === 'city') && (doc[index].name !== undefined)) {
-              return doc[index].name
+              return doc[index].name.toUpperCase()
             } else if (doc[index].length > this.config.grid.textCropLength) {
-              return doc[index].substring(0, this.config.grid.textCropLength - 3) + '...'
+              return doc[index].substring(0, this.config.grid.textCropLength - 3).toUpperCase() + '...'
+            } else {
+              return doc[index].toUpperCase()
             }
           }
-          return doc[index]
+          return ''
         case 'email':
           if (doc[index] !== undefined) {
             if (doc[index].length > this.config.grid.textCropLength) {
@@ -316,7 +318,7 @@ export default {
             if (doc['recurrent']) {
               _format = 'DD/MMMM'
             }
-            return (index === 'date') ? moment.utc(doc[index]).format(_format) : moment(doc[index]).format(_format)
+            return (index === 'date') ? moment.utc(doc[index]).format(_format).toUpperCase() : moment(doc[index]).format(_format).toUpperCase()
           }
           return ''
         case 'geo':

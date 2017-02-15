@@ -209,12 +209,14 @@ export default {
         this.setModalClosed()
         this.changePag()
       }, (response) => {
-        setTimeout(() => swal('Erro!', `Não foi possível remover o documento "${obj.documentIdentify}"`, 'error'))
+        setTimeout(() => swal('Erro!', `Não foi possível remover o documento "${obj.documentIdentify}"\n\n${JSON.stringify(response.body.error)}`, 'error'))
       })
       // setTimeout(() => swal('Removido!', 'O registro selecionado foi removido com sucesso!', 'success'), 1000)
     },
     removeDocumentConfirme (obj) {
-      if (this.API.resource === 'users' && obj.documentId === this.config.adminUserId) {
+      // if (this.API.resource === 'users' && obj.documentId === this.config.adminUserId) {
+      const _temp = false
+      if (_temp) {
         showMessage({
           title: 'Informações de segurança',
           message: 'O usuário administrador não pode ser removido. Dúvidas, por favor, entre em contato com a DocMob.',

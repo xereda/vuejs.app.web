@@ -36,7 +36,7 @@
                        :data-vv-rules="getDataRules(col)"
                        :data-vv-as="col.label"
                        :data-vv-delay="config.delayApplyRule"
-                       :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(col), 'is-danger': errors.has(index) }"
+                       :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(col), 'is-danger': errors.has(index), 'to-upper-case': true }"
                        :name="index"
                        type="text"
                        :placeholder="col.placeHolder">

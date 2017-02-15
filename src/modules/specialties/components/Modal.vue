@@ -33,7 +33,7 @@
                        :data-vv-rules="getDataRules(collection['name'])"
                        :data-vv-as="collection['name'].label"
                        :data-vv-delay="config.delayApplyRule"
-                       :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(collection['name']), 'is-danger': errors.has('name') }"
+                       :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(collection['name']), 'is-danger': errors.has('name'), 'to-upper-case': true }"
                        name="name"
                        type="text"
                        :placeholder="collection['name'].placeHolder">
@@ -49,7 +49,7 @@
                        :data-vv-rules="getDataRules(collection['registrationCode'])"
                        :data-vv-as="collection['registrationCode'].label"
                        :data-vv-delay="config.delayApplyRule"
-                       :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(collection['registrationCode']), 'is-danger': errors.has('registrationCode') }"
+                       :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(collection['registrationCode']), 'is-danger': errors.has('registrationCode'), 'to-upper-case': true }"
                        name="registrationCode"
                        type="text"
                        :placeholder="collection['registrationCode'].placeHolder">

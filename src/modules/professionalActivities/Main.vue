@@ -146,6 +146,10 @@ import dmPagination from '../ui/Pagination.vue'
 import showNotification from '../ui/notification/notification'
 import showMessage from '../ui/message/message'
 
+// import Http from '../services/http'
+
+// import { showWarning, showAPIErrors } from '../services/messenger/main'
+
 export default {
   name: 'dmProfessionalActivities',
   data () {
@@ -215,7 +219,7 @@ export default {
         this.setModalClosed()
         this.changePag()
       }, (response) => {
-        setTimeout(() => swal('Erro!', `Não foi possível remover o documento "${obj.documentIdentify}"`, 'error'))
+        setTimeout(() => swal('Erro!', `Não foi possível remover o documento "${obj.documentIdentify}"\n\n${JSON.stringify(response.body.error)}`, 'error'))
       })
       // setTimeout(() => swal('Removido!', 'O registro selecionado foi removido com sucesso!', 'success'), 1000)
     },
@@ -232,6 +236,31 @@ export default {
         confirmation.removeOne({ callback: this.removeDocumentCallback, documentId: obj.documentId, documentIdentify: obj.documentIdentify })
       }
     },
+    // removeDocumentConfirme (obj) {
+    //   Http.get('/specialties/?professionalActivity=' + obj.documentId)
+    //   .then((response) => {
+    //     const _total = parseInt(response.headers['x-total-count'])
+    //     if (_total > 0) {
+    //       showWarning({ title: 'AVISO', message: 'Há ' + _total + ' Especialização(ões) relacionada(s) ao Ramo de Atividade (' + obj.documentIdentify + ')' })
+    //     } else {
+    //       if (this.API.resource === 'users' && obj.documentId === this.config.adminUserId) {
+    //         showMessage({
+    //           title: 'Informações de segurança',
+    //           message: 'O usuário administrador não pode ser removido. Dúvidas, por favor, entre em contato com a DocMob.',
+    //           duration: 4000,
+    //           showCloseButton: true,
+    //           type: 'warning'
+    //         })
+    //       } else {
+    //         confirmation.removeOne({ callback: this.removeDocumentCallback, documentId: obj.documentId, documentIdentify: obj.documentIdentify })
+    //       }
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log('Error', error.response)
+    //     showAPIErrors(error.response)
+    //   })
+    // },
     getModalState () {
       return this.control.modal.state
     },

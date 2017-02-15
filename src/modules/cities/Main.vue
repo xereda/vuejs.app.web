@@ -214,7 +214,7 @@ export default {
         this.setModalClosed()
         this.changePag()
       }, (response) => {
-        setTimeout(() => swal('Erro!', `Não foi possível remover o documento "${obj.documentIdentify}"`, 'error'))
+        setTimeout(() => swal('Erro!', `Não foi possível remover o documento "${obj.documentIdentify}"\n\n${JSON.stringify(response.body.error)}`, 'error'))
       })
       // setTimeout(() => swal('Removido!', 'O registro selecionado foi removido com sucesso!', 'success'), 1000)
     },
