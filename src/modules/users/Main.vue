@@ -27,7 +27,7 @@
             </div>
             <div class="level-item">
               <p class="control has-addons">
-                <span class="select">
+                <span class="select is-hidden-mobile">
                   <select :class="getCSSState()" @change="selectChanged" v-model="control.filters.search.fieldName">
                     <option value="q">Todos</option>
                     <option v-for="(col, index) in collection" v-if="isSearchFilter(col)" :value="index">{{ col.label }}</option>
@@ -498,7 +498,7 @@ export default {
   directives: {
     focus: {
       inserted (el) {
-        el.focus()
+        // el.focus()
       }
     }
   },
