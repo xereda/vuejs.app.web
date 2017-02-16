@@ -22,7 +22,14 @@
           <div class="columns is-multiline">
             <div class="column is-2">
               <label class="label">Data</label>
-              <dm-form-date :readonly="(modalState === 'update')" :default-value="formFields.date" @input="$v.formFields['date'].$touch()" format="Y-m-d" :input-format="inputDateFormat" placeholder="DD/MM" @event="getValueField" field-name="date"></dm-form-date>
+              <dm-form-date :readonly="(modalState === 'update')"
+                            :default-value="formFields.date"
+                            @input="$v.formFields['date'].$touch()"
+                            format="Y-m-d"
+                            :input-format="inputDateFormat"
+                            placeholder="DD/MM"
+                            @event="getValueField"
+                            field-name="date"></dm-form-date>
               <span v-if="!$v.formFields['date'].required && $v.formFields['date'].$dirty" class="help is-danger">Data é requerida!</span>
             </div>
             <div class="column is-7">
@@ -169,7 +176,9 @@ export default {
       this.formFields.recurrent = false
       this.formFields.regional = false
       this.formFields.city = ''
-      this.$v.formFields.$reset()
+      setTimeout(() => {
+        this.$v.formFields.$reset()
+      }, 0)
     },
     showErrors (_res) {
       showAPIErrors(_res)

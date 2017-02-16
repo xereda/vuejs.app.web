@@ -36,7 +36,7 @@
                          :data-vv-rules="getDataRules(col)"
                          :data-vv-as="col.label"
                          :data-vv-delay="config.delayApplyRule"
-                         :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(col), 'is-danger': errors.has(index), 'upperCase': true }"
+                         :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(col), 'is-danger': errors.has(index) }"
                          :name="index"
                          type="text"
                          :placeholder="col.placeHolder">
@@ -532,8 +532,5 @@ export default {
   width: 80% !important;
 }
 
-.upperCase {
-  text-transform: uppercase;
-}
 
 </style>

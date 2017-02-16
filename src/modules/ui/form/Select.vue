@@ -39,7 +39,6 @@
       this.asyncFind('')
       setTimeout(() => {
         this.selectedValue = { _id: this.defaultValue._id, name: this.defaultValue.name }
-        console.log('passou os valores default para o this.selectedValue: ', this.selectedValue, this.defaultValue)
       }, 100)
     },
     components: {
@@ -53,11 +52,9 @@
           _search = 'name=/' + query + '/i'
         }
         const _uri = this.APIURIBase + this.apiResource + '/?_limit=' + this.optionsLimit + '&_fields=_id,name&' + _search
-        console.log('_uri do select: ', _uri)
         axios.get(_uri)
         .then((response) => {
           this.dataList = response.data
-          console.log('dataList - object de retorno: ', this.dataList)
           this.isLoading = false
         })
         .catch((error) => {

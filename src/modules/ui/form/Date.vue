@@ -1,6 +1,9 @@
 <template lang="html">
   <div>
     <input v-model="selectedValue" ref="flatpickr" @input="$emit('input', $event)" :class="{ 'input': true, 'is-disabled': readonly }">
+    <!-- <pre>defaultValue: {{ defaultValue }}</pre><br />
+    <pre>selectedValue: {{ selectedValue }}</pre><br />
+    <pre>fpOptions: {{ fpOptions }}</pre> -->
   </div>
 </template>
 
@@ -13,6 +16,7 @@
     name: 'dmFormName',
     data () {
       return {
+        Calendar: {},
         selectedValue: '',
         fpOptions: {
           utc: true,
@@ -20,7 +24,6 @@
           dateFormat: this.format,
           altFormat: this.inputFormat,
           altInput: true,
-          defaultDate: this.selectedValue,
           clickOpens: !this.readonly
         }
       }
@@ -30,19 +33,19 @@
     },
     methods: {
       flatPickerInit () {
-        return new Flatpickr(this.$refs.flatpickr, this.fpOptions)
+        this.Calendar = new Flatpickr(this.$refs.flatpickr, this.fpOptions)
       }
     },
     watch: {
       selectedValue (val, oldVal) {
+        if ((val === null) || (val === '')) {
+          this.Calendar.clear()
+        }
         this.$emit('event', { fieldName: this.fieldName, fieldValue: val })
       },
       defaultValue (val, oldVal) {
-        if (val === '') {
-          this.selectedValue = null
-        } else {
-          this.selectedValue = val
-        }
+        this.selectedValue = this.defaultValue
+        this.Calendar.setDate(this.defaultValue, true)
       },
       inputFormat (val, oldVal) {
         this.fpOptions.altFormat = val
@@ -55,7 +58,8 @@
       'value',
       'format',
       'inputFormat',
-      'readonly'
+      'readonly',
+      'clear'
     ]
   }
 </script>

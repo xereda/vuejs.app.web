@@ -1,6 +1,6 @@
 <template lang="html">
 <div>
-  <input :placeholder="placeholder" v-model="selectedValue" @input="$emit('input', $event)" :value="value" class="input to-upper-case"></input>
+  <input :placeholder="placeholder" v-model="selectedValue" @input="$emit('input', $event)" :value="value" class="input"></input>
 </div>
 </template>
 

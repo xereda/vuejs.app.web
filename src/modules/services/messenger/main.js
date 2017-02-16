@@ -8,8 +8,10 @@ const _TOAST_POSITION = 'topRight'
 const _humanMessage = (_data) => {
   let _return = _data
   const _replace = [
-    { search: 'holidays.$date_1_city_1', replaceBy: 'Feriado já cadastrado!' },
-    { search: 'docmob.users.$email_1', replaceBy: 'E-mail já em uso por outro usuário!' }
+    { search: 'date_1_city_1', replaceBy: 'Feriado já cadastrado!' },
+    { search: 'cities index: name_1 dup key', replaceBy: 'Cidade já cadastrada!' },
+    { search: 'email_1 dup key', replaceBy: 'E-mail já cadastrado!' },
+    { search: 'users.$email_1', replaceBy: 'E-mail já em uso por outro usuário!' }
   ]
 
   _replace.forEach((element, index, array) => {
@@ -22,19 +24,21 @@ const _humanMessage = (_data) => {
 }
 
 const showAPIErrors = (_objectErrors) => {
+  console.log('_objectErrors: ', _objectErrors)
   if ((_objectErrors === undefined) || (_objectErrors.data === undefined)) {
     return false
   }
-  if (_objectErrors.data.err.errmsg !== undefined) {
-    izitoast.error({ title: 'AVISO - T1', message: _humanMessage(_objectErrors.data.err.errmsg), position: _TOAST_POSITION })
-  } else if (_objectErrors.data.err.message !== undefined) {
-    izitoast.error({ title: 'AVISO - T2', message: _humanMessage(_objectErrors.data.err.message), position: _TOAST_POSITION })
-  } else if (_objectErrors.data.error !== undefined) {
-    izitoast.error({ title: 'AVISO - T3', message: _humanMessage(_objectErrors.data.error), position: _TOAST_POSITION })
-  } else {
+
+  if (_objectErrors.data.err.errors !== undefined) {
     _.forEach(_objectErrors.data.err.errors, (value, key) => {
-      izitoast.error({ title: 'AVISO - T4', message: _humanMessage(value.message), position: _TOAST_POSITION })
+      izitoast.error({ title: 'AVISO - T1', message: _humanMessage(value.message), position: _TOAST_POSITION })
     })
+  } else if (_objectErrors.data.err.errmsg !== undefined) {
+    izitoast.error({ title: 'AVISO - T2', message: _humanMessage(_objectErrors.data.err.errmsg), position: _TOAST_POSITION })
+  } else if (_objectErrors.data.err.message !== undefined) {
+    izitoast.error({ title: 'AVISO - T3', message: _humanMessage(_objectErrors.data.err.message), position: _TOAST_POSITION })
+  } else if (_objectErrors.data.error !== undefined) {
+    izitoast.error({ title: 'AVISO - T4', message: _humanMessage(_objectErrors.data.error), position: _TOAST_POSITION })
   }
 }
 

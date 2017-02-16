@@ -295,7 +295,7 @@ export default {
           }
           return 'Sim'
         case 'text':
-          if (doc[index] !== undefined) {
+          if ((doc[index] !== undefined) && (doc[index] !== null)) {
             if ((index === 'city') && (doc[index].name !== undefined)) {
               return doc[index].name.toUpperCase()
             } else if (doc[index].length > this.config.grid.textCropLength) {
