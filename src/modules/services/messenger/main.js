@@ -16,6 +16,13 @@ const _humanMessage = (_data) => {
     { search: 'healthinsurances index: name_1 dup key', replaceBy: 'Convênio já cadastrado!' },
     { search: 'healthinsurances index: shortName_1 dup key', replaceBy: 'Nome curto já cadastrado em outro convênio!' },
     { search: 'operators index: ANSCode_1 dup key', replaceBy: 'Código ANS já informado em outra operadora!' },
+    { search: 'professionalactivities.$name_1 dup key', replaceBy: 'Ramo de Atividade já cadastrado!' },
+    { search: 'professionalactivities.$regionalCouncilAcronym_1 dup key', replaceBy: 'Sigla do Conselho Regional já informada em outro Ramo de Atividade!' },
+    { search: 'cities.$name_1 dup key', replaceBy: 'Cidade já cadastrada!' },
+    { search: 'specialties.$name_1 dup key', replaceBy: 'Operadora já cadastrada!' },
+    { search: 'healthinsurances.$name_1 dup key', replaceBy: 'Convênio já cadastrado!' },
+    { search: 'healthinsurances.$shortName_1 dup key', replaceBy: 'Nome curto já cadastrado em outro convênio!' },
+    { search: 'operators.$ANSCode_1 dup key', replaceBy: 'Código ANS já informado em outra operadora!' },
     { search: 'email_1 dup key', replaceBy: 'E-mail já cadastrado!' },
     { search: 'users.$email_1', replaceBy: 'E-mail já em uso por outro usuário!' }
   ]
