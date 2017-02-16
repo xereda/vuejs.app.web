@@ -64,7 +64,7 @@ export default {
       error: 'Informe uma senha válida',
       required: true,
       modal: {
-        veeValidate: 'confirmed:password2|min:5',
+        veeValidate: 'confirmed:password2|min:3',
         cssIcon: 'fa fa-lock',
         responsiveCSS: 'column is-3',
         hiddenOnUpdate: true

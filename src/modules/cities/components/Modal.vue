@@ -157,7 +157,7 @@ import _ from 'lodash'
 import topbar from 'topbar'
 import dmModalAudit from '../../ui/AuditInfo.vue'
 import 'animate.css/animate.min.css'
-import showMessage from '../../ui/message/message'
+import { showAPIErrors, showAPISuccess } from '../../services/messenger/main'
 
 const SIMPLE_INPUT_TYPES = [ 'text', 'email', 'password', 'date', 'geo' ]
 
@@ -283,15 +283,6 @@ export default {
     getLastDocUpdateDate () {
       return this.modalDoc.updatedAt
     },
-    showAlerts (obj) {
-      showMessage({
-        title: obj.title,
-        message: obj.message,
-        duration: obj.duration,
-        showCloseButton: obj.showCloseButton,
-        type: obj.type
-      })
-    },
     startLoading () {
       this.loading = true
       topbar.show()
@@ -324,7 +315,7 @@ export default {
         this.$set(this, 'clonedDoc', JSON.parse(JSON.stringify(this.modalDoc)))
         this.stopLoading(0)
       }, (response) => {
-        this.showUserNotifications(response, 'getDoc', 'error')
+        showAPIErrors(response)
         this.stopLoading(this.config.modal.delayModalSaveButton)
       })
     },
@@ -334,13 +325,13 @@ export default {
       const _uri = this.config.APIURIBase + this.API.resource
 
       this.$http.post(_uri, this.modalDoc, { emulateJSON: true }).then((response) => {
-        this.showUserNotifications(response, 'createDoc', 'success')
+        showAPISuccess({ title: 'OK', message: 'Cidade cadastrada com sucesso!' })
         this.$emit('set-pag', 1)
         this.$set(this, 'modalDoc', JSON.parse(JSON.stringify(this.modelFactory)))
         this.$set(this, 'clonedDoc', JSON.parse(JSON.stringify(this.modelFactory)))
         this.stopLoading(0)
       }, (response) => {
-        this.showUserNotifications(response, 'createDoc', 'error')
+        showAPIErrors(response)
         this.stopLoading(this.config.modal.delayModalSaveButton)
       })
     },
@@ -351,14 +342,14 @@ export default {
 
       this.$http.put(_uri, this.modalDoc, { emulateJSON: true }).then((response) => {
         response.body.updatedAt !== undefined ? this.modalDoc.updatedAt = response.body.updatedAt : null
-        this.showUserNotifications(response, 'updateDoc', 'success')
+        showAPISuccess({ title: 'OK', message: 'Cidade atualizada com sucesso!' })
         // this.clonedDoc = _.clone(this.modalDoc)
         // this.clonedDoc = JSON.parse(JSON.stringify(this.modalDoc))
         this.$set(this, 'clonedDoc', JSON.parse(JSON.stringify(this.modalDoc)))
         this.$emit('set-pag')
         this.stopLoading(500)
       }, (response) => {
-        this.showUserNotifications(response, 'updateDoc', 'error')
+        showAPIErrors(response)
         this.stopLoading(this.config.modal.delayModalSaveButton)
       })
     },
@@ -376,58 +367,6 @@ export default {
           this.createDoc()
         }
       }
-    },
-    showUserNotifications (res, action, status) {
-      const _obj = {
-        title: '',
-        message: '',
-        duration: this.config.modal.messagePresentationTime,
-        showCloseButton: true,
-        type: 'danger'
-      }
-
-      switch (action) {
-        case 'getDoc':
-          _obj.title = 'Erro buscando documento'
-          _obj.message = 'Não foi possível atualizar as informações do documento.'
-          break
-        case 'createDoc':
-          if (status === 'success') {
-            _obj.title = 'Ok'
-            _obj.message = 'O documento foi criado com sucesso!'
-            _obj.type = 'primary'
-          } else {
-            _obj.title = 'Erro inserindo documento'
-          }
-          break
-        case 'updateDoc':
-          if (status === 'success') {
-            _obj.title = 'Ok'
-            _obj.message = 'Documento atualizado com sucesso'
-            _obj.type = 'primary'
-          } else {
-            _obj.title = 'Erro atualizando documento'
-          }
-          break
-        default:
-          null
-      }
-
-      if (status === 'error') {
-        if (res.status === 0) {
-          _obj.message += 'Erro de conexão a API DocMob'
-        } else if (res.status === 503) {
-          _obj.title = res.data.error
-          _obj.message = res.statusText
-        } else if (res.data.err.errors !== undefined) {
-          Object.keys(res.data.err.errors).forEach((element, index) => {
-            _obj.message += res.data.err.errors[element].message + '<br />'
-          })
-        } else {
-          _obj.message += res.data.err.errmsg
-        }
-      }
-      this.showAlerts(_obj)
     },
     getDataRules (col) {
       if ((col.required === true) && (col.modal.veeValidate !== undefined)) {
