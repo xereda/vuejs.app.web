@@ -9,14 +9,14 @@
       <section class="modal-card-body">
         <div class="tabs is-boxed">
           <ul>
-            <li class="is-active">
-              <a>
+            <li :class="{ 'is-active': activeTab === 'geral' }">
+              <a @click="setActiveAba('geral')">
                 <span class="icon"><i class="fa fa-info-circle"></i></span>
                 <span>Geral</span>
               </a>
             </li>
-            <li>
-              <a @click="alerta()">
+            <li :class="{ 'is-active': activeTab === 'vidas' }">
+              <a @click="setActiveAba('vidas')">
                 <span class="icon"><i class="fa fa-user"></i></span>
                 <span>Vidas</span>
               </a>
@@ -35,103 +35,108 @@
             </li>
           </ul>
         </div>
-        <form>
-          <div class="columns is-multiline">
-            <div :class="'' + col.modal.responsiveCSS + ''" v-if="validColumn(col, index)" v-for="(col, index) in collection">
+        <div :class="{ 'modalTabs': true, 'is-hidden': activeTab !== 'geral', 'fadeIn': true, 'fadeOut': activeTab !== 'geral' }">
+          <form>
+            <div class="columns is-multiline">
+              <div :class="'' + col.modal.responsiveCSS + ''" v-if="validColumn(col, index)" v-for="(col, index) in collection">
 
-              <div v-if="col.type !== 'geo'">
-                <label class="label" v-if="showTopLabel(col.type)">{{ col.label }}</label>
-                <p class="control has-icon">
-                  <input v-if="[ 'text', 'date' ].indexOf(col.type) > -1"
-                         v-model="modalDoc[index]"
-                         v-validate
-                         :data-vv-rules="getDataRules(col)"
-                         :data-vv-as="col.label"
-                         :data-vv-delay="config.delayApplyRule"
-                         :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(col), 'is-danger': errors.has(index) }"
-                         :name="index"
-                         type="text"
-                         :placeholder="col.placeHolder">
-                  <input v-if="col.type === 'email'"
-                         v-model="modalDoc[index]"
-                         v-validate
-                         :data-vv-rules="getDataRules(col)"
-                         :data-vv-as="col.label"
-                         :data-vv-delay="config.delayApplyRule"
-                         :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(col), 'is-danger': errors.has(index), 'to-lower-case': true }"
-                         :name="index"
-                         type="email"
-                         :placeholder="col.placeHolder">
-                  <input v-if="col.type === 'password'"
-                         v-model="modalDoc[index]"
-                         v-validate
-                         :data-vv-rules="getDataRules(col)"
-                         :data-vv-as="col.label"
-                         :data-vv-delay="config.delayApplyRule"
-                         :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(col), 'is-danger': errors.has(index) }"
-                         :name="index"
-                         type="password"
-                         :placeholder="col.placeHolder">
-                   <i v-if="isSimpleInputType(col.type)" :class="col.modal.cssIcon"></i>
-                   <span v-if="isSimpleInputType(col.type)" class="help is-danger">{{ errors.first(index) }}&nbsp;</span>
-                </p>
-              </div>
-
-              <div v-if="col.type === 'geo'">
-                <div class="columns">
-                  <div class="column">
-                    <label class="label" v-if="showTopLabel(col.type)">{{ col.geoDefinitions.long.label }}</label>
-                    <p class="control has-icon">
-                      <input v-model="modalDoc[index].coordinates[0]"
-                             v-validate
-                             :data-vv-rules="col.geoDefinitions.long.veeValidate"
-                             :data-vv-as="col.geoDefinitions.long.label"
-                             :data-vv-delay="config.delayApplyRule"
-                             :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(col), 'is-danger': errors.has(col.geoDefinitions.long.name) }"
-                             :name="col.geoDefinitions.long.name"
-                             type="text"
-                             :placeholder="col.geoDefinitions.long.placeHolder">
-                      <i v-if="isSimpleInputType(col.type)" :class="col.modal.cssIcon"></i>
-                      <span v-if="isSimpleInputType(col.type)" class="help is-danger">{{ errors.first(col.geoDefinitions.long.name) }}&nbsp;</span>
-                    </p>
-                  </div>
-                  <div class="column">
-                    <label class="label" v-if="showTopLabel(col.type)">{{ col.geoDefinitions.lat.label }}</label>
-                    <p class="control has-icon">
-                      <input v-model="modalDoc[index].coordinates[1]"
-                             v-validate
-                             :data-vv-rules="col.geoDefinitions.lat.veeValidate"
-                             :data-vv-as="col.geoDefinitions.lat.label"
-                             :data-vv-delay="config.delayApplyRule"
-                             :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(col), 'is-danger': errors.has(col.geoDefinitions.lat.name) }"
-                             :name="col.geoDefinitions.lat.name"
-                             type="text"
-                             :placeholder="col.geoDefinitions.lat.placeHolder">
-                      <i v-if="isSimpleInputType(col.type)" :class="col.modal.cssIcon"></i>
-                      <span v-if="isSimpleInputType(col.type)" class="help is-danger">{{ errors.first(col.geoDefinitions.lat.name) }}&nbsp;</span>
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="columns" v-if="col.type === 'boolean'">
-                <div class="column">
-                  <label class="label is-hidden-mobile">&nbsp;</label>
-                  <p class="control">
-                    <label class="checkbox">
-                      <input type="checkbox"
-                             :class="{ 'checkbox': true, 'is-disabled': isReadOnlyOnUpdate(col) }"
-                             v-model="modalDoc[index]">
-                      {{ col.label }}
-                    </label>
+                <div v-if="col.type !== 'geo'">
+                  <label class="label" v-if="showTopLabel(col.type)">{{ col.label }}</label>
+                  <p class="control has-icon">
+                    <input v-if="[ 'text', 'date' ].indexOf(col.type) > -1"
+                           v-model="modalDoc[index]"
+                           v-validate
+                           :data-vv-rules="getDataRules(col)"
+                           :data-vv-as="col.label"
+                           :data-vv-delay="config.delayApplyRule"
+                           :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(col), 'is-danger': errors.has(index) }"
+                           :name="index"
+                           type="text"
+                           :placeholder="col.placeHolder">
+                    <input v-if="col.type === 'email'"
+                           v-model="modalDoc[index]"
+                           v-validate
+                           :data-vv-rules="getDataRules(col)"
+                           :data-vv-as="col.label"
+                           :data-vv-delay="config.delayApplyRule"
+                           :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(col), 'is-danger': errors.has(index), 'to-lower-case': true }"
+                           :name="index"
+                           type="email"
+                           :placeholder="col.placeHolder">
+                    <input v-if="col.type === 'password'"
+                           v-model="modalDoc[index]"
+                           v-validate
+                           :data-vv-rules="getDataRules(col)"
+                           :data-vv-as="col.label"
+                           :data-vv-delay="config.delayApplyRule"
+                           :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(col), 'is-danger': errors.has(index) }"
+                           :name="index"
+                           type="password"
+                           :placeholder="col.placeHolder">
+                     <i v-if="isSimpleInputType(col.type)" :class="col.modal.cssIcon"></i>
+                     <span v-if="isSimpleInputType(col.type)" class="help is-danger">{{ errors.first(index) }}&nbsp;</span>
                   </p>
                 </div>
-              </div>
 
+                <div v-if="col.type === 'geo'">
+                  <div class="columns">
+                    <div class="column">
+                      <label class="label" v-if="showTopLabel(col.type)">{{ col.geoDefinitions.long.label }}</label>
+                      <p class="control has-icon">
+                        <input v-model="modalDoc[index].coordinates[0]"
+                               v-validate
+                               :data-vv-rules="col.geoDefinitions.long.veeValidate"
+                               :data-vv-as="col.geoDefinitions.long.label"
+                               :data-vv-delay="config.delayApplyRule"
+                               :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(col), 'is-danger': errors.has(col.geoDefinitions.long.name) }"
+                               :name="col.geoDefinitions.long.name"
+                               type="text"
+                               :placeholder="col.geoDefinitions.long.placeHolder">
+                        <i v-if="isSimpleInputType(col.type)" :class="col.modal.cssIcon"></i>
+                        <span v-if="isSimpleInputType(col.type)" class="help is-danger">{{ errors.first(col.geoDefinitions.long.name) }}&nbsp;</span>
+                      </p>
+                    </div>
+                    <div class="column">
+                      <label class="label" v-if="showTopLabel(col.type)">{{ col.geoDefinitions.lat.label }}</label>
+                      <p class="control has-icon">
+                        <input v-model="modalDoc[index].coordinates[1]"
+                               v-validate
+                               :data-vv-rules="col.geoDefinitions.lat.veeValidate"
+                               :data-vv-as="col.geoDefinitions.lat.label"
+                               :data-vv-delay="config.delayApplyRule"
+                               :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(col), 'is-danger': errors.has(col.geoDefinitions.lat.name) }"
+                               :name="col.geoDefinitions.lat.name"
+                               type="text"
+                               :placeholder="col.geoDefinitions.lat.placeHolder">
+                        <i v-if="isSimpleInputType(col.type)" :class="col.modal.cssIcon"></i>
+                        <span v-if="isSimpleInputType(col.type)" class="help is-danger">{{ errors.first(col.geoDefinitions.lat.name) }}&nbsp;</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="columns" v-if="col.type === 'boolean'">
+                  <div class="column">
+                    <label class="label is-hidden-mobile">&nbsp;</label>
+                    <p class="control">
+                      <label class="checkbox">
+                        <input type="checkbox"
+                               :class="{ 'checkbox': true, 'is-disabled': isReadOnlyOnUpdate(col) }"
+                               v-model="modalDoc[index]">
+                        {{ col.label }}
+                      </label>
+                    </p>
+                  </div>
+                </div>
+
+              </div>
             </div>
-          </div>
-        </form>
-        <dm-modal-audit :mutation-prefix="API.mutationPrefix" :resource="API.resource" :last-doc-update-date="getLastDocUpdateDate()" :document-id="documentId" v-if="isUpdateDocument() "></dm-modal-audit>
+          </form>
+        </div>
+        <dm-modal-audit :mutation-prefix="API.mutationPrefix" :resource="API.resource" :last-doc-update-date="getLastDocUpdateDate()" :document-id="documentId" v-if="isUpdateDocument() && activeTab === 'geral'"></dm-modal-audit>
+        <div v-if="getModalState() === 'update'" :class="{ 'modalTabs': true, 'is-hidden': activeTab !== 'vidas', 'fadeIn': true, 'fadeOut': activeTab !== 'vidas' }">
+          <dm-lives></dm-lives>
+        </div>
       </section>
       <footer class="modal-card-foot">
 
@@ -163,10 +168,10 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import izitoast from 'izitoast'
 import _ from 'lodash'
 import topbar from 'topbar'
 import dmModalAudit from '../../ui/AuditInfo.vue'
+import dmLives from './Lives.vue'
 import 'animate.css/animate.min.css'
 import { showAPIErrors, showAPISuccess } from '../../services/messenger/main'
 
@@ -175,6 +180,7 @@ const SIMPLE_INPUT_TYPES = [ 'text', 'email', 'password', 'date', 'geo' ]
 export default {
   data () {
     return {
+      activeTab: 'geral',
       modelo: 'opa la',
       loading: false,
       fadeIn: true,
@@ -273,10 +279,10 @@ export default {
     }
   },
   methods: {
-    alerta () {
-      izitoast.warning({ title: 'Caution', message: 'Refilling process not yet finalized.' })
-      izitoast.error({ title: 'Error', message: 'Synchronize the new component model, please.' })
-      izitoast.info({ title: 'Info', message: 'VueJS offers tools for this work.' })
+    setActiveAba (aba) {
+      if (this.getModalState() === 'update') {
+        this.activeTab = aba
+      }
     },
     ...mapActions([]),
     isPristine () {
@@ -443,7 +449,8 @@ export default {
     }
   },
   components: {
-    dmModalAudit
+    dmModalAudit,
+    dmLives
   },
   watch: {
     documentId (val) {
@@ -474,6 +481,10 @@ export default {
 }
 .custom {
   width: 80% !important;
+}
+
+.modalTabs {
+  animation-duration: $fadeModalTabsTime;
 }
 
 </style>

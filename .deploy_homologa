@@ -2,6 +2,10 @@
 send_user "================================================\n"
 send_user "          BUILD INICIADO - HOMOLOGACAO          \n"
 send_user "================================================\n"
+send_user "Horário INÍCIO do script: "
+spawn date
+interact
+send_user "================================================\n"
 spawn npm run build
 interact
 send_user "================================================\n"
@@ -23,6 +27,11 @@ expect {
 }
 }
 interact
+send_user "================================================\n"
+send_user "Horário FIM do script: "
+spawn date
+interact
+send_user "================================================\n"
 send_user "================================================\n"
 send_user "        COPIA FINALIZADA EM HOMOLOGACAO         \n"
 send_user "================================================\n"
