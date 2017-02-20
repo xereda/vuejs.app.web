@@ -1,48 +1,48 @@
 <template lang="html">
-  <collapse accordion is-fullwidth class="margem" @on-click="changeCollapseState">
-     <collapse-item :selected="userDecisions.modal.AuditInfo.collapseOpened" title="Informações de auditoria">
-       <div class="columns is-multiline">
-         <div class="column is-3">
-           <label class="label">Criado em:</label>
-           <p class="control has-icon">
-             <input type="text" :value="AuditInfo.createdBy.date" class="input is-disabled" />
-             <i class="fa fa-calendar"></i>
-           </p>
+  <div>
+    <collapse accordion is-fullwidth class="margem" @on-click="changeCollapseState">
+       <collapse-item :selected="userDecisions.modal.AuditInfo.collapseOpened" title="Informações de auditoria">
+         <div class="columns is-multiline">
+           <div class="column is-3">
+             <label class="label">Criado em:</label>
+             <p class="control has-icon">
+               <input type="text" :value="AuditInfo.createdBy.date" class="input is-small is-disabled" />
+               <span class="icon is-small">
+                 <i class="fa fa-calendar"></i>
+               </span>
+             </p>
+           </div>
+           <div class="column is-3">
+             <label class="label">Criado por:</label>
+             <p class="control has-icon">
+               <input type="text" :value="AuditInfo.createdBy.name" class="input is-small is-disabled" />
+               <span class="icon is-small">
+                 <i class="fa fa-user"></i>
+               </span>
+             </p>
+           </div>
+           <div class="column is-3">
+             <label class="label">Alterado em:</label>
+             <p class="control has-icon">
+               <input type="text" :value="AuditInfo.updatedBy.date" class="input is-small is-disabled" />
+               <span class="icon is-small">
+                 <i class="fa fa-calendar"></i>
+               </span>
+             </p>
+           </div>
+           <div class="column is-3">
+             <label class="label">Alterado por:</label>
+             <p class="control has-icon">
+               <input type="text" :value="AuditInfo.updatedBy.name" class="input is-small is-disabled" />
+               <span class="icon is-small">
+                 <i class="fa fa-user"></i>
+               </span>
+             </p>
+           </div>
          </div>
-         <div class="column is-3">
-           <label class="label">Criado por:</label>
-           <p class="control has-icon">
-             <input type="text" :value="AuditInfo.createdBy.name" class="input is-disabled" />
-             <i class="fa fa-user"></i>
-           </p>
-         </div>
-         <div class="column is-3">
-           <label class="label">Alterado em:</label>
-           <p class="control has-icon">
-             <input type="text" :value="AuditInfo.updatedBy.date" class="input is-disabled" />
-             <i class="fa fa-calendar"></i>
-           </p>
-         </div>
-         <div class="column is-3">
-           <label class="label">Alterado por:</label>
-           <p class="control has-icon">
-             <input type="text" :value="AuditInfo.updatedBy.name" class="input is-disabled" />
-             <i class="fa fa-user"></i>
-           </p>
-         </div>
-       </div>
-     </collapse-item>
-     <!-- <collapse-item title="Elements">
-       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris. @bulmaio. #css #responsive
-     </collapse-item>
-     <collapse-item title="Nests" selected>
-       <collapse>
-         <collapse-item title="Nest Child" selected>
-           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris. @bulmaio. #css #responsive
-         </collapse-item>
-       </collapse>
-     </collapse-item> -->
-   </collapse>
+       </collapse-item>
+     </collapse>
+  </div>
 </template>
 
 <script>
@@ -129,9 +129,15 @@ export default {
 </script>
 
 <style lang="css" scoped>
-  input {
-    font-size: .88em;
+  /*input {
+    font-size: 0.88em;
+    vertical-align: middle !important;
   }
+
+  .icon {
+    font-size: 0.88em !important;
+  }
+*/
   .margem {
     margin-top: 25px;
     margin-bottom: 10px;

@@ -60,7 +60,9 @@
                        :name="index"
                        type="password"
                        :placeholder="col.placeHolder">
-                <i v-if="isSimpleInputType(col.type)" :class="col.modal.cssIcon"></i>
+                <span class="icon is-small">
+                  <i v-if="isSimpleInputType(col.type)" :class="col.modal.cssIcon"></i>
+                </span>
                 <span v-if="isSimpleInputType(col.type)" class="help is-danger">{{ errors.first(index) }}&nbsp;</span>
               </p>
 
@@ -108,6 +110,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import swal from 'sweetalert'
 import _ from 'lodash'
 import topbar from 'topbar'
 import dmModalAudit from '../../ui/AuditInfo.vue'

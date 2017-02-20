@@ -84,8 +84,8 @@
                       <i :class="getCSSSorteColumnSate('createdAt')" aria-hidden="true"></i> Criado em
                     </a>
                   </th><!-- criado em  -->
-                  <th></th><!-- botao editar -->
-                  <th></th><!-- excluir -->
+                  <th class="is-icon"></th><!-- botao editar -->
+                  <th class="is-icon"></th><!-- excluir -->
                 </tr>
               </thead>
               <tbody>
@@ -98,12 +98,16 @@
                   </td>
                   <td class="is-icon">
                     <a @click="updateDocument(doc)">
-                      <i class="fa fa-folder-open"></i>
+                      <span class="icon">
+                        <i class="fa fa-folder-open"></i>
+                      </span>
                     </a>
                   </td>
                   <td class="is-icon">
                     <a @click="removeDocumentConfirme({ documentId: doc._id, documentIdentify: doc.name })">
-                      <i class="fa fa-trash"></i>
+                      <span class="icon">
+                        <i class="fa fa-trash"></i>
+                      </span>
                     </a>
                   </td>
                 </tr>
@@ -124,10 +128,7 @@
 </template>
 
 <script>
-// import Vue from 'vue'
-// import VueFilter from 'vue-filter'
-// Vue.use(VueFilter)
-
+import swal from 'sweetalert'
 import _ from 'lodash'
 
 import moment from 'moment'

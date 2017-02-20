@@ -1,3 +1,5 @@
+import swal from 'sweetalert'
+
 const removeOne = (obj) => {
   swal({
     title: 'Deseja remover?',

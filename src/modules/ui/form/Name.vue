@@ -1,6 +1,11 @@
 <template lang="html">
 <div>
-  <input :placeholder="placeholder" v-model="selectedValue" @input="$emit('input', $event)" :value="value" class="input"></input>
+  <p class="control has-icon">
+    <input :placeholder="placeholder" v-model="selectedValue" @input="$emit('input', $event)" :value="value" class="input"></input>
+    <span class="icon is-small">
+      <i :class="faIcon"></i>
+    </span>
+  </p>
 </div>
 </template>
 
@@ -26,7 +31,8 @@
       'default-value',
       'placeholder',
       'field-name',
-      'value'
+      'value',
+      'fa-icon'
     ]
   }
 </script>

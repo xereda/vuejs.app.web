@@ -28,7 +28,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import confirmation from '../../ui/confirmation/confirmation'
+import confirmation from './confirmation/confirmation'
 
 export default {
   data () {

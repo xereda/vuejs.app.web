@@ -37,7 +37,9 @@
                        name="name"
                        type="text"
                        :placeholder="collection['name'].placeHolder">
-                <i :class="collection['name'].modal.cssIcon"></i>
+                 <span class="icon is-small">
+                   <i :class="collection['name'].modal.cssIcon"></i>
+                 </span>
                 <span class="help is-danger">{{ errors.first('name') }}&nbsp;</span>
               </p>
             </div>
@@ -78,7 +80,9 @@
                    @input="vueSelectUpdateSelected">
                  </multiselect>
 
-                <i :class="collection['healthInsurance'].modal.cssIcon"></i>
+                 <span class="icon is-small">
+                   <i :class="collection['healthInsurance'].modal.cssIcon"></i>
+                 </span>
                 <span class="help is-danger" v-if="modalDoc.healthInsurance === ''">{{ errors.first('healthInsurance') }}&nbsp;</span>
                 <span class="help is-danger" v-else>&nbsp;</span>
 
@@ -97,7 +101,9 @@
                        name="ANSCode"
                        type="text"
                        :placeholder="collection['ANSCode'].placeHolder">
-                <i :class="collection['ANSCode'].modal.cssIcon"></i>
+                <span class="icon is-small">
+                  <i :class="collection['ANSCode'].modal.cssIcon"></i>
+                </span>
                 <span class="help is-danger">{{ errors.first('ANSCode') }}&nbsp;</span>
               </p>
             </div>
@@ -113,7 +119,9 @@
                        name="internalCode"
                        type="text"
                        :placeholder="collection['internalCode'].placeHolder">
-                <i :class="collection['internalCode'].modal.cssIcon"></i>
+                <span class="icon is-small">
+                  <i :class="collection['internalCode'].modal.cssIcon"></i>
+                </span>
                 <span class="help is-danger">{{ errors.first('internalCode') }}&nbsp;</span>
               </p>
             </div>
@@ -129,7 +137,9 @@
                        name="webService_uri"
                        type="text"
                        :placeholder="collection['webService.uri'].placeHolder">
-                <i :class="collection['webService.uri'].modal.cssIcon"></i>
+                 <span class="icon is-small">
+                   <i :class="collection['webService.uri'].modal.cssIcon"></i>
+                 </span>
                 <span class="help is-danger">{{ errors.first('webService_uri') }}&nbsp;</span>
               </p>
             </div>
@@ -145,7 +155,9 @@
                        name="webService_user"
                        type="text"
                        :placeholder="collection['webService.user'].placeHolder">
-                <i :class="collection['webService.user'].modal.cssIcon"></i>
+                <span class="icon is-small">
+                  <i :class="collection['webService.user'].modal.cssIcon"></i>
+                </span>
                 <span class="help is-danger">{{ errors.first('webService_user') }}&nbsp;</span>
               </p>
             </div>
@@ -161,7 +173,9 @@
                        name="webService_password"
                        type="password"
                        :placeholder="collection['webService.password'].placeHolder">
-                <i :class="collection['webService.password'].modal.cssIcon"></i>
+                <span class="icon is-small">
+                  <i :class="collection['webService.password'].modal.cssIcon"></i>
+                </span>
                 <span class="help is-danger">{{ errors.first('webService_password') }}&nbsp;</span>
               </p>
             </div>
@@ -213,6 +227,7 @@
 </template>
 
 <script>
+import swal from 'sweetalert'
 import { mapState, mapActions } from 'vuex'
 import _ from 'lodash'
 import topbar from 'topbar'

@@ -60,7 +60,9 @@
                          :name="index"
                          type="password"
                          :placeholder="col.placeHolder">
-                   <i v-if="isSimpleInputType(col.type)" :class="col.modal.cssIcon"></i>
+                  <span class="icon is-small">
+                    <i v-if="isSimpleInputType(col.type)" :class="col.modal.cssIcon"></i>
+                  </span>
                    <span v-if="isSimpleInputType(col.type)" class="help is-danger">{{ errors.first(index) }}&nbsp;</span>
                 </p>
               </div>
@@ -79,7 +81,9 @@
                              :name="col.geoDefinitions.long.name"
                              type="text"
                              :placeholder="col.geoDefinitions.long.placeHolder">
-                      <i v-if="isSimpleInputType(col.type)" :class="col.modal.cssIcon"></i>
+                      <span class="icon is-small">
+                        <i v-if="isSimpleInputType(col.type)" :class="col.modal.cssIcon"></i>
+                      </span>
                       <span v-if="isSimpleInputType(col.type)" class="help is-danger">{{ errors.first(col.geoDefinitions.long.name) }}&nbsp;</span>
                     </p>
                   </div>
@@ -95,7 +99,9 @@
                              :name="col.geoDefinitions.lat.name"
                              type="text"
                              :placeholder="col.geoDefinitions.lat.placeHolder">
-                      <i v-if="isSimpleInputType(col.type)" :class="col.modal.cssIcon"></i>
+                      <span class="icon is-small">
+                        <i v-if="isSimpleInputType(col.type)" :class="col.modal.cssIcon"></i>
+                      </span>
                       <span v-if="isSimpleInputType(col.type)" class="help is-danger">{{ errors.first(col.geoDefinitions.lat.name) }}&nbsp;</span>
                     </p>
                   </div>
@@ -146,6 +152,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import swal from 'sweetalert'
 import _ from 'lodash'
 import topbar from 'topbar'
 import dmModalAudit from '../../ui/AuditInfo.vue'

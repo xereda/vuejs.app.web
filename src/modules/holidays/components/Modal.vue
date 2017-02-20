@@ -22,7 +22,8 @@
           <div class="columns is-multiline">
             <div class="column is-2">
               <label class="label">Data</label>
-              <dm-form-date :readonly="(modalState === 'update')"
+              <dm-form-date fa-icon="fa fa-calendar"
+                            :readonly="(modalState === 'update')"
                             :default-value="formFields.date"
                             @input="$v.formFields['date'].$touch()"
                             format="Y-m-d"
@@ -34,7 +35,7 @@
             </div>
             <div class="column is-7">
               <label class="label">Feriado</label>
-              <dm-form-name :default-value="formFields.name" @input="$v.formFields['name'].$touch()" placeholder="Informe o nome do feriado" @event="getValueField" field-name="name"></dm-form-name>
+              <dm-form-name fa-icon="fa fa-calendar" :default-value="formFields.name" @input="$v.formFields['name'].$touch()" placeholder="Informe o nome do feriado" @event="getValueField" field-name="name"></dm-form-name>
               <span v-if="!$v.formFields['name'].required && $v.formFields['name'].$dirty" class="help is-danger">Informe o feriado!</span>
             </div>
             <div class="column is-3">
@@ -79,7 +80,7 @@
 import _ from 'lodash'
 import { mapState } from 'vuex'
 import axios from 'axios'
-import dmModalFooter from './ModalFooter.vue'
+import dmModalFooter from '../../ui/ModalFooter.vue'
 import dmFormDate from '../../ui/form/Date.vue'
 import dmFormName from '../../ui/form/Name.vue'
 import dmFormBoolean from '../../ui/form/Boolean.vue'

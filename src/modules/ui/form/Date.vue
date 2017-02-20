@@ -1,6 +1,11 @@
 <template lang="html">
   <div>
-    <input v-model="selectedValue" ref="flatpickr" @input="$emit('input', $event)" :class="{ 'input': true, 'is-disabled': readonly }">
+    <p class="control has-icon">
+      <input v-model="selectedValue" ref="flatpickr" @input="$emit('input', $event)" :class="{ 'input': true, 'is-disabled': readonly }">
+      <span class="icon is-small">
+        <i :class="faIcon"></i>
+      </span>
+    </p>
     <!-- <pre>defaultValue: {{ defaultValue }}</pre><br />
     <pre>selectedValue: {{ selectedValue }}</pre><br />
     <pre>fpOptions: {{ fpOptions }}</pre> -->
@@ -59,7 +64,8 @@
       'format',
       'inputFormat',
       'readonly',
-      'clear'
+      'clear',
+      'fa-icon'
     ]
   }
 </script>

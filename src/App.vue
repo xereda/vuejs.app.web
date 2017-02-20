@@ -43,6 +43,7 @@ export default {
 </script>
 
 <style lang="scss">
+
   @import './scss/config';
   @import '~bulma';
 
@@ -70,6 +71,13 @@ export default {
 
   .to-lower-case {
     text-transform: lowercase;
+  }
+
+  .table td.is-icon, .table th.is-icon {
+      padding: 5px;
+      text-align: center;
+      white-space: nowrap;
+      width: 1%;
   }
 
 </style>

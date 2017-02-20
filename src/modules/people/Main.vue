@@ -98,12 +98,16 @@
                   </td>
                   <td class="is-icon">
                     <a @click="updateDocument(doc)">
-                      <i class="fa fa-folder-open"></i>
+                      <span class="icon">
+                        <i class="fa fa-folder-open"></i>
+                      </span>
                     </a>
                   </td>
                   <td class="is-icon">
                     <a @click="removeDocumentConfirme({ documentId: doc._id, documentIdentify: doc.name })">
-                      <i class="fa fa-trash"></i>
+                      <span class="icon">
+                        <i class="fa fa-trash"></i>
+                      </span>
                     </a>
                   </td>
                 </tr>
@@ -124,6 +128,7 @@
 </template>
 
 <script>
+import swal from 'sweetalert'
 import _ from 'lodash'
 import moment from 'moment'
 import localePTBR from 'moment/locale/pt-br'

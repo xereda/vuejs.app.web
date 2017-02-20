@@ -37,7 +37,9 @@
                        name="name"
                        type="text"
                        :placeholder="collection['name'].placeHolder">
-                <i :class="collection['name'].modal.cssIcon"></i>
+                <span class="icon is-small">
+                  <i :class="collection['name'].modal.cssIcon"></i>
+                </span>
                 <span class="help is-danger">{{ errors.first('name') }}&nbsp;</span>
               </p>
             </div>
@@ -53,7 +55,9 @@
                        name="registrationCode"
                        type="text"
                        :placeholder="collection['registrationCode'].placeHolder">
-                <i :class="collection['registrationCode'].modal.cssIcon"></i>
+                <span class="icon is-small">
+                  <i :class="collection['registrationCode'].modal.cssIcon"></i>
+                </span>
                 <span class="help is-danger">{{ errors.first('registrationCode') }}&nbsp;</span>
               </p>
             </div>
@@ -86,7 +90,9 @@
                    @input="vueSelectUpdateSelected">
                  </multiselect>
 
-                <i :class="collection['professionalActivity'].modal.cssIcon"></i>
+                 <span class="icon is-small">
+                   <i :class="collection['professionalActivity'].modal.cssIcon"></i>
+                 </span>
                 <span class="help is-danger" v-if="modalDoc.professionalActivity === ''">{{ errors.first('professionalActivity') }}&nbsp;</span>
                 <span class="help is-danger" v-else>&nbsp;</span>
 
@@ -142,6 +148,7 @@
 </template>
 
 <script>
+import swal from 'sweetalert'
 import { mapState, mapActions } from 'vuex'
 import _ from 'lodash'
 import topbar from 'topbar'

@@ -11,11 +11,11 @@
             <a class="button is-medium">Mês</a>
             <a class="button is-medium">Dia</a>
           </div>
-          <full-calendar :events="fcEvents"
+          <!-- <full-calendar :events="fcEvents"
                          :weekNames="config.fullCalendar.locales.ptbr.weekNames"
                          :monthNames="config.fullCalendar.locales.ptbr.monthNames"
                          :titleFormat="config.fullCalendar.locales.ptbr.titleFormat">
-          </full-calendar>
+          </full-calendar> -->
         </div>
       </div>
     </div>
@@ -26,7 +26,7 @@
 import { mapState } from 'vuex'
 import prestadores from './components/prestadores.vue'
 import convenios from './components/convenios.vue'
-import fullCalendar from 'vue-fullcalendar'
+// import fullCalendar from 'vue-fullcalendar'
 
 export default {
   data () {
@@ -35,7 +35,7 @@ export default {
     }
   },
   components: {
-    fullCalendar,
+    // fullCalendar,
     prestadores,
     convenios
   },
