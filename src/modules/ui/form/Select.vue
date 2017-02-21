@@ -40,7 +40,7 @@
         Http.get(_uri)
         .then((response) => {
           this.dataList = response.data
-          this.selectedValue = this.defaultValue
+          this.selectedValue = this.defaultValueReturn
           this.isLoading = false
         })
         .catch((error) => {
@@ -65,6 +65,9 @@
       }),
       activesOnly () {
         return this.actives !== undefined && this.actives === true ? '&active=true' : ''
+      },
+      defaultValueReturn () {
+        return this.defaultValue
       }
     },
     props: {
