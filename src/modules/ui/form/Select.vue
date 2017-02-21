@@ -40,8 +40,7 @@
         Http.get(_uri)
         .then((response) => {
           this.dataList = response.data
-          console.log('this.defaultValue: ', this.teste)
-          this.selectedValue = this.teste
+          this.selectedValue = this.defaultValue
           this.isLoading = false
         })
         .catch((error) => {
@@ -51,22 +50,19 @@
       }
     },
     watch: {
-      defaultValue (val) {
-        console.log('DENTRO DA COMPUTATED DEFAULTVALUE', val)
-        this.selectedValue = val
-      },
       selectedValue (val, oldVal) {
         const _objReturn = { fieldName: this.fieldName, fieldValue: val }
-        console.log('vai passar um objeto para o componente pai: ', _objReturn)
         this.$emit('event', _objReturn)
       }
+      // defaultValue (val) {
+      //   setTimeout(() => {
+      //     this.selectedValue = val
+      //   }, 0)
+      // }
     },
     computed: {
       ...mapState({
       }),
-      teste () {
-        return this.defaultValue
-      },
       activesOnly () {
         return this.actives !== undefined && this.actives === true ? '&active=true' : ''
       }

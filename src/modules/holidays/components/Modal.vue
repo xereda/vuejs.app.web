@@ -40,13 +40,13 @@
             </div>
             <div class="column is-3">
               <label class="label">Recorrente</label>
-              <dm-form-boolean :default-value="formFields.recurrent" @change="$v.formFields['recurrent'].$touch()" @event="getValueField" field-name="recurrent" :checked="false"></dm-form-boolean>
+              <dm-form-boolean :default-value="formFields.recurrent" @change="$v.formFields['recurrent'].$touch()" @event="getValueField" field-name="recurrent"></dm-form-boolean>
             </div>
           </div>
           <div class="columns is-multiline">
             <div class="column is-2">
               <label class="label">Regional</label>
-              <dm-form-boolean :default-value="formFields.regional" @change="$v.formFields['regional'].$touch()" @event="getValueField" field-name="regional" :checked="false"></dm-form-boolean>
+              <dm-form-boolean :default-value="formFields.regional" @change="$v.formFields['regional'].$touch()" @event="getValueField" field-name="regional"></dm-form-boolean>
             </div>
             <div class="column is-4">
               <label class="label">Cidade</label>
@@ -59,6 +59,7 @@
             </div>
           </div>
         </form>
+        <pre>{{ formFields }}</pre>
       </section>
       <dm-modal-footer :save-button-off="saveButtonOff"
                        :request-confirm="isDirty"
@@ -95,18 +96,16 @@ export default {
         _id: '',
         date: '',
         name: '',
-        recurrent: false,
-        regional: false,
+        recurrent: true,
+        regional: true,
         city: ''
       }
     }
   },
-  created () {
-    showAPIErrors()
-  },
   mounted () {
     if (this.modalState === 'update') {
       const _uri = this.API.resource + '/' + this.documentId + '/?_populate=city'
+      console.log(_uri)
       Http.get(_uri)
       .then((response) => {
         this.formFields._id = response.data._id
@@ -163,8 +162,8 @@ export default {
       this.formFields._id = ''
       this.formFields.date = ''
       this.formFields.name = ''
-      this.formFields.recurrent = false
-      this.formFields.regional = false
+      this.formFields.recurrent = true
+      this.formFields.regional = true
       this.formFields.city = ''
       setTimeout(() => {
         this.$v.formFields.$reset()
@@ -174,13 +173,11 @@ export default {
       showAPIErrors(_res)
     },
     saveDoc () {
-      const _data = _.clone(this.formFields)
-      if (!_data.regional) {
-        delete _data.city
+      const _data = _.cloneDeep(this.formFields)
+      if (_data.regional === false) {
+        _data.city = ''
       }
-
       let _uri = this.API.resource
-
       if (this.modalState === 'new') {
         delete _data.updatedById
         _data.createdById = this.userSession._id
@@ -248,8 +245,6 @@ export default {
     'modalState'
   ],
   watch: {
-    'formFields.regional' (val, oldVal) {
-    }
   }
 }
 </script>

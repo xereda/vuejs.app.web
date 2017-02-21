@@ -14,12 +14,10 @@
     name: 'dmFormBoolean',
     data () {
       return {
-        selectedValue: ''
+        selectedValue: true
       }
     },
     mounted () {
-      (this.checked === undefined) ? this.checked = false : null
-      this.selectedValue = this.checked
     },
     methods: {
     },
@@ -32,9 +30,8 @@
       }
     },
     props: [
-      'default-value',
       'field-name',
-      'checked'
+      'default-value'
     ]
   }
 </script>

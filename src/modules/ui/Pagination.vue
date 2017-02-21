@@ -1,5 +1,4 @@
 <template lang="html">
-
   <div>
     <nav class="pagination">
       <a :class="backButtonCSS" @click="setPage(currentPag - 1)" :disabled="defPrevButton()">Voltar</a>
@@ -23,7 +22,6 @@
       </ul>
     </nav>
   </div>
-
 </template>
 
 <script>

@@ -1,19 +1,21 @@
 export default {
   user: {
+    // _id: '58124f84c5560561f8e2dfbf',
     _id: '58a67e385e721f451ca19aab',
     name: '',
     email: '',
     workplace: {
       _id: '',
-      name: 'Administrador (DocMob)'
+      name: 'Administrador'
     },
     provider: {
       _id: '',
-      name: 'Jackson Ricardo Schroeder'
+      name: 'Xereda'
     },
     lastSessionDate: new Date()
   },
   config: {
+    // adminUserId: '58124f84c5560561f8e2dfbf',
     adminUserId: '58a67e385e721f451ca19aab',
     modules: [
       { route: '/professionalActivities', name: 'professionalActivities', label: 'Ramos de Atividade' },
