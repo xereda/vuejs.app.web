@@ -1,21 +1,21 @@
 <template lang="html">
 
-  <div class="">
+  <div>
     <nav class="pagination">
-      <a :class="setCSSBackNextButton()" @click="setPage(currentPag - 1)" :disabled="defPrevButton()">Voltar</a>
-      <a :class="setCSSBackNextButton()" @click="setPage(currentPag + 1)" :disabled="defNextButton()">Avançar</a>
-      <ul>
+      <a :class="backButtonCSS" @click="setPage(currentPag - 1)" :disabled="defPrevButton()">Voltar</a>
+      <a :class="nextButtonCSS" @click="setPage(currentPag + 1)" :disabled="defNextButton()">Próxima página</a>
+      <ul class="pagination-list">
         <li v-show="defFirstAndLastPageButtons()">
           <a :disabled="iscurrentPagInLoop(currentPag, 1)" :class="setCSSButton(currentPag, 1) + ''" @click="setPage(1)">1</a>
         </li>
         <li v-show="defFirstAndLastPageButtons()">
-          <span>...</span>
+          <span class="pagination-ellipsis">&hellip;</span>
         </li>
         <li v-for="pag in pages">
           <a :disabled="iscurrentPagInLoop(currentPag, pag)" :class="setCSSButton(currentPag, pag)" @click="setPage(pag)">{{ pag }}</a>
         </li>
         <li v-show="defFirstAndLastPageButtons()">
-          <span>...</span>
+          <span class="pagination-ellipsis">&hellip;</span>
         </li>
         <li v-show="defFirstAndLastPageButtons()">
           <a :disabled="iscurrentPagInLoop(currentPag, totalPages())" :class="setCSSButton(currentPag, totalPages())" @click="setPage(totalPages())">{{ totalPages() }}</a>
@@ -39,6 +39,18 @@ export default {
     }
   },
   computed: {
+    backButtonCSS () {
+      if (this.isLoading === true) {
+        return 'pagination-previous is-disabled'
+      }
+      return 'pagination-previous'
+    },
+    nextButtonCSS () {
+      if (this.isLoading === true) {
+        return 'pagination-next is-disabled'
+      }
+      return 'pagination-next'
+    },
     pages () {
       const totalPages = this.totalPages()
       let _array = []
@@ -59,16 +71,10 @@ export default {
   mounted () {
   },
   methods: {
-    setCSSBackNextButton () {
-      if (this.isLoading === true) {
-        return 'button is-disabled'
-      }
-      return 'button'
-    },
     setCSSButton (currentPag, pag) {
-      let _css = 'button'
+      let _css = 'pagination-link'
       if (this.iscurrentPagInLoop(currentPag, pag)) {
-        _css += ' is-info'
+        _css += ' is-current'
       }
       if (this.isLoading === true) {
         _css += ' is-disabled'
