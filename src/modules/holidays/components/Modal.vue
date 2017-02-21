@@ -50,19 +50,14 @@
             </div>
             <div class="column is-4">
               <label class="label">Cidade</label>
-              <dm-form-select :default-value="defaultValueSelect" @event="getValueField" field-name="city" api-resource="cities" :disabled="!formFields.regional"></dm-form-select>
-              <!-- <dm-form-select @event="getValueField" field-name="city" api-resource="cities" :disabled="!formFields.regional"></dm-form-select> -->
+              <dm-form-select :default-value="formFields.city" @event="getValueField" field-name="city" placeholder="Selecione uma cidade" :actives="true" api-resource="cities" :disabled="!formFields.regional"></dm-form-select>
               <span v-if="!formFields['regional'] && formFields['city'] === null" class="help is-danger">Selecione a cidade do feriado!</span>
-              <!-- <pre>
-                {{ formFields }} - {{ defaultValueSelect }}
-              </pre> -->
             </div>
           </div>
           <div class="columns is-multiline">
             <div class="column is-12" style="height:200px;">
             </div>
           </div>
-
         </form>
       </section>
       <dm-modal-footer :save-button-off="saveButtonOff"
@@ -79,7 +74,7 @@
 <script>
 import _ from 'lodash'
 import { mapState } from 'vuex'
-import axios from 'axios'
+import Http from '../../services/http'
 import dmModalFooter from '../../ui/ModalFooter.vue'
 import dmFormDate from '../../ui/form/Date.vue'
 import dmFormName from '../../ui/form/Name.vue'
@@ -103,10 +98,6 @@ export default {
         recurrent: false,
         regional: false,
         city: ''
-      },
-      defaultValueSelect: {
-        _id: '',
-        name: ''
       }
     }
   },
@@ -115,8 +106,8 @@ export default {
   },
   mounted () {
     if (this.modalState === 'update') {
-      const _uri = this.config.APIURIBase + this.API.resource + '/' + this.documentId + '/?_populate=city'
-      axios.get(_uri)
+      const _uri = this.API.resource + '/' + this.documentId + '/?_populate=city'
+      Http.get(_uri)
       .then((response) => {
         this.formFields._id = response.data._id
         this.formFields.name = response.data.name
@@ -124,8 +115,6 @@ export default {
         this.formFields.recurrent = response.data.recurrent
         this.formFields.regional = response.data.regional
         this.formFields.city = response.data.city._id
-        this.defaultValueSelect._id = response.data.city._id
-        this.defaultValueSelect.name = response.data.city.name
 
         setTimeout(() => {
           this.$v.formFields.$reset()
@@ -190,12 +179,12 @@ export default {
         delete _data.city
       }
 
-      let _uri = this.config.APIURIBase + this.API.resource
+      let _uri = this.API.resource
 
       if (this.modalState === 'new') {
         delete _data.updatedById
         _data.createdById = this.userSession._id
-        axios.post(_uri, _data)
+        Http.post(_uri, _data)
         .then((response) => {
           showAPISuccess({ title: 'OK', message: 'Feriado cadastrado com sucesso!' })
           this.$emit('set-pag', 1)
@@ -207,7 +196,7 @@ export default {
       } else {
         delete _data.createdById
         _data.updatedById = this.userSession._id
-        axios.put(_uri, _data)
+        Http.put(_uri, _data)
         .then((response) => {
           showAPISuccess({ title: 'OK', message: 'Feriado atualizado com sucesso!' })
           this.$emit('set-pag')
@@ -241,7 +230,7 @@ export default {
       }
     }),
     isDirty () {
-      return this.$v.formFields['date'].$dirty || this.$v.formFields['name'].$dirty || this.$v.formFields['recurrent'].$dirty || this.$v.formFields['regional'].$dirty
+      return this.$v.formFields['name'].$dirty || this.$v.formFields['recurrent'].$dirty || this.$v.formFields['regional'].$dirty
     },
     saveButtonOff () {
       return this.$v.formFields.$invalid || ((this.formFields['regional'] && this.formFields['city'] === ''))
@@ -260,11 +249,6 @@ export default {
   ],
   watch: {
     'formFields.regional' (val, oldVal) {
-    },
-    'formFields.city' (val, oldVal) {
-      if (val === '') {
-        this.defaultValueSelect = { _id: '', name: '' }
-      }
     }
   }
 }

@@ -1,48 +1,33 @@
 <template lang="html">
 <div>
-  <multiselect v-model="selectedValue"
-               label="name"
-               track-by="_id"
-               :placeholder="placeholder"
-               :options="dataList"
-               :loading="isLoading"
-               :internal-search="true"
-               :close-on-select="true"
-               :options-limit="optionsLimit"
-               :disabled="disabled"
-               :block-keys="['Tab']"
-               @input="$emit('input', $event)"
-               select-label="Enter para selecionar"
-               selected-label="Selecionado"
-               deselect-label="Enter para remover"
-               @search-change="asyncFind">
-    <span slot="noResult">Sem retorno com o filtro.</span>
-  </multiselect>
+  <p class="control">
+    <span class="select">
+      <select v-model="selectedValue" :class="{ 'is-disabled': disabled }">
+        <option value="">{{ placeholder }}</option>
+        <option v-for="item in dataList" :value="item._id">{{ item.name }}</option>
+      </select>
+    </span>
+  </p>
 </div>
 </template>
 
 <script>
   import { mapState } from 'vuex'
-  import Multiselect from 'vue-multiselect'
-  import axios from 'axios'
+  import Http from '../../services/http'
 
   export default {
     name: 'dmFormSelect',
     data () {
       return {
         isLoading: false,
-        selectedValue: { _id: '', name: '' },
+        selectedValue: '',
         dataList: []
       }
     },
     mounted () {
       this.asyncFind('')
-      setTimeout(() => {
-        this.selectedValue = { _id: this.defaultValue._id, name: this.defaultValue.name }
-      }, 100)
     },
     components: {
-      Multiselect
     },
     methods: {
       asyncFind (query) {
@@ -51,10 +36,12 @@
         if (query !== '') {
           _search = 'name=/' + query + '/i'
         }
-        const _uri = this.APIURIBase + this.apiResource + '/?_limit=' + this.optionsLimit + '&_fields=_id,name&' + _search
-        axios.get(_uri)
+        const _uri = this.apiResource + '/?_limit=' + this.optionsLimit + this.activesOnly + '&_fields=_id,name&' + _search
+        Http.get(_uri)
         .then((response) => {
           this.dataList = response.data
+          console.log('this.defaultValue: ', this.teste)
+          this.selectedValue = this.teste
           this.isLoading = false
         })
         .catch((error) => {
@@ -64,46 +51,49 @@
       }
     },
     watch: {
+      defaultValue (val) {
+        console.log('DENTRO DA COMPUTATED DEFAULTVALUE', val)
+        this.selectedValue = val
+      },
       selectedValue (val, oldVal) {
-        if (val === null) {
-          val = ''
-        } else if (val._id !== undefined) {
-          val = val._id
-        }
-        this.$emit('event', { fieldName: this.fieldName, fieldValue: val })
+        const _objReturn = { fieldName: this.fieldName, fieldValue: val }
+        console.log('vai passar um objeto para o componente pai: ', _objReturn)
+        this.$emit('event', _objReturn)
       }
     },
     computed: {
       ...mapState({
-        APIURIBase: state => {
-          const { config } = state
-          return config.APIURIBase
-        }
-      })
+      }),
+      teste () {
+        return this.defaultValue
+      },
+      activesOnly () {
+        return this.actives !== undefined && this.actives === true ? '&active=true' : ''
+      }
     },
     props: {
       defaultValue: {
       },
       placeholder: {
         type: String,
-        default: 'Pesquisar...'
-      },
-      fieldName: {
-        type: String,
-        required: true
-      },
-      value: {
-        type: ['String', 'Number']
-      },
-      apiResource: {
-        type: String,
-        required: true
+        default: 'Selecione um valor...'
       },
       optionsLimit: {
         type: Number,
         default: 10
       },
       disabled: {
+        type: Boolean
+      },
+      apiResource: {
+        type: String,
+        required: true
+      },
+      fieldName: {
+        type: String,
+        required: true
+      },
+      actives: {
         type: Boolean
       }
     }
