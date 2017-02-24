@@ -7,9 +7,9 @@
       </h1>
       <h2 class="subtitle">
         {{ session.provider.name }}
-        <span class="tag is-small">
+        <span class="tag">
           sair
-          <button @click="logOff()" class="delete is-small"></button>
+          <button class="delete is-small"></button>
         </span>
       </h2>
     </div>

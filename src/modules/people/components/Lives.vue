@@ -1,44 +1,46 @@
 <template lang="html">
-  <div class="">
-    <table class="table">
-      <thead>
-        <tr>
-          <th class="is-hidden-mobile">Nome</th>
-          <th>Apelido</th>
-          <th class="is-hidden-mobile">CPF</th>
-          <th class="is-hidden-mobile">Nascimento</th>
-          <th class="is-hidden-mobile">Nome da mãe</th>
-          <th class="is-hidden-mobile">Convênios</th>
-          <th></th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="live in lives">
-          <td class="is-hidden-mobile">{{ live.name }}</td>
-          <td>{{ live.shortName }}</td>
-          <td class="is-hidden-mobile">{{ live.cpf }}</td>
-          <td class="is-hidden-mobile">{{ moment(live.birthdate, 'DD/MM/YYYY') }}</td>
-          <td class="is-hidden-mobile">{{ live.mothersName }}</td>
-          <td class="is-hidden-mobile">{{ getHI(live.healthInsurances) }}</td>
-          <td class="is-icon">
-            <a @click="">
-              <span class="icon">
-                <i class="fa fa-folder-open"></i>
-              </span>
-            </a>
-          </td>
-          <td class="is-icon">
-            <a @click="">
-              <span class="icon">
-                <i class="fa fa-trash"></i>
-              </span>
-            </a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <transition name="fade">
+    <div class="">
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="is-hidden-mobile">Nome</th>
+            <th>Apelido</th>
+            <th class="is-hidden-mobile">CPF</th>
+            <th class="is-hidden-mobile">Nascimento</th>
+            <th class="is-hidden-mobile">Nome da mãe</th>
+            <th class="is-hidden-mobile">Convênios</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="live in lives">
+            <td class="is-hidden-mobile">{{ live.name }}</td>
+            <td>{{ live.shortName }}</td>
+            <td class="is-hidden-mobile">{{ live.cpf }}</td>
+            <td class="is-hidden-mobile">{{ moment(live.birthdate, 'DD/MM/YYYY') }}</td>
+            <td class="is-hidden-mobile">{{ live.mothersName }}</td>
+            <td class="is-hidden-mobile">{{ getHI(live.healthInsurances) }}</td>
+            <td class="is-icon">
+              <a @click="">
+                <span class="icon">
+                  <i class="fa fa-folder-open"></i>
+                </span>
+              </a>
+            </td>
+            <td class="is-icon">
+              <a @click="">
+                <span class="icon">
+                  <i class="fa fa-trash"></i>
+                </span>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -62,7 +64,10 @@ export default {
         const { config } = state
         return config
       }
-    })
+    }),
+    requestURI () {
+      return '/lives/?_populate=healthInsurances.healthInsurance&person=' + this.personId
+    }
   },
   mounted () {
     moment().locale('pt-BR', localePTBR)
@@ -76,9 +81,10 @@ export default {
       return _.map(hiList, 'healthInsurance.shortName').join(', ')
     },
     getLives () {
-      Http.get('/lives/?_populate=healthInsurances.healthInsurance')
+      console.log(this.requestURI)
+      Http.get(this.requestURI)
       .then((response) => {
-        console.log(response.data)
+        console.log(response.headers['x-total-count'])
         this.lives = response.data
       })
       .catch((response) => {
@@ -86,7 +92,10 @@ export default {
         showAPIErrors(response)
       })
     }
-  }
+  },
+  props: [
+    'person-id'
+  ]
 }
 </script>
 

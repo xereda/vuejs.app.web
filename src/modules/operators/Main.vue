@@ -143,8 +143,7 @@ import topbar from 'topbar'
 import { mapState, mapActions } from 'vuex'
 import dmPagination from '../ui/Pagination.vue'
 
-import showNotification from '../ui/notification/notification'
-import showMessage from '../ui/message/message'
+import { showAPIErrors } from '../services/messenger/main'
 
 export default {
   name: 'dmOperators',
@@ -219,17 +218,7 @@ export default {
       // setTimeout(() => swal('Removido!', 'O registro selecionado foi removido com sucesso!', 'success'), 1000)
     },
     removeDocumentConfirme (obj) {
-      if (this.API.resource === 'users' && obj.documentId === this.config.adminUserId) {
-        showMessage({
-          title: 'Informações de segurança',
-          message: 'O usuário administrador não pode ser removido. Dúvidas, por favor, entre em contato com a DocMob.',
-          duration: 4000,
-          showCloseButton: true,
-          type: 'warning'
-        })
-      } else {
-        confirmation.removeOne({ callback: this.removeDocumentCallback, documentId: obj.documentId, documentIdentify: obj.documentIdentify })
-      }
+      confirmation.removeOne({ callback: this.removeDocumentCallback, documentId: obj.documentId, documentIdentify: obj.documentIdentify })
     },
     getModalState () {
       return this.control.modal.state
@@ -420,23 +409,8 @@ export default {
         this.showError(response)
       })
     },
-    showError (res) {
-      let _APIError = 'Status: ' + res.status + '<br />'
-      _APIError += 'Texto: ' + res.statusText + '<br />'
-      if (res.data.error) {
-        _APIError += 'Mensagem: ' + res.data.error + '<br />'
-      }
-      if (res.body.errors) {
-        _APIError += 'Objeto JSON: ' + JSON.stringify(res.body.errors) + '<br />'
-      }
-
-      showNotification({
-        title: '[ Erro de acesso a API ]',
-        message: 'Houve um erro ao acessar a API do sistema. Por favor, entre em contato com o administrador do sistema',
-        APIError: '<br /><br />' + _APIError,
-        type: 'danger',
-        duration: 5000
-      })
+    showError (response) {
+      showAPIErrors(response)
     }
   },
   computed: {

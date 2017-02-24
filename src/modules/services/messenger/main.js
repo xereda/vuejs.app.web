@@ -42,16 +42,30 @@ const showAPIErrors = (_objectErrors) => {
     return false
   }
 
+  if (_objectErrors.status === 0) {
+    izitoast.error({ title: 'AVISO - T0', message: 'Não foi possível acessar a API', position: _TOAST_POSITION })
+  }
+
   if (_objectErrors.data.err.errors !== undefined) {
     _.forEach(_objectErrors.data.err.errors, (value, key) => {
       izitoast.error({ title: 'AVISO - T1', message: _humanMessage(value.message), position: _TOAST_POSITION })
     })
-  } else if (_objectErrors.data.err.errmsg !== undefined) {
+    return true
+  }
+
+  if (_objectErrors.data.err.errmsg !== undefined) {
     izitoast.error({ title: 'AVISO - T2', message: _humanMessage(_objectErrors.data.err.errmsg), position: _TOAST_POSITION })
-  } else if (_objectErrors.data.err.message !== undefined) {
+    return true
+  }
+
+  if (_objectErrors.data.err.message !== undefined) {
     izitoast.error({ title: 'AVISO - T3', message: _humanMessage(_objectErrors.data.err.message), position: _TOAST_POSITION })
-  } else if (_objectErrors.data.error !== undefined) {
+    return true
+  }
+
+  if (_objectErrors.data.error !== undefined) {
     izitoast.error({ title: 'AVISO - T4', message: _humanMessage(_objectErrors.data.error), position: _TOAST_POSITION })
+    return true
   }
 }
 
