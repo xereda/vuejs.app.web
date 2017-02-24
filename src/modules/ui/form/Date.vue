@@ -1,13 +1,12 @@
 <template lang="html">
   <div>
     <p class="control has-icon">
-      <input v-model="selectedValue" ref="flatpickr" @input="$emit('input', $event)" :class="{ 'input': true, 'is-disabled': readonly }">
+      <input :value="value" ref="flatpickr" @input="eventField($event.target.value)" :class="{ 'input': true, 'is-disabled': readonly }">
       <span class="icon is-small">
         <i :class="faIcon"></i>
       </span>
     </p>
-    <!-- <pre>defaultValue: {{ defaultValue }}</pre><br />
-    <pre>selectedValue: {{ selectedValue }}</pre><br />
+    <!-- <pre>value: {{ value }}</pre>
     <pre>fpOptions: {{ fpOptions }}</pre> -->
   </div>
 </template>
@@ -22,7 +21,6 @@
     data () {
       return {
         Calendar: {},
-        selectedValue: '',
         fpOptions: {
           utc: true,
           locale: pt,
@@ -36,28 +34,30 @@
     mounted () {
       this.flatPickerInit()
     },
+    computed: {
+    },
     methods: {
+      eventField (value) {
+        this.$emit('input', value)
+      },
       flatPickerInit () {
         this.Calendar = new Flatpickr(this.$refs.flatpickr, this.fpOptions)
       }
     },
     watch: {
-      selectedValue (val, oldVal) {
-        if ((val === null) || (val === '')) {
-          this.Calendar.clear()
+      value (val, oldVal) {
+        console.log(val === null, val === '', val, oldVal)
+        if (oldVal === '') {
+          this.Calendar.setDate(val)
         }
-        this.$emit('event', { fieldName: this.fieldName, fieldValue: val })
-      },
-      defaultValue (val, oldVal) {
-        this.selectedValue = this.defaultValue
-        this.Calendar.setDate(this.defaultValue, true)
       },
       inputFormat (val, oldVal) {
-        this.fpOptions.altFormat = val
+        console.log('vai formatar: ', val)
+        this.Calendar.set('altFormat', val)
+        this.Calendar.setDate(this.value)
       }
     },
     props: [
-      'default-value',
       'placeholder',
       'field-name',
       'value',

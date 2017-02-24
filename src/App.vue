@@ -80,4 +80,12 @@ export default {
       width: 1%;
   }
 
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity $fadeGridTime;
+  }
+
+  .fade-enter, .fade-leave-active {
+    opacity: 0;
+  }  
+
 </style>

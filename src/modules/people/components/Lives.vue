@@ -3,22 +3,38 @@
     <table class="table">
       <thead>
         <tr>
-          <th>Nome</th>
+          <th class="is-hidden-mobile">Nome</th>
           <th>Apelido</th>
-          <th>CPF</th>
-          <th>Nascimento</th>
-          <th>Nome da mãe</th>
-          <th>Convênios</th>
+          <th class="is-hidden-mobile">CPF</th>
+          <th class="is-hidden-mobile">Nascimento</th>
+          <th class="is-hidden-mobile">Nome da mãe</th>
+          <th class="is-hidden-mobile">Convênios</th>
+          <th></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="live in lives">
-          <td>{{ live.name }}</td>
+          <td class="is-hidden-mobile">{{ live.name }}</td>
           <td>{{ live.shortName }}</td>
-          <td>{{ live.cpf }}</td>
-          <td>{{ moment(live.birthdate, 'DD/MM/YYYY') }}</td>
-          <td>{{ live.mothersName }}</td>
-          <td>{{ getHI(live.healthInsurances) }}</td>
+          <td class="is-hidden-mobile">{{ live.cpf }}</td>
+          <td class="is-hidden-mobile">{{ moment(live.birthdate, 'DD/MM/YYYY') }}</td>
+          <td class="is-hidden-mobile">{{ live.mothersName }}</td>
+          <td class="is-hidden-mobile">{{ getHI(live.healthInsurances) }}</td>
+          <td class="is-icon">
+            <a @click="">
+              <span class="icon">
+                <i class="fa fa-folder-open"></i>
+              </span>
+            </a>
+          </td>
+          <td class="is-icon">
+            <a @click="">
+              <span class="icon">
+                <i class="fa fa-trash"></i>
+              </span>
+            </a>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -74,5 +90,7 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
+
+
 </style>

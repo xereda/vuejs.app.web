@@ -27,11 +27,6 @@
                 <span>Dispositivos</span>
               </a>
             </li>
-            <li>
-              <a>
-                <span class="icon"><i class="fa fa-link"></i></span>
-                <span>Relações</span>
-              </a>
             </li>
           </ul>
         </div>

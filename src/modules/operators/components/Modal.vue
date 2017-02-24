@@ -405,6 +405,7 @@ export default {
       const _uri = this.config.APIURIBase + this.API.resource + '/' + this.documentId + '/?_populate=healthInsurance'
       this.$http.get(_uri).then((response) => {
         this.modalDoc = response.body
+        console.log('modalDoc: ', JSON.stringify(response.body))
         const _selectedObjectHI = {
           _id: response.body.healthInsurance._id,
           name: response.body.healthInsurance.name
@@ -439,6 +440,8 @@ export default {
       this.startLoading()
       this.modalDoc.updatedById = this.session._id
       const _uri = this.config.APIURIBase + this.API.resource
+
+      console.log('modalDoc: ', this.modalDoc)
 
       this.$http.put(_uri, this.modalDoc, { emulateJSON: true }).then((response) => {
         response.body.updatedAt !== undefined ? this.modalDoc.updatedAt = response.body.updatedAt : null

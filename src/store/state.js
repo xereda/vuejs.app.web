@@ -1,7 +1,7 @@
 export default {
   user: {
-    // _id: '58124f84c5560561f8e2dfbf',
-    _id: '58a67e385e721f451ca19aab',
+    _id: '58124f84c5560561f8e2dfbf',
+    // _id: '58a67e385e721f451ca19aab', // homologacao
     name: '',
     email: '',
     workplace: {
@@ -15,8 +15,8 @@ export default {
     lastSessionDate: new Date()
   },
   config: {
-    // adminUserId: '58124f84c5560561f8e2dfbf',
-    adminUserId: '58a67e385e721f451ca19aab',
+    adminUserId: '58124f84c5560561f8e2dfbf',
+    // adminUserId: '58a67e385e721f451ca19aab', // homologacao
     modules: [
       { route: '/professionalActivities', name: 'professionalActivities', label: 'Ramos de Atividade' },
       { route: '/specialties', name: 'specialties', label: 'Especializações' },
@@ -57,8 +57,8 @@ export default {
       shadowBlur: 7,
       shadowColor: 'rgba(0, 0, 0, .99)'
     },
-    APIURIBase: 'http://homologa.docmob.com.br:5000/',
-    // APIURIBase: 'http://localhost:5000/',
+    APIURIBase: 'http://localhost:5000/',
+    // APIURIBase: 'http://homologa.docmob.com.br:5000/', // homologacao
     grid: {
       delayLoading: 250,
       textCropLength: 40

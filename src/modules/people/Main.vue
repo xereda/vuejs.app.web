@@ -535,14 +535,6 @@ export default {
     color: $columnHeaderLink;
   }
 
-  .fade-enter-active, .fade-leave-active {
-    transition: opacity $fadeGridTime;
-  }
-
-  .fade-enter, .fade-leave-active {
-    opacity: 0;
-  }
-
   .icon-sort-column {
     font-size: 1em;
   }

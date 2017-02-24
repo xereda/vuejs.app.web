@@ -6,6 +6,10 @@ const client = axios.create({
   baseURL: store.state.config.APIURIBase,
   timeout: 1000,
   headers: {}
+  // transformRequest (data) {
+  //   // console.log('dentro do axios: ', data)
+  //   return data
+  // }
 })
 
 export default client

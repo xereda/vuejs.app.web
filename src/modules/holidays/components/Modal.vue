@@ -24,33 +24,32 @@
               <label class="label">Data</label>
               <dm-form-date fa-icon="fa fa-calendar"
                             :readonly="(modalState === 'update')"
-                            :default-value="formFields.date"
+                            v-model="formFields.date"
                             @input="$v.formFields['date'].$touch()"
                             format="Y-m-d"
                             :input-format="inputDateFormat"
                             placeholder="DD/MM"
-                            @event="getValueField"
                             field-name="date"></dm-form-date>
               <span v-if="!$v.formFields['date'].required && $v.formFields['date'].$dirty" class="help is-danger">Data é requerida!</span>
             </div>
             <div class="column is-7">
               <label class="label">Feriado</label>
-              <dm-form-name fa-icon="fa fa-calendar" :default-value="formFields.name" @input="$v.formFields['name'].$touch()" placeholder="Informe o nome do feriado" @event="getValueField" field-name="name"></dm-form-name>
+              <dm-form-name fa-icon="fa fa-calendar" v-model="formFields.name" @input="$v.formFields['name'].$touch()" placeholder="Informe o nome do feriado"></dm-form-name>
               <span v-if="!$v.formFields['name'].required && $v.formFields['name'].$dirty" class="help is-danger">Informe o feriado!</span>
             </div>
             <div class="column is-3">
               <label class="label">Recorrente</label>
-              <dm-form-boolean :default-value="formFields.recurrent" @change="$v.formFields['recurrent'].$touch()" @event="getValueField" field-name="recurrent"></dm-form-boolean>
+              <dm-form-boolean v-model="formFields.recurrent"></dm-form-boolean>
             </div>
           </div>
           <div class="columns is-multiline">
             <div class="column is-2">
               <label class="label">Regional</label>
-              <dm-form-boolean :default-value="formFields.regional" @change="$v.formFields['regional'].$touch()" @event="getValueField" field-name="regional"></dm-form-boolean>
+              <dm-form-boolean v-model="formFields.regional"></dm-form-boolean>
             </div>
             <div class="column is-4">
               <label class="label">Cidade</label>
-              <dm-form-select :default-value="formFields.city" @event="getValueField" field-name="city" placeholder="Selecione uma cidade" :actives="true" api-resource="cities" :disabled="!formFields.regional"></dm-form-select>
+              <dm-form-select  v-model="formFields.city" field-name="city" placeholder="Selecione uma cidade" :actives="true" api-resource="cities" :disabled="!formFields.regional"></dm-form-select>
               <span v-if="!formFields['regional'] && formFields['city'] === null" class="help is-danger">Selecione a cidade do feriado!</span>
             </div>
           </div>
@@ -59,7 +58,8 @@
             </div>
           </div>
         </form>
-        <pre>{{ formFields }}</pre>
+        <!-- <pre>{{ $v.formFields }}</pre>
+        <pre>{{ formFields }}</pre> -->
       </section>
       <dm-modal-footer :save-button-off="saveButtonOff"
                        :request-confirm="isDirty"
@@ -96,8 +96,8 @@ export default {
         _id: '',
         date: '',
         name: '',
-        recurrent: true,
-        regional: true,
+        recurrent: '',
+        regional: '',
         city: ''
       }
     }
@@ -132,12 +132,6 @@ export default {
       },
       name: {
         required
-      },
-      regional: {
-        required
-      },
-      recurrent: {
-        required
       }
     }
   },
@@ -154,9 +148,6 @@ export default {
     },
     delDoc () {
       this.$emit('remove-document', { documentId: this.documentId, documentIdentify: this.formFields.name })
-    },
-    getValueField (fieldObj) {
-      this.formFields[fieldObj.fieldName] = fieldObj.fieldValue
     },
     clearFields () {
       this.formFields._id = ''
@@ -193,6 +184,7 @@ export default {
       } else {
         delete _data.createdById
         _data.updatedById = this.userSession._id
+        console.log(JSON.stringify(_data))
         Http.put(_uri, _data)
         .then((response) => {
           showAPISuccess({ title: 'OK', message: 'Feriado atualizado com sucesso!' })
@@ -227,7 +219,7 @@ export default {
       }
     }),
     isDirty () {
-      return this.$v.formFields['name'].$dirty || this.$v.formFields['recurrent'].$dirty || this.$v.formFields['regional'].$dirty
+      return this.$v.formFields['date'].$dirty || this.$v.formFields['name'].$dirty
     },
     saveButtonOff () {
       return this.$v.formFields.$invalid || ((this.formFields['regional'] && this.formFields['city'] === ''))
