@@ -16,7 +16,7 @@
               </a>
             </li>
             <li :class="{ 'is-active': activeTab === 'vidas' }">
-              <a @click="setActiveAba('vidas')">
+              <a @click="setActiveAba('vidas')" :class="{ 'is-disabled': getModalState() === 'new' }">
                 <span class="icon"><i class="fa fa-user"></i></span>
                 <span>Vidas</span>
               </a>
@@ -483,6 +483,7 @@ export default {
 }
 .custom {
   width: 80% !important;
+  height: 600px !important;
 }
 
 .modalTabs {

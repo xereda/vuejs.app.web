@@ -1,7 +1,7 @@
 <template lang="html">
   <transition name="fade">
     <div class="">
-      <table class="table">
+      <table class="table" v-show="state === 'list'">
         <thead>
           <tr>
             <th class="is-hidden-mobile">Nome</th>
@@ -15,22 +15,22 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="live in lives">
+          <tr v-for="live in lives"  v-show="!showNotification">
             <td class="is-hidden-mobile">{{ live.name }}</td>
             <td>{{ live.shortName }}</td>
             <td class="is-hidden-mobile">{{ live.cpf }}</td>
-            <td class="is-hidden-mobile">{{ moment(live.birthdate, 'DD/MM/YYYY') }}</td>
+            <td class="is-hidden-mobile">{{ moment(live.birthday, 'DD/MM/YYYY') }}</td>
             <td class="is-hidden-mobile">{{ live.mothersName }}</td>
             <td class="is-hidden-mobile">{{ getHI(live.healthInsurances) }}</td>
             <td class="is-icon">
-              <a @click="">
+              <a @click="updateLife(live._id)">
                 <span class="icon">
                   <i class="fa fa-folder-open"></i>
                 </span>
               </a>
             </td>
             <td class="is-icon">
-              <a @click="">
+              <a @click="deleteLife(live._id)">
                 <span class="icon">
                   <i class="fa fa-trash"></i>
                 </span>
@@ -39,6 +39,18 @@
           </tr>
         </tbody>
       </table>
+      <dm-life-form v-show="state !== 'list'" :state="state" @close-form="state = 'list'" :person-id="personId" :life-id-update="lifeIdUpdate"></dm-life-form>
+      <dm-notification v-show="showNotification">
+        <span>Não há vidas relacionadas a esta pessoa.</span>
+      </dm-notification>
+      <div class="level-right" v-show="state === 'list'">
+        <a @click="newLife()" class="button is-success">
+          <span class="icon is-small">
+            <i class="fa fa-file-o"></i>
+          </span>
+          <span>Nova vida</span>
+        </a>
+      </div>
     </div>
   </transition>
 </template>
@@ -50,13 +62,22 @@ import _ from 'lodash'
 import localePTBR from 'moment/locale/pt-br'
 import Http from '../../services/http'
 import { showAPIErrors } from '../../services/messenger/main'
+import dmNotification from '../../ui/Notification.vue'
+import dmLifeForm from './LifeForm.vue'
 
 export default {
   name: 'dmLives',
   data () {
     return {
-      lives: [{}]
+      lives: [{}],
+      showNotification: false,
+      state: 'list', // list, update, new
+      lifeIdUpdate: ''
     }
+  },
+  components: {
+    dmNotification,
+    dmLifeForm
   },
   computed: {
     ...mapState({
@@ -80,17 +101,47 @@ export default {
     getHI (hiList) {
       return _.map(hiList, 'healthInsurance.shortName').join(', ')
     },
+    newLife () {
+      this.state = 'new'
+      this.showNotification = false
+      this.lifeIdUpdate = ''
+    },
+    updateLife (lifeId) {
+      console.log('dentro da updateLife', lifeId)
+      this.lifeIdUpdate = lifeId
+      this.state = 'update'
+    },
+    deleteLife (lifeId) {
+      console.log('vai delelatar o lifeId: ', lifeId)
+      Http.delete('/lives/' + lifeId)
+      .then(response => {
+        console.log('DELETOU', lifeId)
+        this.getLives()
+      })
+      .catch(response => {
+        console.log(response)
+        showAPIErrors(response)
+      })
+    },
     getLives () {
       console.log(this.requestURI)
       Http.get(this.requestURI)
       .then((response) => {
         console.log(response.headers['x-total-count'])
+        response.headers['x-total-count'] === '0' ? this.showNotification = true : this.showNotification = false
         this.lives = response.data
       })
       .catch((response) => {
         console.log(response)
         showAPIErrors(response)
       })
+    }
+  },
+  watch: {
+    state (val) {
+      if (val === 'list') {
+        this.getLives()
+      }
     }
   },
   props: [
