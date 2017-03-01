@@ -43,7 +43,7 @@ export default {
 </script>
 
 <style lang="scss">
-
+  @import '~izitoast/dist/css/iziToast.min.css';
   @import './scss/config';
   @import '~bulma';
 
@@ -86,6 +86,6 @@ export default {
 
   .fade-enter, .fade-leave-active {
     opacity: 0;
-  }  
+  }
 
 </style>

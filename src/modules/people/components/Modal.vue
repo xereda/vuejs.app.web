@@ -483,7 +483,7 @@ export default {
 }
 .custom {
   width: 80% !important;
-  height: 600px !important;
+  height: 90% !important;
 }
 
 .modalTabs {

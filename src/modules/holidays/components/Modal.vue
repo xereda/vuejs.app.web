@@ -49,7 +49,7 @@
             </div>
             <div class="column is-4">
               <label class="label">Cidade</label>
-              <dm-form-select  v-model="formFields.city" field-name="city" placeholder="Selecione uma cidade" :actives="true" api-resource="cities" :disabled="!formFields.regional"></dm-form-select>
+              <dm-form-select v-model="formFields.city" field-name="city" placeholder="Selecione uma cidade" :actives="true" api-resource="cities" :disabled="!formFields.regional"></dm-form-select>
               <span v-if="!formFields['regional'] && formFields['city'] === null" class="help is-danger">Selecione a cidade do feriado!</span>
             </div>
           </div>
@@ -242,6 +242,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import '~izitoast/dist/css/iziToast.min.css';
 
 </style>

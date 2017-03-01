@@ -4,7 +4,7 @@ console.log('store.state.config.APIURIBase: ', store.state.config.APIURIBase)
 
 const client = axios.create({
   baseURL: store.state.config.APIURIBase,
-  timeout: 1000,
+  timeout: 10000,
   headers: {}
   // transformRequest (data) {
   //   // console.log('dentro do axios: ', data)

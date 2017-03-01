@@ -2,90 +2,122 @@
 <transition name="fade">
   <div class="box">
     <h1 class="title">Vida</h1>
-    <h1 class="subtitle">Adicionando  uma nova vida</h1>
+    <h2 class="subtitle" v-if="state === 'new'">Adicionando uma nova vida</h2>
+    <h2 class="subtitle" v-else>Alterando uma vida</h2>
     <div class="columns is-multiline">
-      <div class="column is-6">
-        <dm-form-name v-model="formFields.name"
-                      @input="$v.formFields['name'].$touch()"
-                      :vuelidate="$v.formFields['name']"
-                      fa-icon="fa fa-heart"
-                      label="Nome"
-                      placeholder="Informe o nome do dependente"></dm-form-name>
+      <div class="column is-7">
+        <div class="columns is-multiline">
+          <div class="column is-12">
+            <dm-form-name v-model="formFields.name"
+                          @input="$v.formFields['name'].$touch()"
+                          :vuelidate="$v.formFields['name']"
+                          fa-icon="fa fa-heart"
+                          label="Nome"
+                          placeholder="Informe o nome"></dm-form-name>
+          </div>
+          <div class="column is-6">
+            <dm-form-name v-model="formFields.shortName"
+                          @input="$v.formFields['shortName'].$touch()"
+                          :vuelidate="$v.formFields['shortName']"
+                          fa-icon="fa fa-minus"
+                          label="Apelido"
+                          placeholder="Nome abreviado"></dm-form-name>
+          </div>
+          <div class="column is-6">
+            <dm-form-cpf v-model="formFields.cpf"
+                         fa-icon="fa fa-id-card-o"
+                         @input="$v.formFields['cpf'].$touch()"
+                         :vuelidate="$v.formFields['cpf']"
+                         label="CPF"
+                         placeholder="Número do CPF"></dm-form-cpf>
+          </div>
+          <div class="column is-12">
+            <dm-form-name v-model="formFields.mothersName"
+                          @input="$v.formFields['mothersName'].$touch()"
+                          :vuelidate="$v.formFields['mothersName']"
+                          fa-icon="fa fa-female"
+                          label="Nome da mãe"
+                          placeholder="Nome da mãe"></dm-form-name>
+          </div>
+          <div class="column is-6">
+            <dm-form-date v-model="formFields.birthday"
+                          fa-icon="fa fa-birthday-cake"
+                          :readonly="false"
+                          @input="$v.formFields['birthday'].$touch()"
+                          format="Y-m-d"
+                          input-format="d/m/Y"
+                          :max-date="new Date()"
+                          :clear="clearDate"
+                          label="Data de Nascimento"
+                          placeholder="Nascido em"></dm-form-date>
+          </div>
+          <div class="column is-6">
+            <dm-form-boolean v-model="formFields.active"
+                             @click.native="$v.formFields['active'].$touch()"
+                             label="Ativo"></dm-form-boolean>
+          </div>
+          <div class="column is-12">
+            <div class="level">
+              <div class="control is-grouped is-hidden-mobile">
+                <p class="control">
+                  <a :class="{ 'button': true, 'is-info': true, 'is-disabled': formIsInvalid }" @click="lifeSave()">
+                    <span class="icon is-small">
+                      <i class="fa fa-check"></i>
+                    </span>
+                    <span>Salvar</span>
+                  </a>
+                </p>
+                <p class="control">
+                  <a class="button" @click="$emit('close-form')">
+                    <span class="icon is-small">
+                      <i class="fa fa-ban"></i>
+                    </span>
+                    <span>Cancelar</span>
+                  </a>
+                </p>
+                <p class="control">
+                  <a class="button is-danger" @click="lifeDelete()">
+                    <span class="icon is-small">
+                      <i class="fa fa-trash"></i>
+                    </span>
+                    <span>Excluir</span>
+                  </a>
+                </p>
+              </div>
+              <div class="control is-grouped is-hidden-tablet">
+                <p class="control">
+                  <a :class="{ 'button': true, 'is-info': true, 'is-disabled': formIsInvalid }" @click="lifeSave()">
+                    <span class="icon is-small">
+                      <i class="fa fa-check"></i>
+                    </span>
+                  </a>
+                </p>
+                <p class="control">
+                  <a class="button" @click="$emit('close-form')">
+                    <span class="icon is-small">
+                      <i class="fa fa-ban"></i>
+                    </span>
+                  </a>
+                </p>
+                <p class="control">
+                  <a class="button is-danger" @click="lifeDelete()">
+                    <span class="icon is-small">
+                      <i class="fa fa-trash"></i>
+                    </span>
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="column is-3">
-        <dm-form-name v-model="formFields.shortName"
-                      @input="$v.formFields['shortName'].$touch()"
-                      :vuelidate="$v.formFields['shortName']"
-                      fa-icon="fa fa-minus"
-                      label="Apelido"
-                      placeholder="Nome abreviado"></dm-form-name>
-      </div>
-      <div class="column is-3">
-        <dm-form-cpf v-model="formFields.cpf"
-                     fa-icon="fa fa-id-card-o"
-                     @input="$v.formFields['cpf'].$touch()"
-                     :vuelidate="$v.formFields['cpf']"
-                     label="CPF"
-                     placeholder="Número do CPF"></dm-form-cpf>
-      </div>
-      <div class="column is-6">
-        <dm-form-name v-model="formFields.mothersName"
-                      @input="$v.formFields['mothersName'].$touch()"
-                      :vuelidate="$v.formFields['mothersName']"
-                      fa-icon="fa fa-female"
-                      label="Nome da mãe"
-                      placeholder="Nome da mãe"></dm-form-name>
-      </div>
-      <div class="column is-3">
-        <dm-form-date v-model="formFields.birthday"
-                      fa-icon="fa fa-birthday-cake"
-                      :readonly="false"
-                      @input="$v.formFields['birthday'].$touch()"
-                      format="Y-m-d"
-                      input-format="d/m/Y"
-                      :max-date="new Date()"
-                      :clear="clearDate"
-                      label="Data de Nascimento"
-                      placeholder="Nascido em"></dm-form-date>
-      </div>
-      <div class="column is-3">
-        <dm-form-boolean v-model="formFields.active"
-                         @click.native="$v.formFields['active'].$touch()"
-                         label="Ativo"></dm-form-boolean>
+      <div class="column is-5">
+        <dm-life-hi :person-id="personId" :life-id-update="lifeIdUpdate" :state="state"></dm-life-hi>
       </div>
     </div>
 
-    <div class="level-right">
-      <div class="control is-grouped">
-        <p class="control">
-          <a :class="{ 'button': true, 'is-info': true, 'is-disabled': formIsInvalid }" @click="lifeSave()">
-            <span class="icon is-small">
-              <i class="fa fa-check"></i>
-            </span>
-            <span>Salvar</span>
-          </a>
-        </p>
-        <p class="control">
-          <a class="button" @click="$emit('close-form')">
-            <span class="icon is-small">
-              <i class="fa fa-ban"></i>
-            </span>
-            <span>Cancelar</span>
-          </a>
-        </p>
-        <p class="control">
-          <a class="button is-danger">
-            <span class="icon is-small">
-              <i class="fa fa-trash"></i>
-            </span>
-            <span>Excluir</span>
-          </a>
-        </p>
-      </div>
-    </div>
-
-    <pre>{{ formFields }}</pre>
-    <pre>{{ $v.formFields }}</pre>
+    <!-- <pre>{{ formFields }}</pre>
+    <pre>{{ $v.formFields }}</pre> -->
 
   </div>
 </transition>
@@ -109,6 +141,8 @@ import dmFormCpf from '../../ui/form/CPF.vue'
 import dmFormDate from '../../ui/form/Date.vue'
 import dmFormBoolean from '../../ui/form/Boolean.vue'
 
+import dmLifeHi from './LifeHi.vue'
+
 export default {
   data () {
     return {
@@ -122,6 +156,32 @@ export default {
         birthday: '',
         mothersName: '',
         active: false
+      }
+    }
+  },
+  validations: {
+    formFields: {
+      name: {
+        required,
+        minLength: minLength(3)
+      },
+      shortName: {
+        required,
+        minLength: minLength(3)
+      },
+      cpf: {
+        minLength: minLength(14),
+        maxLength: maxLength(14)
+      },
+      birthday: {
+        required
+      },
+      mothersName: {
+        required,
+        minLength: minLength(3)
+      },
+      active: {
+        required
       }
     }
   },
@@ -156,7 +216,9 @@ export default {
       Http.post('/lives', this.formFields)
       .then((response) => {
         showAPISuccess({ title: 'OK', message: 'Vida cadastrada com sucesso!' })
-        this.clearFields(true)
+        // this.clearFields(true)
+        console.log('vai atualizar o status para update: ', response, response.data, response.data._id)
+        this.$emit('after-new-life', response.data._id)
       })
       .catch((error) => {
         showAPIErrors(error.response)
@@ -165,12 +227,15 @@ export default {
     lifeUpdate () {
       Http.put('/lives', this.formFields)
       .then((response) => {
-        showAPISuccess({ title: 'OK' + response.status, message: 'Vida atualizada com sucesso!' })
-        // this.clearFields()
+        showAPISuccess({ title: 'OK', message: 'Vida atualizada com sucesso!' })
+        this.$emit('close-form')
       })
       .catch((error) => {
         showAPIErrors(error.response)
       })
+    },
+    lifeDelete () {
+      this.$emit('delete-life', this.lifeIdUpdate)
     },
     clearFields (closeForm) {
       this.formFields.name = ''
@@ -186,34 +251,12 @@ export default {
       }
     }
   },
-  validations: {
-    formFields: {
-      name: {
-        required
-      },
-      shortName: {
-        required
-      },
-      cpf: {
-        minLength: minLength(14),
-        maxLength: maxLength(14)
-      },
-      birthday: {
-        required
-      },
-      mothersName: {
-        required
-      },
-      active: {
-        required
-      }
-    }
-  },
   components: {
     dmFormName,
     dmFormCpf,
     dmFormDate,
-    dmFormBoolean
+    dmFormBoolean,
+    dmLifeHi
   },
   computed: {
     ...mapState({

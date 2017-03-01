@@ -1,14 +1,19 @@
 <template lang="html">
-<div>
-  <p class="control">
-    <span class="select">
-      <select :value="value" @change="$emit('input', $event.target.value)" :class="{ 'is-disabled': disabled }">
-        <option value="">{{ placeholder }}</option>
-        <option v-for="item in dataList" :value="item._id">{{ item.name }}</option>
-      </select>
-    </span>
-  </p>
-</div>
+  <div>
+    <label v-if="showLabel" class="label">{{ label }}</label>
+    <p class="control has-icon">
+      <span class="select">
+        <select :value="value" @change="$emit('input', $event.target.value)" :class="{ 'is-disabled': disabled }">
+          <option value="">{{ placeholder }}</option>
+          <option v-for="item in dataList" :value="item._id">{{ item.name }}</option>
+        </select>
+      </span>
+      <span class="icon is-small">
+        <i :class="faIcon"></i>
+      </span>
+      <span v-if="showError" class="help is-danger">{{ errorMessage }}</span>
+    </p>
+  </div>
 </template>
 
 <script>
@@ -54,6 +59,12 @@
       }),
       activesOnly () {
         return this.actives !== undefined && this.actives === true ? '&active=true' : ''
+      },
+      showLabel () {
+        return this.label !== undefined && this.label.length > 0
+      },
+      showError () {
+        return this.errorMessage !== undefined && this.errorMessage.length > 0
       }
     },
     props: {
@@ -61,7 +72,7 @@
       },
       placeholder: {
         type: String,
-        default: 'Selecione um valor...'
+        default: 'Selecione um opção...'
       },
       optionsLimit: {
         type: Number,
@@ -74,18 +85,29 @@
         type: String,
         required: true
       },
-      fieldName: {
-        type: String,
-        required: true
-      },
       actives: {
         type: Boolean
+      },
+      faIcon: {
+        type: String,
+        default: 'fa fa-list-ul'
+      },
+      label: {
+        type: String,
+        default: ''
+      },
+      errorMessage: {
+        type: String,
+        default: ''
       }
     }
   }
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
 
+  select {
+    padding-left: 35px !important;
+  }
 
 </style>

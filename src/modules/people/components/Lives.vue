@@ -30,7 +30,7 @@
               </a>
             </td>
             <td class="is-icon">
-              <a @click="deleteLife(live._id)">
+              <a @click="deleteConfirm(live._id)">
                 <span class="icon">
                   <i class="fa fa-trash"></i>
                 </span>
@@ -39,16 +39,16 @@
           </tr>
         </tbody>
       </table>
-      <dm-life-form v-show="state !== 'list'" :state="state" @close-form="state = 'list'" :person-id="personId" :life-id-update="lifeIdUpdate"></dm-life-form>
+      <dm-life-form v-show="state !== 'list'" :state="state" @close-form="state = 'list'" @after-new-life="afterNewLife" @delete-life="deleteConfirm" :person-id="personId" :life-id-update="lifeIdUpdate"></dm-life-form>
       <dm-notification v-show="showNotification">
-        <span>Não há vidas relacionadas a esta pessoa.</span>
+        <span>Não há dependentes relacionados a esta pessoa.</span>
       </dm-notification>
       <div class="level-right" v-show="state === 'list'">
         <a @click="newLife()" class="button is-success">
           <span class="icon is-small">
             <i class="fa fa-file-o"></i>
           </span>
-          <span>Nova vida</span>
+          <span>Novo dependente</span>
         </a>
       </div>
     </div>
@@ -61,7 +61,7 @@ import moment from 'moment'
 import _ from 'lodash'
 import localePTBR from 'moment/locale/pt-br'
 import Http from '../../services/http'
-import { showAPIErrors } from '../../services/messenger/main'
+import { showAPIErrors, showConfirmDelete } from '../../services/messenger/main'
 import dmNotification from '../../ui/Notification.vue'
 import dmLifeForm from './LifeForm.vue'
 
@@ -72,7 +72,8 @@ export default {
       lives: [{}],
       showNotification: false,
       state: 'list', // list, update, new
-      lifeIdUpdate: ''
+      lifeIdUpdate: '',
+      lifeIdDelete: ''
     }
   },
   components: {
@@ -106,17 +107,28 @@ export default {
       this.showNotification = false
       this.lifeIdUpdate = ''
     },
+    afterNewLife (lifeId) {
+      this.lifeIdUpdate = lifeId
+      this.state = 'update'
+    },
     updateLife (lifeId) {
       console.log('dentro da updateLife', lifeId)
       this.lifeIdUpdate = lifeId
       this.state = 'update'
+    },
+    deleteCallback () {
+      this.deleteLife(this.lifeIdDelete)
+    },
+    deleteConfirm (lifeId) {
+      this.lifeIdDelete = lifeId
+      showConfirmDelete(this.deleteCallback)
     },
     deleteLife (lifeId) {
       console.log('vai delelatar o lifeId: ', lifeId)
       Http.delete('/lives/' + lifeId)
       .then(response => {
         console.log('DELETOU', lifeId)
-        this.getLives()
+        this.state === 'list' ? this.getLives() : this.state = 'list'
       })
       .catch(response => {
         console.log(response)

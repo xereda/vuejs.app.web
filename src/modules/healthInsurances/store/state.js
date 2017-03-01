@@ -1,10 +1,10 @@
 export default {
   general: {
-    title: 'Planos de Saúde',
-    subTitle: 'cadastro de planos de saúde',
+    title: 'Convênios',
+    subTitle: 'cadastro de convênios',
     modal: {
-      titleNewDocument: 'Novo Plano de Saúde',
-      titleUpdateDocument: 'Alterando Plano de Saúde'
+      titleNewDocument: 'Novo Convênio',
+      titleUpdateDocument: 'Alterando Convênio'
     }
   },
   API: {
@@ -19,7 +19,7 @@ export default {
     name: {
       type: 'text',
       label: 'Nome',
-      placeHolder: 'Informe o nome do plano',
+      placeHolder: 'Informe o nome do convênio',
       error: 'Informe pelo menos 3 caracteres',
       filter: true,
       APIReturnable: true,
@@ -39,7 +39,7 @@ export default {
     shortName: {
       type: 'text',
       label: 'Nome curto',
-      placeHolder: 'Informe um nome resumido para o plano',
+      placeHolder: 'Informe um nome resumido para o convênio',
       error: 'Informe pelo menos 2 caracteres',
       filter: true,
       APIReturnable: true,
