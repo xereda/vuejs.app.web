@@ -21,7 +21,6 @@
         <form>
           <div class="columns is-multiline">
             <div class="column is-2">
-              <label class="label">Data</label>
               <dm-form-date fa-icon="fa fa-calendar"
                             :readonly="(modalState === 'update')"
                             v-model="formFields.date"
