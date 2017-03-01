@@ -25,7 +25,8 @@ export default {
       { route: '/operators', name: 'operators', label: 'Operadoras' },
       { route: '/cities', name: 'cities', label: 'Cidades' },
       { route: '/people', name: 'people', label: 'Pessoas' },
-      { route: '/holidays', name: 'holidays', label: 'Feriados' }
+      { route: '/holidays', name: 'holidays', label: 'Feriados' },
+      { route: '/providers', name: 'providers', label: 'Prestadores' }
     ],
     spinner: {
       lines: 11, // The number of lines to draw

@@ -15,6 +15,7 @@ import ProfessionalActivities from './modules/professionalActivities/route'
 import Specialties from './modules/specialties/route'
 import Holidays from './modules/holidays/route'
 import Schedules from './modules/schedules/route'
+import Providers from './modules/providers/route'
 
 const routes = [
   ...Users,
@@ -28,7 +29,8 @@ const routes = [
   ...ProfessionalActivities,
   ...Specialties,
   ...Holidays,
-  ...Schedules
+  ...Schedules,
+  ...Providers
 ]
 
 const router = new Router({ routes })

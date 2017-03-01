@@ -15,6 +15,7 @@ import professionalActivities from '../modules/professionalActivities/store/stor
 import specialties from '../modules/specialties/store/store'
 import holidays from '../modules/holidays/store/store'
 import schedules from '../modules/schedules/store/store'
+import providers from '../modules/providers/store/store'
 
 Vue.use(Vuex)
 
@@ -34,6 +35,7 @@ export default new Vuex.Store({
     professionalActivities,
     specialties,
     holidays,
-    schedules
+    schedules,
+    providers
   }
 })

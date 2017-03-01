@@ -134,8 +134,6 @@ import { showAPISuccess, showAPIErrors } from '../../services/messenger/main'
 Vue.use(Vuelidate)
 import { required, minLength, maxLength } from 'vuelidate/lib/validators'
 
-import VMasker from 'vanilla-masker'
-
 import dmFormName from '../../ui/form/Name.vue'
 import dmFormCpf from '../../ui/form/CPF.vue'
 import dmFormDate from '../../ui/form/Date.vue'
@@ -193,7 +191,6 @@ export default {
       .then((response) => {
         this.formFields = _.cloneDeep(response.data)
         if (this.formFields.cpf === undefined) this.formFields.cpf = ''
-        this.formFields.cpf = VMasker.toPattern(this.formFields.cpf, '999.999.999-99')
         if (this.formFields.birthday === undefined) this.formFields.birthday = ''
         // this.$v.formFields.$touch()
       })
