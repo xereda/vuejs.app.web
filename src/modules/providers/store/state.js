@@ -2,9 +2,19 @@ export default {
   general: {
     title: 'Prestadores',
     subTitle: 'Cadastro de prestadores',
-    modal: {
-      titleNewDocument: 'Novo Prestador',
-      titleUpdateDocument: 'Alterando um Prestador'
+    actionsTitle: {
+      subTitleNewDocument: 'Adicionando um novo prestador',
+      subTitleUpdateDocument: 'Alterando um prestador'
+    },
+    breadcrumbs: {
+      new: [
+        { route: '/providers', name: 'Prestadores', activedLink: true },
+        { route: '', name: 'Novo', activedLink: false }
+      ],
+      update: [
+        { route: '/providers', name: 'Prestadores', activedLink: true },
+        { route: '', name: 'Atualizando', activedLink: false }
+      ]
     }
   },
   API: {

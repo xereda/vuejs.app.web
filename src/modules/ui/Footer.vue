@@ -23,7 +23,7 @@
 
 <style scoped>
   .logo_footer {
-    max-width: 90%;
-    width: 400px;
+    max-width: 80%;
+    width: 300px;
   }
 </style>
