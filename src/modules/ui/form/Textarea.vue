@@ -1,12 +1,9 @@
 <template lang="html">
 <div>
   <label v-if="showLabel" class="label">{{ label }}</label>
-  <p class="control has-icon">
-    <input :placeholder="placeholder" :value="value" @input="$emit('input', $event.target.value)" :class="{ 'input': true, 'is-danger': hasError }"></input>
-    <span class="icon is-small">
-      <i :class="faIcon"></i>
-    </span>
-    <span v-if="errorMessage !== ''" class="help is-danger">{{ errorMessage }}</span>
+  <p class="control">
+    <textarea :placeholder="placeholder" :value="value" @input="$emit('input', $event.target.value)" :class="{ 'textarea': true, 'is-disabled': disabled, 'is-danger': hasError }"></textarea>
+    <span v-if="hasError" class="help is-danger">{{ errorMessage }}</span>
   </p>
 </div>
 </template>
@@ -15,7 +12,7 @@
 import _ from 'lodash'
 
 export default {
-  name: 'dmFormName',
+  name: 'dmFormTextarea',
   props: {
     placeholder: {
       type: String,
@@ -25,10 +22,6 @@ export default {
       type: String,
       required: true
     },
-    faIcon: {
-      type: String,
-      default: 'fa fa-font'
-    },
     label: {
       type: String,
       default: ''
@@ -36,6 +29,10 @@ export default {
     vuelidate: {
       type: Object,
       default: () => Object.assign({})
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -68,8 +65,7 @@ export default {
     },
     hasError () {
       return this.errorMessage !== ''
-    }
-  }
+    }}
 }
 </script>
 

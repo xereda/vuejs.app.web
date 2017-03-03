@@ -176,9 +176,10 @@ export default {
       'providers_addSortColumn'
     ]),
     newDocument () {
-      this.$router.push({ name: 'providers.new', params: { state: 'new', providerId: 'AAABBBCCC' } })
+      this.$router.push({ name: 'providers.new', params: { state: 'new' } })
     },
     updateDocument (doc) {
+      this.$router.push({ name: 'providers.update', params: { state: 'update', providerId: doc._id } })
     },
     removeDocumentCallback (obj) {
       const _uri = this.config.APIURIBase + this.API.resource + '/' + obj.documentId

@@ -2,11 +2,11 @@
   <div>
     <label v-if="showLabel" class="label">{{ label }}</label>
     <p class="control has-icon">
-      <input :value="value" ref="flatpickr" @input="eventField($event.target.value)" :class="{ 'input': true, 'is-disabled': readonly }">
+      <input :value="value" ref="flatpickr" @input="eventField($event.target.value)" :class="{ 'input': true, 'is-disabled': readonly, 'is-danger': hasError }">
       <span class="icon is-small">
         <i :class="faIcon"></i>
       </span>
-      <span v-if="errorMessage !== ''" class="help is-danger">{{ errorMessage }}</span>
+      <span v-if="hasError" class="help is-danger">{{ errorMessage }}</span>
     </p>
     <!-- <pre>value: {{ value }}</pre>
     <pre>fpOptions: {{ fpOptions }}</pre> -->
@@ -59,6 +59,9 @@
           }
         }
         return ''
+      },
+      hasError () {
+        return this.errorMessage !== ''
       }
     },
     methods: {

@@ -12,6 +12,8 @@ const _humanMessage = (_data) => {
     { search: 'professionalactivities index: name_1 dup key', replaceBy: 'Ramo de Atividade já cadastrado!' },
     { search: 'professionalactivities index: regionalCouncilAcronym_1 dup key', replaceBy: 'Sigla do Conselho Regional já informada em outro Ramo de Atividade!' },
     { search: 'cities index: name_1 dup key', replaceBy: 'Cidade já cadastrada!' },
+    { search: 'providers index: cpf_1 dup key', replaceBy: 'CPF já cadastrado!' },
+    { search: 'providers index: cnpj_1 dup key', replaceBy: 'CNPJ já cadastrado!' },
     { search: 'specialties index: name_1 dup key', replaceBy: 'Operadora já cadastrada!' },
     { search: 'healthinsurances index: name_1 dup key', replaceBy: 'Convênio já cadastrado!' },
     { search: 'healthinsurances index: shortName_1 dup key', replaceBy: 'Nome curto já cadastrado em outro convênio!' },

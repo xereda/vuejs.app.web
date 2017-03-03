@@ -3,7 +3,7 @@
     <label v-if="showLabel" class="label">{{ label }}</label>
     <p class="control has-icon">
       <span class="select">
-        <select :value="value" @change="$emit('input', $event.target.value)" :class="{ 'is-disabled': disabled }">
+        <select :value="value" @change="$emit('input', $event.target.value)" :class="{ 'is-disabled': disabled, 'is-danger': showError }">
           <option value="">{{ placeholder }}</option>
           <option v-for="item in dataList" :value="item._id">{{ item.name }}</option>
         </select>

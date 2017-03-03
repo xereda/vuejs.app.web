@@ -2,7 +2,7 @@
 <div>
   <label v-if="showLabel" class="label">{{ label }}</label>
   <p class="control has-icon">
-    <input :placeholder="placeholder" v-mask="'999.999.999-99'" :value="value" @input="$emit('input', $event.target.value)" :class="{ 'input': true, 'is-danger': hasError }"></input>
+    <input :placeholder="placeholder" v-mask="'99.999.999/9999-99'" :value="value" @input="$emit('input', $event.target.value)" :class="{ 'input': true, 'is-danger': hasError }"></input>
     <span class="icon is-small">
       <i :class="faIcon"></i>
     </span>

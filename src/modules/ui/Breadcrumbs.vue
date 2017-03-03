@@ -20,11 +20,12 @@ export default {
   },
   computed: {
     links () {
-      return this.objectLinks
+      return this.state === 'new' ? this.objectLinks.new : this.objectLinks.update
     }
   },
   props: [
-    'object-links'
+    'object-links',
+    'state'
   ]
 }
 </script>

@@ -125,14 +125,14 @@
 
 <script>
 import Vue from 'vue'
-import _ from 'lodash'
-import { mapState } from 'vuex'
 import Vuelidate from 'vuelidate'
-import Http from '../../services/http'
-import { showAPISuccess, showAPIErrors } from '../../services/messenger/main'
-
 Vue.use(Vuelidate)
 import { required, minLength, maxLength } from 'vuelidate/lib/validators'
+
+import _ from 'lodash'
+import { mapState } from 'vuex'
+import Http from '../../services/http'
+import { showAPISuccess, showAPIErrors } from '../../services/messenger/main'
 
 import dmFormName from '../../ui/form/Name.vue'
 import dmFormCpf from '../../ui/form/CPF.vue'

@@ -6,7 +6,7 @@
     <span class="icon is-small">
       <i :class="faIcon"></i>
     </span>
-    <span v-if="errorMessage !== ''" class="help is-danger">{{ errorMessage }}</span>
+    <span v-if="hasError" class="help is-danger">{{ errorMessage }}</span>
   </p>
 </div>
 </template>
@@ -15,7 +15,7 @@
 import _ from 'lodash'
 
 export default {
-  name: 'dmFormName',
+  name: 'dmFormEmail',
   props: {
     placeholder: {
       type: String,
@@ -57,13 +57,9 @@ export default {
           return this.label + ' é requerido!'
         }
       }
-      if (this.vuelidate.minLength !== undefined && this.vuelidate.minLength === false) {
-        return 'Qt mínima de caracteres não atendida!'
+      if (this.vuelidate.email !== undefined && this.vuelidate.email === false) {
+        return 'E-mail inválido!'
       }
-      if (this.vuelidate.maxLength !== undefined && this.vuelidate.maxLength === false) {
-        return 'Ultrapassou qt máxima de caracteres!'
-      }
-
       return ''
     },
     hasError () {
