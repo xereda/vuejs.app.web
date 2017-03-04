@@ -11,12 +11,14 @@
       <span class="icon is-small">
         <i :class="faIcon"></i>
       </span>
-      <span v-if="showError" class="help is-danger">{{ errorMessage }}</span>
+      <span v-if="hasError" class="help is-danger">{{ errorMessage }}</span>
     </p>
+    vuelidate: <pre>{{ vuelidate }}</pre>
   </div>
 </template>
 
 <script>
+  import _ from 'lodash'
   import { mapState } from 'vuex'
   import Http from '../../services/http'
 
@@ -36,11 +38,8 @@
     methods: {
       asyncFind (query) {
         this.isLoading = true
-        let _search = ''
-        if (query !== '') {
-          _search = 'name=/' + query + '/i'
-        }
-        const _uri = this.apiResource + '/?_limit=' + this.optionsLimit + this.activesOnly + '&_fields=_id,name&' + _search
+        const _uri = this.apiResource + '/?_limit=' + this.optionsLimit + this.activesOnly + this.filter + '&_fields=_id,name&'
+        console.log('_uri para select: ', _uri)
         Http.get(_uri)
         .then((response) => {
           this.dataList = response.data
@@ -53,6 +52,9 @@
       }
     },
     watch: {
+      filter (val) {
+        this.asyncFind()
+      }
     },
     computed: {
       ...mapState({
@@ -65,6 +67,25 @@
       },
       showError () {
         return this.errorMessage !== undefined && this.errorMessage.length > 0
+      },
+      errorMessage () {
+        if (_.isEmpty(this.vuelidate)) {
+          return ''
+        }
+        if (this.vuelidate.$dirty !== undefined && this.vuelidate.$dirty === false) {
+          return ''
+        }
+        if (this.vuelidate.required !== undefined && this.vuelidate.required === false) {
+          if (this.label === '') {
+            return 'Campo é requerido!'
+          } else {
+            return this.label.replace(' *', '') + ' é requerido!'
+          }
+        }
+        return ''
+      },
+      hasError () {
+        return this.errorMessage !== ''
       }
     },
     props: {
@@ -76,7 +97,7 @@
       },
       optionsLimit: {
         type: Number,
-        default: 10
+        default: 20
       },
       disabled: {
         type: Boolean
@@ -96,9 +117,13 @@
         type: String,
         default: ''
       },
-      errorMessage: {
+      filter: {
         type: String,
         default: ''
+      },
+      vuelidate: {
+        type: Object,
+        default: () => Object.assign({})
       }
     }
   }

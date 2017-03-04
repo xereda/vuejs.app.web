@@ -66,7 +66,7 @@
           if (this.label === '') {
             return 'Campo é requerido!'
           } else {
-            return this.label + ' é requerido!'
+            return this.label.replace(' *', '') + ' é requerido!'
           }
         }
         if (this.vuelidate.minLength !== undefined && this.vuelidate.minLength === false) {

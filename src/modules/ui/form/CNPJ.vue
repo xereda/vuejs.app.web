@@ -55,7 +55,6 @@
         return this.label !== undefined && this.label.length > 0
       },
       errorMessage () {
-        console.log('typeof this.vuelidate', typeof this.vuelidate, this.vuelidate)
         if (_.isEmpty(this.vuelidate)) {
           return ''
         }
@@ -66,7 +65,7 @@
           if (this.label === '') {
             return 'Campo é requerido!'
           } else {
-            return this.label + ' é requerido!'
+            return this.label.replace(' *', '') + ' é requerido!'
           }
         }
         if (this.vuelidate.minLength !== undefined && this.vuelidate.minLength === false) {

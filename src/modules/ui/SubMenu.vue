@@ -2,7 +2,7 @@
   <nav class="nav has-shadow">
     <div class="container">
       <div class="nav-left">
-        <a :class="{ 'nav-item': true, 'is-tab': true, 'is-active': $route.name.indexOf(module.name) > -1 }" v-for="module in config.modules">
+        <a :class="{ 'nav-item': true, 'is-tab': true, 'is-active': isCurrentRoute(module) }" v-for="module in config.modules">
           <router-link :to="module.route">{{ module.label }}</router-link>
         </a>
         <a :class="{ 'nav-item': true, 'is-tab': true, 'is-active': false }" @click="alerta()">
@@ -23,6 +23,12 @@ export default {
       izitoast.warning({ title: 'Caution', message: 'Refactoring process started. Global modules are missing. Documentation available on the VueJS website.' })
       // izitoast.error({ title: 'Error', message: 'Synchronize the new component model, please.' })
       // izitoast.info({ title: 'Info', message: 'VueJS offers tools for this work.' })
+    },
+    isCurrentRoute (module) {
+      if (this.$route.name === undefined) return false
+      if (this.$route.name === null) return false
+      if (this.$route.name.indexOf(module.name) === -1) return false
+      return true
     }
   },
   computed: {

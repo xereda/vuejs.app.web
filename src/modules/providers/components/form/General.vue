@@ -1,9 +1,9 @@
 <template lang="html">
   <transition name="fade">
     <div class="">
-      providerId: <pre>{{ providerId }}</pre>
+      <!-- providerId: <pre>{{ providerId }}</pre>
       state: <pre>{{ state }}</pre>
-      form: <pre>{{ formFields }}</pre>
+      form: <pre>{{ formFields }}</pre> -->
       <dm-breadcrumbs :object-links="breadcrumbs" :state="state"></dm-breadcrumbs>
 
       <div class="container box">
@@ -16,7 +16,7 @@
                               @input="$v.formFields['name'].$touch()"
                               :vuelidate="$v.formFields['name']"
                               fa-icon="fa fa-user-md"
-                              label="Nome"
+                              label="Nome *"
                               placeholder="Informe o nome"></dm-form-name>
               </div>
               <div class="column is-6">
@@ -24,22 +24,22 @@
                               @input="$v.formFields['email'].$touch()"
                               :vuelidate="$v.formFields['email']"
                               fa-icon="fa fa-envelope"
-                              label="E-mail"
+                              label="E-mail *"
                               placeholder="Informe o nome"></dm-form-email>
               </div>
-              <div class="column is-4">
+              <div class="column is-5">
                 <dm-form-radio v-model="formFields.entityType"
                               @input="$v.formFields['entityType'].$touch()"
                               :vuelidate="$v.formFields['entityType']"
                               :options="entityTypeOptions"
-                              label="Tipo"></dm-form-radio>
+                              label="Tipo *"></dm-form-radio>
               </div>
               <div class="column is-5" v-if="formFields.entityType !== 'J'">
                 <dm-form-cpf v-model="formFields.cpf"
                              fa-icon="fa fa-id-card-o"
                              @input="$v.formFields['cpf'].$touch()"
                              :vuelidate="$v.formFields['cpf']"
-                             label="CPF"
+                             label="CPF *"
                              placeholder="Número do CPF"></dm-form-cpf>
               </div>
               <div class="column is-5" v-if="formFields.entityType === 'J'">
@@ -47,7 +47,7 @@
                              fa-icon="fa fa-id-card-o"
                              @input="$v.formFields['cnpj'].$touch()"
                              :vuelidate="$v.formFields['cnpj']"
-                             label="CNPJ"
+                             label="CNPJ *"
                              placeholder="Número do CNPJ"></dm-form-cnpj>
               </div>
               <div class="column">
@@ -55,26 +55,31 @@
                                  @click.native="$v.formFields['active'].$touch()"
                                  label="Ativo"></dm-form-boolean>
               </div>
+              <div class="column">
+                <span class="required-fields-legend-ast">* </span><span class="required-fields-legend">Campos requeridos.</span>
+              </div>
             </div>
           </div>
           <div class="column">
             <dm-form-textarea v-model="formFields.description"
                           @input="$v.formFields['description'].$touch()"
                           :vuelidate="$v.formFields['description']"
-                          label="Sobre"
+                          label="Sobre *"
                           placeholder="Informações sobre o prestador"></dm-form-textarea>
           </div>
         </div>
         <div class="">
-          nova linha
+          <dm-buttons :save-enabled="enableSaveButton"
+                      :cancel-enabled="true"
+                      :delete-enabled="enableDeleteButton"
+                      @action-save="saveForm"
+                      @action-cancel="closeForm"
+                      @action-delete="deleteDoc"></dm-buttons>
         </div>
-        <div class="">
-          <dm-buttons-main-ctrl :save-enabled="enableSaveButton"
-                                :cancel-enabled="true"
-                                :delete-enabled="enableDeleteButton"
-                                @action-save="saveForm"
-                                @action-cancel="closeForm"
-                                @action-delete="deleteDoc"></dm-buttons-main-ctrl>
+        <div class="is-hidden-tablet dm-divisor">
+        </div>
+        <div class="" v-if="state === 'update'">
+          <dm-abas :provider-id="providerId"></dm-abas>
         </div>
       </div>
 
@@ -104,11 +109,13 @@ import DmFormRadio from '../../../ui/form/Radio.vue'
 import DmFormCpf from '../../../ui/form/CPF.vue'
 import DmFormCnpj from '../../../ui/form/CNPJ.vue'
 import DmFormBoolean from '../../../ui/form/Boolean.vue'
-import DmButtonsMainCtrl from '../../../ui/form/ButtonsMainCTRL.vue'
+import DmButtons from '../../../ui/form/Buttons.vue'
+import DmAbas from './Abas.vue'
 
 export default {
   data () {
     return {
+      teste: false,
       formFields: {
         _id: '',
         name: '',
@@ -161,7 +168,8 @@ export default {
     DmFormCpf,
     DmFormCnpj,
     DmFormBoolean,
-    DmButtonsMainCtrl
+    DmButtons,
+    DmAbas
   },
   mounted () {
     if (this.state !== 'new' && this.state !== 'update') {
@@ -273,7 +281,7 @@ export default {
       }
     }),
     enableDeleteButton () {
-
+      return this.state === 'update'
     },
     enableSaveButton () {
       if (_.filter(this.$v.formFields, e => e.$invalid).length > 0) return false
@@ -308,5 +316,5 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
 </style>

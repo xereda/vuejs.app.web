@@ -88,4 +88,20 @@ export default {
     opacity: 0;
   }
 
+  .required-fields-legend {
+      font-style: italic;
+      font-size: 90%;
+      font-weight: none;
+      color: rgb(148, 148, 148);
+  }
+
+  .required-fields-legend-ast {
+      font-style: italic;
+      font-weight: bold;
+  }
+  
+  .dm-divisor {
+    height: 30px;
+  }
+
 </style>
