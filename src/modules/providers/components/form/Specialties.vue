@@ -1,8 +1,6 @@
 <template lang="html">
   <transition name="fade">
     <div class="">
-      <pre>{{ formFields }}</pre>
-      <pre>{{ $v.formFields }}</pre>
       <div class="columns">
         <div class="column is-narrow">
           <div class="box">
@@ -49,7 +47,13 @@
           </div>
         </div>
         <div class="column">
-         aqui entra a grid
+         <dm-specialties-list api-resource="providers"
+                              :mainId="providerId"
+                              subDoc="specialties"
+                              :update-list="updateList"
+                              :data-def="dataTableDef"
+                              del-item-message="Especialidade removida com sucesso!"
+                              ></dm-specialties-list>
         </div>
       </div>
     </div>
@@ -62,11 +66,18 @@ import Vuelidate from 'vuelidate'
 Vue.use(Vuelidate)
 import { required } from 'vuelidate/lib/validators'
 
+import { mapState } from 'vuex'
+
 import _ from 'lodash'
+
+import Http from '../../../services/http'
+import { showAPIErrors, showAPISuccess } from '../../../services/messenger/main'
 
 import DmFormSelect from '../../../ui/form/Select.vue'
 import DmFormInput from '../../../ui/form/Input.vue'
 import DmFormButtons from '../../../ui/form/Buttons.vue'
+
+import DmSpecialtiesList from '../../../ui/form/SubDocumentsList.vue'
 
 export default {
   data () {
@@ -75,6 +86,23 @@ export default {
         professionalActivity: '',
         specialty: '',
         regionalCouncilCode: ''
+      },
+      updateList: false,
+      dataTableDef: {
+        _id: {
+          field: 'specialty._id',
+          visible: false
+        },
+        specialty: {
+          label: 'Especialidade',
+          field: 'specialty.name',
+          visible: true
+        },
+        regionalCouncilCode: {
+          label: 'Código no CR',
+          field: 'regionalCouncilCode',
+          visible: true
+        }
       }
     }
   },
@@ -91,14 +119,47 @@ export default {
   components: {
     DmFormSelect,
     DmFormInput,
-    DmFormButtons
+    DmFormButtons,
+    DmSpecialtiesList
   },
   methods: {
     saveForm () {
+      this.updateList = false
       console.log('dentro do saveform')
+      Http.post('/providers/' + this.providerId + '/specialties', this.objectDataPost)
+      .then(response => {
+        console.log('response', response, response.data)
+        this.updateList = true
+        showAPISuccess({ title: 'OK', message: 'Especialidade relacionada ao prestador com sucesso!' })
+      })
+      .catch(error => {
+        console.log(error.response)
+        showAPIErrors(error.response)
+      })
     }
   },
   computed: {
+    ...mapState({
+      general: state => {
+        const { general } = state.providers
+        return general
+      },
+      session: state => {
+        const { user } = state
+        return user
+      },
+      breadcrumbs: state => {
+        const { breadcrumbs } = state.providers.general
+        return breadcrumbs
+      }
+    }),
+    objectDataPost () {
+      return {
+        specialty: this.formFields.specialty,
+        regionalCouncilCode: this.formFields.regionalCouncilCode,
+        createdById: this.session._id
+      }
+    },
     specialtiesFilter () {
       return '&professionalActivity=' + this.formFields.professionalActivity
     },
@@ -111,6 +172,11 @@ export default {
     providerId: {
       type: String,
       required: true
+    }
+  },
+  watch: {
+    'formFields.professionalActivity' (val) {
+      this.formFields.specialty = ''
     }
   }
 }

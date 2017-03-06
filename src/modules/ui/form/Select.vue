@@ -13,7 +13,6 @@
       </span>
       <span v-if="hasError" class="help is-danger">{{ errorMessage }}</span>
     </p>
-    vuelidate: <pre>{{ vuelidate }}</pre>
   </div>
 </template>
 

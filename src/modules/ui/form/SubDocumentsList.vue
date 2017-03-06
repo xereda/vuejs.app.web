@@ -1,0 +1,132 @@
+<template lang="html">
+  <div class="">
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="" v-for="propertie in dataTableProperties" v-if="dataTableDef[propertie].visible">{{ dataTableDef[propertie].label }}</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="item in list">
+          <td class="" v-for="propertie in dataTableProperties" v-if="dataTableDef[propertie].visible">{{ item[propertie] }}</td>
+          <td class="is-icon">
+            <a @click="deleteItem(item._id)">
+              <span class="icon">
+                <i class="fa fa-trash"></i>
+              </span>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<script>
+import Http from '../../services/http'
+import { showAPIErrors, showAPISuccess } from '../../services/messenger/main'
+
+export default {
+  data () {
+    return {
+      list: []
+    }
+  },
+  mounted () {
+    console.log('MOUNTED!!!')
+    this.getList()
+  },
+  methods: {
+    getList () {
+      this.list = []
+      console.log(this.resourceURI)
+      Http.get(this.resourceURI)
+      .then(response => {
+        console.log('recuperou a lista dos subdocumentos: ', this.mainId, this.subDoc)
+        console.log(response.data)
+        this.hydrateData(response.data)
+      })
+      .catch(error => {
+        console.log(error.response)
+        showAPIErrors(error.response)
+      })
+    },
+    deleteItem (item) {
+      console.log('delete item: ', item)
+      Http.delete(this.resourceURI + '/' + item)
+      .then(response => {
+        showAPISuccess({ title: 'OK', message: this.delItemMessage })
+        console.log(response.data)
+        this.getList()
+      })
+      .catch(error => {
+        console.log(error.response)
+        showAPIErrors(error.response)
+      })
+    },
+    hydrateData (data) {
+      data.forEach(element => {
+        const _objPush = {}
+        this.dataTableProperties.forEach(propertie => {
+          const _field = this.dataTableDef[propertie].field.split('.')
+          if (_field.length > 1) {
+            _objPush[propertie] = element[_field[0]][_field[1]]
+          } else {
+            _objPush[propertie] = element[_field[0]]
+          }
+        })
+        // _id: element.specialty._id,
+        // specialty: element.specialty.name,
+        // regionalCouncilCode: element.regionalCouncilCode
+        this.list.push(_objPush)
+      })
+    }
+  },
+  computed: {
+    resourceURI () {
+      return '/' + this.ApiResource + '/' + this.mainId + '/' + this.subDoc
+    },
+    dataTableDef () {
+      return this.dataDef
+    },
+    dataTableProperties () {
+      return Object.keys(this.dataTableDef)
+    }
+  },
+  props: {
+    ApiResource: {
+      type: String,
+      required: true
+    },
+    mainId: {
+      type: String,
+      required: true
+    },
+    subDoc: {
+      type: String,
+      required: true
+    },
+    updateList: {
+      type: Boolean,
+      default: false
+    },
+    dataDef: {
+      type: Object,
+      required: true
+    },
+    delItemMessage: {
+      type: String,
+      default: 'Item removido com sucesso!'
+    }
+  },
+  watch: {
+    updateList (val) {
+      if (val) this.getList()
+    }
+  }
+}
+</script>
+
+<style lang="css">
+</style>
