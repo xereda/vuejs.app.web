@@ -89,6 +89,14 @@
         if (val === true) {
           this.Calendar.clear()
         }
+      },
+      minDate (val) {
+        this.Calendar.set('minDate', val)
+        // this.Calendar.setDate(this.value)
+      },
+      maxDate (val) {
+        this.Calendar.set('minDate', val)
+        // this.Calendar.setDate(this.value)
       }
     },
     props: {

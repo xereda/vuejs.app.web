@@ -23,14 +23,14 @@
           </li>
         </ul>
       </div>
-      <div class="" v-if="isActivated('specialties')">
+      <div class="" v-show="isActivated('specialties')">
         <dm-specialties :providerId="providerId"></dm-specialties>
       </div>
-      <div class="" v-if="isActivated('blockedLives')">
-        conteudo de blockedLives
+      <div class="" v-show="isActivated('blockedLives')">
+        <dm-blocked-lives :providerId="providerId"></dm-blocked-lives>
       </div>
-      <div class="" v-if="isActivated('workplaces')">
-        conteudo de workplaces
+      <div class="" v-show="isActivated('workplaces')">
+        <dm-workplaces :providerId="providerId"></dm-workplaces>
       </div>
     </div>
   </transition>
@@ -39,7 +39,7 @@
 
 <script>
 import DmSpecialties from './Specialties.vue'
-import DmBlocklives from './BlockedLives.vue'
+import DmBlockedLives from './BlockedLives.vue'
 import DmWorkplaces from './Workplaces.vue'
 
 export default {
@@ -58,7 +58,7 @@ export default {
   },
   components: {
     DmSpecialties,
-    DmBlocklives,
+    DmBlockedLives,
     DmWorkplaces
   },
   props: {

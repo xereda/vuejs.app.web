@@ -1,6 +1,6 @@
 <template lang="html">
   <transition name="fade">
-    <div class="">
+    <div class="main-canvas">
       <!-- providerId: <pre>{{ providerId }}</pre>
       state: <pre>{{ state }}</pre>
       form: <pre>{{ formFields }}</pre> -->
@@ -78,7 +78,7 @@
         </div>
         <div class="is-hidden-tablet dm-divisor">
         </div>
-        <div class="" v-if="state === 'update'">
+        <div class="abas" v-if="state === 'update'">
           <dm-abas :provider-id="providerId"></dm-abas>
         </div>
       </div>
@@ -317,4 +317,7 @@ export default {
 </script>
 
 <style lang="css" scoped>
+  .main-canvas {
+    min-height: 900px;
+  }
 </style>

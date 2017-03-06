@@ -3,14 +3,14 @@
     <table class="table">
       <thead>
         <tr>
-          <th class="" v-for="propertie in dataTableProperties" v-if="dataTableDef[propertie].visible">{{ dataTableDef[propertie].label }}</th>
-          <th></th>
+          <th :class="dataTableDef[propertie].class" v-for="propertie in dataTableProperties" v-if="dataTableDef[propertie].visible">{{ dataTableDef[propertie].label }}</th>
+          <th v-if="!delItemDisabled"></th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="item in list">
-          <td class="" v-for="propertie in dataTableProperties" v-if="dataTableDef[propertie].visible">{{ item[propertie] }}</td>
-          <td class="is-icon">
+          <td :class="dataTableDef[propertie].class" v-for="propertie in dataTableProperties" v-if="dataTableDef[propertie].visible">{{ item[propertie] }}</td>
+          <td class="is-icon" v-if="!delItemDisabled">
             <a @click="deleteItem(item._id)">
               <span class="icon">
                 <i class="fa fa-trash"></i>
@@ -26,6 +26,8 @@
 <script>
 import Http from '../../services/http'
 import { showAPIErrors, showAPISuccess } from '../../services/messenger/main'
+import moment from 'moment'
+import localePTBR from 'moment/locale/pt-br'
 
 export default {
   data () {
@@ -35,6 +37,7 @@ export default {
   },
   mounted () {
     console.log('MOUNTED!!!')
+    moment().locale('pt-BR', localePTBR)
     this.getList()
   },
   methods: {
@@ -74,6 +77,16 @@ export default {
             _objPush[propertie] = element[_field[0]][_field[1]]
           } else {
             _objPush[propertie] = element[_field[0]]
+          }
+          if (this.dataTableDef[propertie].type !== undefined && this.dataTableDef[propertie].type === 'date') {
+            if (_objPush[propertie] === undefined) {
+              _objPush[propertie] = ''
+            } else if (_objPush[propertie] !== '') {
+              _objPush[propertie] = moment.utc(_objPush[propertie]).format('DD/MM/YYYY')
+            }
+          }
+          if (_objPush[propertie] === undefined) {
+            _objPush[propertie] = ''
           }
         })
         // _id: element.specialty._id,
@@ -118,6 +131,10 @@ export default {
     delItemMessage: {
       type: String,
       default: 'Item removido com sucesso!'
+    },
+    delItemDisabled: {
+      type: Boolean,
+      default: false
     }
   },
   watch: {
