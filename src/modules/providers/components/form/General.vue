@@ -98,20 +98,20 @@ import { required, email, minLength, maxLength } from 'vuelidate/lib/validators'
 
 import _ from 'lodash'
 
-import Http from '../../../services/http'
+import Http from '../../../../utils/services/http'
 
-import { showAPIErrors, showAPISuccess, showConfirmDelete } from '../../../services/messenger/main'
+import { showAPIErrors, showAPISuccess, showConfirmDelete } from '../../../../utils/services/messenger/main'
 
 import { mapState } from 'vuex'
-import DmBreadcrumbs from '../../../ui/Breadcrumbs.vue'
-import DmFormName from '../../../ui/form/Name.vue'
-import DmFormEmail from '../../../ui/form/Email.vue'
-import DmFormTextarea from '../../../ui/form/Textarea.vue'
-import DmFormRadio from '../../../ui/form/Radio.vue'
-import DmFormCpf from '../../../ui/form/CPF.vue'
-import DmFormCnpj from '../../../ui/form/CNPJ.vue'
-import DmFormBoolean from '../../../ui/form/Boolean.vue'
-import DmButtons from '../../../ui/form/Buttons.vue'
+import DmBreadcrumbs from '../../../../utils/ui/Breadcrumbs.vue'
+import DmFormName from '../../../../utils/ui/form/Name.vue'
+import DmFormEmail from '../../../../utils/ui/form/Email.vue'
+import DmFormTextarea from '../../../../utils/ui/form/Textarea.vue'
+import DmFormRadio from '../../../../utils/ui/form/Radio.vue'
+import DmFormCpf from '../../../../utils/ui/form/CPF.vue'
+import DmFormCnpj from '../../../../utils/ui/form/CNPJ.vue'
+import DmFormBoolean from '../../../../utils/ui/form/Boolean.vue'
+import DmButtons from '../../../../utils/ui/form/Buttons.vue'
 import DmAbas from './Abas.vue'
 
 export default {

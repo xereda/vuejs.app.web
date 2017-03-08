@@ -131,13 +131,13 @@ import { required, minLength, maxLength } from 'vuelidate/lib/validators'
 
 import _ from 'lodash'
 import { mapState } from 'vuex'
-import Http from '../../services/http'
-import { showAPISuccess, showAPIErrors } from '../../services/messenger/main'
+import Http from '../../../utils/services/http'
+import { showAPISuccess, showAPIErrors } from '../../../utils/services/messenger/main'
 
-import dmFormName from '../../ui/form/Name.vue'
-import dmFormCpf from '../../ui/form/CPF.vue'
-import dmFormDate from '../../ui/form/Date.vue'
-import dmFormBoolean from '../../ui/form/Boolean.vue'
+import dmFormName from '../../../utils/ui/form/Name.vue'
+import dmFormCpf from '../../../utils/ui/form/CPF.vue'
+import dmFormDate from '../../../utils/ui/form/Date.vue'
+import dmFormBoolean from '../../../utils/ui/form/Boolean.vue'
 
 import dmLifeHi from './LifeHi.vue'
 

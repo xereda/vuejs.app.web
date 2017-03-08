@@ -14,9 +14,9 @@ import 'sweetalert'
 import 'sweetalert/dist/sweetalert.css'
 import 'font-awesome/css/font-awesome.css'
 
-import dmHeader from './modules/ui/Header.vue'
-import dmSubMenu from './modules/ui/SubMenu.vue'
-import dmFooter from './modules/ui/Footer.vue'
+import dmHeader from './utils/ui/Header.vue'
+import dmSubMenu from './utils/ui/SubMenu.vue'
+import dmFooter from './utils/ui/Footer.vue'
 
 export default {
   name: 'app',

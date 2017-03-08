@@ -74,19 +74,19 @@
 <script>
 import _ from 'lodash'
 import { mapState } from 'vuex'
-import Http from '../../services/http'
-import dmModalFooter from '../../ui/ModalFooter.vue'
-import dmFormDate from '../../ui/form/Date.vue'
-import dmFormName from '../../ui/form/Name.vue'
-import dmFormBoolean from '../../ui/form/Boolean.vue'
-import dmFormSelect from '../../ui/form/Select.vue'
+import Http from '../../../utils/services/http'
+import dmModalFooter from '../../../utils/ui/ModalFooter.vue'
+import dmFormDate from '../../../utils/ui/form/Date.vue'
+import dmFormName from '../../../utils/ui/form/Name.vue'
+import dmFormBoolean from '../../../utils/ui/form/Boolean.vue'
+import dmFormSelect from '../../../utils/ui/form/Select.vue'
 
 import Vue from 'vue'
 import Vuelidate from 'vuelidate'
 Vue.use(Vuelidate)
 import { required } from 'vuelidate/lib/validators'
 
-import { showAPIErrors, showAPISuccess } from '../../services/messenger/main'
+import { showAPIErrors, showAPISuccess } from '../../../utils/services/messenger/main'
 
 export default {
   data () {

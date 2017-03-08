@@ -70,14 +70,14 @@ import { mapState } from 'vuex'
 
 import _ from 'lodash'
 
-import Http from '../../../services/http'
-import { showAPIErrors, showAPISuccess } from '../../../services/messenger/main'
+import Http from '../../../../utils/services/http'
+import { showAPIErrors, showAPISuccess } from '../../../../utils/services/messenger/main'
 
-import DmFormSelect from '../../../ui/form/Select.vue'
-import DmFormInput from '../../../ui/form/Input.vue'
-import DmFormButtons from '../../../ui/form/Buttons.vue'
+import DmFormSelect from '../../../../utils/ui/form/Select.vue'
+import DmFormInput from '../../../../utils/ui/form/Input.vue'
+import DmFormButtons from '../../../../utils/ui/form/Buttons.vue'
 
-import DmSpecialtiesList from '../../../ui/form/SubDocumentsList.vue'
+import DmSpecialtiesList from '../../../../utils/ui/form/SubDocumentsList.vue'
 
 export default {
   data () {

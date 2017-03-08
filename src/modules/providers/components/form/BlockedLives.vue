@@ -78,15 +78,15 @@ import { mapState } from 'vuex'
 
 import _ from 'lodash'
 
-import Http from '../../../services/http'
-import { showAPIErrors, showAPISuccess } from '../../../services/messenger/main'
+import Http from '../../../../utils/services/http'
+import { showAPIErrors, showAPISuccess } from '../../../../utils/services/messenger/main'
 
-import DmFormMultiSelect from '../../../ui/form/MultiSelect.vue'
-import DmFormDate from '../../../ui/form/Date.vue'
-import DmFormButtons from '../../../ui/form/Buttons.vue'
-import DmFormTextarea from '../../../ui/form/Textarea.vue'
+import DmFormMultiSelect from '../../../../utils/ui/form/MultiSelect.vue'
+import DmFormDate from '../../../../utils/ui/form/Date.vue'
+import DmFormButtons from '../../../../utils/ui/form/Buttons.vue'
+import DmFormTextarea from '../../../../utils/ui/form/Textarea.vue'
 
-import DmBlockedLivesList from '../../../ui/form/SubDocumentsList.vue'
+import DmBlockedLivesList from '../../../../utils/ui/form/SubDocumentsList.vue'
 
 export default {
   name: 'DmProviderBlockedLives',

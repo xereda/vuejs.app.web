@@ -60,9 +60,9 @@ import { mapState } from 'vuex'
 import moment from 'moment'
 import _ from 'lodash'
 import localePTBR from 'moment/locale/pt-br'
-import Http from '../../services/http'
-import { showAPIErrors, showConfirmDelete } from '../../services/messenger/main'
-import dmNotification from '../../ui/Notification.vue'
+import Http from '../../../utils/services/http'
+import { showAPIErrors, showConfirmDelete } from '../../../utils/services/messenger/main'
+import dmNotification from '../../../utils/ui/Notification.vue'
 import dmLifeForm from './LifeForm.vue'
 
 export default {

@@ -24,7 +24,7 @@
 <script>
   import _ from 'lodash'
   import { mapState } from 'vuex'
-  import Http from '../../services/http'
+  import Http from '../../../utils/services/http'
   import Multiselect from 'vue-multiselect'
 
   export default {

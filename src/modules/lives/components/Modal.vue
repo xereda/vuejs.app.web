@@ -145,9 +145,9 @@
 import { mapState, mapActions } from 'vuex'
 import _ from 'lodash'
 import topbar from 'topbar'
-import dmModalAudit from '../../ui/AuditInfo.vue'
+import dmModalAudit from '../../../utils/ui/AuditInfo.vue'
 import 'animate.css/animate.min.css'
-import showMessage from '../../ui/message/message'
+import showMessage from '../../../utils/ui/message/message'
 import Multiselect from 'vue-multiselect'
 
 const SIMPLE_INPUT_TYPES = [ 'text', 'email', 'password', 'date', 'geo' ]

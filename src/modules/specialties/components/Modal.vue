@@ -152,10 +152,10 @@ import swal from 'sweetalert'
 import { mapState, mapActions } from 'vuex'
 import _ from 'lodash'
 import topbar from 'topbar'
-import dmModalAudit from '../../ui/AuditInfo.vue'
+import dmModalAudit from '../../../utils/ui/AuditInfo.vue'
 import 'animate.css/animate.min.css'
 import Multiselect from 'vue-multiselect'
-import { showAPIErrors, showAPISuccess } from '../../services/messenger/main'
+import { showAPIErrors, showAPISuccess } from '../../../utils/services/messenger/main'
 
 const SIMPLE_INPUT_TYPES = [ 'text', 'email', 'password', 'date', 'geo' ]
 

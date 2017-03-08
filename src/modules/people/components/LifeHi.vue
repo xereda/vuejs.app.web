@@ -64,11 +64,11 @@ import Vuelidate from 'vuelidate'
 Vue.use(Vuelidate)
 import { required, minLength, maxLength } from 'vuelidate/lib/validators'
 
-import { showAPISuccess, showAPIErrors } from '../../services/messenger/main'
-import Http from '../../services/http'
+import { showAPISuccess, showAPIErrors } from '../../../utils/services/messenger/main'
+import Http from '../../../utils/services/http'
 
-import dmFormSelect from '../../ui/form/Select.vue'
-import dmFormInput from '../../ui/form/Input.vue'
+import dmFormSelect from '../../../utils/ui/form/Select.vue'
+import dmFormInput from '../../../utils/ui/form/Input.vue'
 
 export default {
   name: 'dmLifeHi',

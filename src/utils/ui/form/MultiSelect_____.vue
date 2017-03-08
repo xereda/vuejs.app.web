@@ -27,7 +27,7 @@
 <script>
   import { mapState } from 'vuex'
   import Multiselect from 'vue-multiselect'
-  import Http from '../../services/http'
+  import Http from '../../../utils/services/http'
 
   export default {
     name: 'dmFormSelect',

@@ -26,10 +26,7 @@ import { mapState } from 'vuex'
 
 import _ from 'lodash'
 
-// import Http from '../../../services/http'
-// import { showAPIErrors, showAPISuccess } from '../../../services/messenger/main'
-
-import DmWorkplacesList from '../../../ui/form/SubDocumentsList.vue'
+import DmWorkplacesList from '../../../../utils/ui/form/SubDocumentsList.vue'
 
 export default {
   name: 'DmProviderWorkplace',

@@ -134,7 +134,7 @@ import _ from 'lodash'
 import moment from 'moment'
 import localePTBR from 'moment/locale/pt-br'
 
-import confirmation from '../ui/confirmation/confirmation'
+import confirmation from '../../utils/ui/confirmation/confirmation'
 
 import dmModal from './components/Modal.vue'
 import Spinner from 'spin'
@@ -142,9 +142,9 @@ let spinner
 
 import topbar from 'topbar'
 import { mapState, mapActions } from 'vuex'
-import dmPagination from '../ui/Pagination.vue'
+import dmPagination from '../../utils/ui/Pagination.vue'
 
-import { showAPIErrors } from '../services/messenger/main'
+import { showAPIErrors } from '../../utils/services/messenger/main'
 
 export default {
   name: 'dmProfessionalActivities',
