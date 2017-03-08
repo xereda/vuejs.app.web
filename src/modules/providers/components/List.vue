@@ -342,6 +342,7 @@ export default {
       }, this.config.grid.delayLoading)
 
       const _boolean = this.filters.boolean
+      console.log('_boolean: ', _boolean)
       const _search = this.filters.search
       const _limit = this.pagination.limit
       let _pag = this.pagination.currentPag

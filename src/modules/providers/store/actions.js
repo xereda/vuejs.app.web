@@ -9,6 +9,7 @@ export default {
     context.commit('PROVIDERS.UPDATE_FILTERS_SEARCH', obj)
   },
   providers_addBooleanFilter (context, field) {
+    console.log('providers_addBooleanFilter: ', context, field)
     context.commit('PROVIDERS.ADD_BOOLEAN_FILTER', field)
   },
   providers_removeBooleanFilter (context, field) {

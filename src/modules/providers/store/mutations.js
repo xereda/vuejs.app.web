@@ -9,6 +9,7 @@ export default {
     state.filters.search = obj
   },
   'PROVIDERS.ADD_BOOLEAN_FILTER' (state, field) {
+    console.log('PROVIDERS.ADD_BOOLEAN_FILTER: ', (new Date()).getTime(), state, field)
     state.filters.boolean.push(field)
   },
   'PROVIDERS.REMOVE_BOOLEAN_FILTER' (state, field) {
