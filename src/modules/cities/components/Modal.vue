@@ -347,6 +347,8 @@ export default {
       this.modalDoc.updatedById = this.session._id
       const _uri = this.config.APIURIBase + this.API.resource
 
+      console.log('modalDoc: ', this.modalDoc)
+
       this.$http.put(_uri, this.modalDoc, { emulateJSON: true }).then((response) => {
         response.body.updatedAt !== undefined ? this.modalDoc.updatedAt = response.body.updatedAt : null
         showAPISuccess({ title: 'OK', message: 'Cidade atualizada com sucesso!' })

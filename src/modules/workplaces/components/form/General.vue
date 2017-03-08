@@ -1,13 +1,11 @@
 <template lang="html">
   <transition name="fade">
     <div class="main-canvas">
-      <!-- providerId: <pre>{{ providerId }}</pre>
-      state: <pre>{{ state }}</pre>
-      form: <pre>{{ formFields }}</pre> -->
       <dm-breadcrumbs :object-links="breadcrumbs" :state="state"></dm-breadcrumbs>
 
       <div class="container box">
         <p class="title is-4">Dados Gerais</p>
+        <pre>{{ formFields }}</pre>
         <div class="columns is-multiline">
           <div class="column is-7">
             <div class="columns is-multiline">
@@ -27,36 +25,11 @@
                               label="E-mail *"
                               placeholder="Informe o nome"></dm-form-email>
               </div>
-              <div class="column is-5">
-                <dm-form-radio v-model="formFields.entityType"
-                              @input="$v.formFields['entityType'].$touch()"
-                              :vuelidate="$v.formFields['entityType']"
-                              :options="entityTypeOptions"
-                              label="Tipo *"></dm-form-radio>
-              </div>
-              <div class="column is-5" v-if="formFields.entityType !== 'J'">
-                <dm-form-cpf v-model="formFields.cpf"
-                             fa-icon="fa fa-id-card-o"
-                             @input="$v.formFields['cpf'].$touch()"
-                             :vuelidate="$v.formFields['cpf']"
-                             label="CPF *"
-                             placeholder="Número do CPF"></dm-form-cpf>
-              </div>
-              <div class="column is-5" v-if="formFields.entityType === 'J'">
-                <dm-form-cnpj v-model="formFields.cnpj"
-                             fa-icon="fa fa-id-card-o"
-                             @input="$v.formFields['cnpj'].$touch()"
-                             :vuelidate="$v.formFields['cnpj']"
-                             label="CNPJ *"
-                             placeholder="Número do CNPJ"></dm-form-cnpj>
-              </div>
               <div class="column">
                 <dm-form-boolean v-model="formFields.active"
                                  @click.native="$v.formFields['active'].$touch()"
                                  label="Ativo"></dm-form-boolean>
               </div>
-            </div>
-            <div class="columns is-multiline">
               <div class="column">
                 <span class="required-fields-legend-ast">* </span><span class="required-fields-legend">Campos requeridos.</span>
               </div>
@@ -81,7 +54,7 @@
         <div class="is-hidden-tablet dm-divisor">
         </div>
         <div class="abas" v-if="state === 'update'">
-          <dm-abas :provider-id="providerId"></dm-abas>
+          <dm-abas :workplace-id="workplaceId"></dm-abas>
         </div>
       </div>
 
@@ -94,7 +67,7 @@
 import Vue from 'vue'
 import Vuelidate from 'vuelidate'
 Vue.use(Vuelidate)
-import { required, email, minLength, maxLength } from 'vuelidate/lib/validators'
+import { required, email } from 'vuelidate/lib/validators'
 
 import _ from 'lodash'
 
@@ -107,9 +80,6 @@ import DmBreadcrumbs from '../../../ui/Breadcrumbs.vue'
 import DmFormName from '../../../ui/form/Name.vue'
 import DmFormEmail from '../../../ui/form/Email.vue'
 import DmFormTextarea from '../../../ui/form/Textarea.vue'
-import DmFormRadio from '../../../ui/form/Radio.vue'
-import DmFormCpf from '../../../ui/form/CPF.vue'
-import DmFormCnpj from '../../../ui/form/CNPJ.vue'
 import DmFormBoolean from '../../../ui/form/Boolean.vue'
 import DmButtons from '../../../ui/form/Buttons.vue'
 import DmAbas from './Abas.vue'
@@ -123,15 +93,25 @@ export default {
         name: '',
         email: '',
         description: '',
-        entityType: '',
-        cpf: '',
-        cnpj: '',
-        active: false
-      },
-      entityTypeOptions: [
-        { label: 'Física', value: 'F' },
-        { label: 'Jurídica', value: 'J' }
-      ]
+        active: false,
+        address: {
+          name: '',
+          number: '',
+          complement: '',
+          zipCode: ''
+        },
+        city: {
+          _id: '',
+          name: ''
+        },
+        geoLocation: {
+          coordinates: [],
+          Type: 'Point'
+        },
+        phone: '',
+        deadLineUserChoose: '',
+        nationalCode: ''
+      }
     }
   },
   validations: {
@@ -146,18 +126,26 @@ export default {
       description: {
         required
       },
-      entityType: {
-        required
-      },
-      cpf: {
-        minLength: minLength(14),
-        maxLength: maxLength(14)
-      },
-      cnpj: {
-        minLength: minLength(18),
-        maxLength: maxLength(18)
-      },
       active: {
+      },
+      address: {
+        name: {
+          required
+        },
+        neighborhood: {
+          required
+        },
+        zipCode: {
+          required
+        }
+      },
+      city: {
+        name: {
+          required
+        }
+      },
+      phone: {
+        required
       }
     }
   },
@@ -166,9 +154,6 @@ export default {
     DmFormName,
     DmFormEmail,
     DmFormTextarea,
-    DmFormRadio,
-    DmFormCpf,
-    DmFormCnpj,
     DmFormBoolean,
     DmButtons,
     DmAbas
@@ -178,19 +163,21 @@ export default {
       this.closeForm()
     }
     if (this.state === 'update') {
-      this.openDoc(this.providerId)
+      this.openDoc(this.workplaceId)
     }
   },
   methods: {
     closeForm () {
-      this.$router.push({ name: 'providers' })
+      this.$router.push({ name: 'workplaces' })
     },
     saveForm () {
+      console.log('entrou da saveForm()')
       this.state === 'new' ? this.newDoc() : this.updateDoc()
     },
-    openDoc (providerId) {
-      Http.get('/providers/' + providerId)
+    openDoc (workplaceId) {
+      Http.get('/workplaces/' + workplaceId + '/?_populate=city')
       .then(response => {
+        console.log('response', response, response.data)
         this.getFormFieldsFromResponse(response.data)
       })
       .catch(error => {
@@ -200,9 +187,10 @@ export default {
       })
     },
     newDoc () {
-      Http.post('/providers', this.cloneDataFormFields(this.formFields))
+      Http.post('/workplaces', this.cloneDataFormFields(this.formFields))
       .then(response => {
-        this.$router.push({ name: 'providers.update', params: { state: 'update', providerId: response.data._id } })
+        console.log('response', response, response.data)
+        this.$router.push({ name: 'workplaces.update', params: { state: 'update', workplaceId: response.data._id } })
         showAPISuccess({ title: 'OK', message: 'Prestador cadastrado com sucesso!' })
       })
       .catch(error => {
@@ -211,8 +199,9 @@ export default {
       })
     },
     updateDoc () {
-      Http.put('/providers', this.cloneDataFormFields(this.formFields))
+      Http.put('/workplaces', this.cloneDataFormFields(this.formFields))
       .then(response => {
+        console.log('response', response, response.data)
         showAPISuccess({ title: 'OK', message: 'Prestador alterado com sucesso!' })
       })
       .catch(error => {
@@ -221,8 +210,9 @@ export default {
       })
     },
     callbackDeleteDoc () {
-      Http.delete('/providers/' + this.providerId)
+      Http.delete('/workplaces/' + this.workplaceId)
       .then(response => {
+        console.log('response', response, response.data)
         showAPISuccess({ title: 'OK', message: 'Provider removido com sucesso!' })
         this.closeForm()
       })
@@ -232,6 +222,7 @@ export default {
       })
     },
     deleteDoc () {
+      console.log('dentrou da deleteDoc()')
       showConfirmDelete(this.callbackDeleteDoc)
     },
     cloneDataFormFields (_objData) {
@@ -241,7 +232,7 @@ export default {
         _formsFieldsCloned.createdById = this.session._id
       } else {
         _formsFieldsCloned.updatedById = this.session._id
-        _formsFieldsCloned._id = this.providerId
+        _formsFieldsCloned._id = this.workplaceId
       }
 
       _formsFieldsCloned.entityType === 'F' ? delete _formsFieldsCloned.cnpj : delete _formsFieldsCloned.cpf
@@ -254,17 +245,27 @@ export default {
       this.formFields.name = _cloned.name
       this.formFields.email = _cloned.email
       this.formFields.description = _cloned.description
-      this.formFields.entityType = _cloned.entityType
-      this.formFields.cpf = _cloned.cpf !== undefined ? _cloned.cpf : ''
-      this.formFields.cnpj = _cloned.cnpj !== undefined ? _cloned.cnpj : ''
       this.formFields.active = _cloned.active
+      this.formFields.address.name = _cloned.address.name
+      this.formFields.address.number = _cloned.address.number
+      this.formFields.address.complement = _cloned.address.complement
+      this.formFields.address.neighborhood = _cloned.address.neighborhood
+      this.formFields.address.zipCode = _cloned.address.zipCode
+      this.formFields.city._id = _cloned.city._id
+      this.formFields.city.name = _cloned.city.name
+      this.formFields.geoLocation.coordinates[0] = _cloned.geoLocation.coordinates[0]
+      this.formFields.geoLocation.coordinates[1] = _cloned.geoLocation.coordinates[1]
+      this.formFields.geoLocation.type = _cloned.geoLocation.type
+      this.formFields.phone = _cloned.phone
+      this.formFields.deadLineUserChoose = _cloned.deadLineUserChoose
+      this.formFields.nationalCode = _cloned.nationalCode
       this.$v.formFields.$touch()
     }
   },
   computed: {
     ...mapState({
       general: state => {
-        const { general } = state.providers
+        const { general } = state.workplaces
         return general
       },
       session: state => {
@@ -272,7 +273,7 @@ export default {
         return user
       },
       breadcrumbs: state => {
-        const { breadcrumbs } = state.providers.general
+        const { breadcrumbs } = state.workplaces.general
         return breadcrumbs
       }
     }),
@@ -292,8 +293,8 @@ export default {
       }
       return true
     },
-    providerId () {
-      return this.$route.params.providerId !== undefined ? this.$route.params.providerId : ''
+    workplaceId () {
+      return this.$route.params.workplaceId !== undefined ? this.$route.params.workplaceId : ''
     },
     state () {
       return this.$route.params.state !== undefined ? this.$route.params.state : ''

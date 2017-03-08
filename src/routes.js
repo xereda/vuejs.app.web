@@ -16,6 +16,8 @@ import Specialties from './modules/specialties/route'
 import Holidays from './modules/holidays/route'
 import Schedules from './modules/schedules/route'
 import Providers from './modules/providers/route'
+import Workplaces from './modules/workplaces/route'
+import Login from './modules/login/route'
 
 const routes = [
   ...Users,
@@ -30,7 +32,10 @@ const routes = [
   ...Specialties,
   ...Holidays,
   ...Schedules,
-  ...Providers
+  ...Providers,
+  ...Workplaces,
+  ...Login,
+  { path: '/', redirect: '/login' }
 ]
 
 const router = new Router({ routes })

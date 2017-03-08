@@ -155,12 +155,16 @@ export default {
   methods: {
     saveForm () {
       this.updateList = false
+      console.log('dentro do saveform')
+      console.log('------>>> : ', this.objectDataPost)
       Http.post('/providers/' + this.providerId + '/blockedLives', this.objectDataPost)
       .then(response => {
+        console.log('response', response, response.data)
         this.updateList = true
         showAPISuccess({ title: 'OK', message: 'Vida relacionada ao prestador com sucesso!' })
       })
       .catch(error => {
+        console.log(error.response)
         showAPIErrors(error.response)
       })
     }

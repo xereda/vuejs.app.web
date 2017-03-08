@@ -28,11 +28,11 @@
   import Multiselect from 'vue-multiselect'
 
   export default {
-    name: 'dmFormSelect',
+    name: 'dmFormMultiSelect',
     data () {
       return {
         isLoading: false,
-        dataList: [],
+        dataList: [{}],
         selectedObject: null
       }
     },
@@ -48,7 +48,7 @@
         let query = ''
         q !== undefined && q !== null && q !== '' ? query = '&name=/' + q + '/i' : query = ''
         const _uri = this.apiResource + '/?_limit=' + this.optionsLimit + this.activesOnly + this.filter + '&_fields=_id,name' + query
-        console.log('_uri para select: ', _uri)
+        console.log('_uri: ', _uri)
         Http.get(_uri)
         .then(response => {
           this.dataList = response.data
@@ -65,7 +65,8 @@
         this.asyncFind()
       },
       selectedObject (val) {
-        this.$emit('input', val)
+        console.log('vai passar este objeto: ', val)
+        this.$emit('input', val === null ? { _id: '', name: '' } : val)
       }
     },
     computed: {
@@ -144,7 +145,7 @@
 <style lang="css" scoped>
 
   select {
-    padding-left: 35px !important;
+    // padding-left: 35px !important;
   }
 
 </style>

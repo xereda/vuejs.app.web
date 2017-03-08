@@ -1,9 +1,9 @@
 <template>
   <div>
-    <dm-header></dm-header>
-    <dm-sub-menu></dm-sub-menu>
+    <dm-header v-if="$route.name !== 'login'"></dm-header>
+    <dm-sub-menu v-if="$route.name !== 'login'"></dm-sub-menu>
     <router-view></router-view>
-    <dm-footer></dm-footer>
+    <dm-footer v-if="$route.name !== 'login'"></dm-footer>
   </div>
 </template>
 
@@ -24,7 +24,7 @@ export default {
     return {
     }
   },
-  mounted () {
+  beforeCreate () {
   },
   components: {
     dmHeader,
@@ -99,7 +99,7 @@ export default {
       font-style: italic;
       font-weight: bold;
   }
-  
+
   .dm-divisor {
     height: 30px;
   }

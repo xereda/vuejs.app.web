@@ -36,18 +36,14 @@ export default {
     }
   },
   mounted () {
-    console.log('MOUNTED!!!')
     moment().locale('pt-BR', localePTBR)
     this.getList()
   },
   methods: {
     getList () {
       this.list = []
-      console.log(this.resourceURI)
       Http.get(this.resourceURI)
       .then(response => {
-        console.log('recuperou a lista dos subdocumentos: ', this.mainId, this.subDoc)
-        console.log(response.data)
         this.hydrateData(response.data)
       })
       .catch(error => {
@@ -56,11 +52,9 @@ export default {
       })
     },
     deleteItem (item) {
-      console.log('delete item: ', item)
       Http.delete(this.resourceURI + '/' + item)
       .then(response => {
         showAPISuccess({ title: 'OK', message: this.delItemMessage })
-        console.log(response.data)
         this.getList()
       })
       .catch(error => {

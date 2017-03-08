@@ -44,7 +44,6 @@
         return this.label !== undefined && this.label.length > 0
       },
       errorMessage () {
-        console.log('typeof this.vuelidate', typeof this.vuelidate, this.vuelidate)
         if (_isEmpty(this.vuelidate)) {
           return ''
         }
@@ -74,14 +73,12 @@
     },
     watch: {
       value (val, oldVal) {
-        console.log(val === null, val === '', val, oldVal)
         this.Calendar.setDate(val)
         // if (oldVal === '') {
         //   this.Calendar.setDate(val)
         // }
       },
       inputFormat (val, oldVal) {
-        console.log('vai formatar: ', val)
         this.Calendar.set('altFormat', val)
         this.Calendar.setDate(this.value)
       },
@@ -89,15 +86,15 @@
         if (val === true) {
           this.Calendar.clear()
         }
-      },
-      minDate (val) {
-        this.Calendar.set('minDate', val)
-        // this.Calendar.setDate(this.value)
-      },
-      maxDate (val) {
-        this.Calendar.set('minDate', val)
-        // this.Calendar.setDate(this.value)
       }
+      // minDate (val) {
+      //   this.Calendar.set('minDate', val)
+      //   // this.Calendar.setDate(this.value)
+      // },
+      // maxDate (val) {
+      //   this.Calendar.set('minDate', val)
+      //   // this.Calendar.setDate(this.value)
+      // }
     },
     props: {
       placeholder: {

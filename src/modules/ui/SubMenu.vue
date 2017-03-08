@@ -5,9 +5,6 @@
         <a :class="{ 'nav-item': true, 'is-tab': true, 'is-active': isCurrentRoute(module) }" v-for="module in config.modules">
           <router-link :to="module.route">{{ module.label }}</router-link>
         </a>
-        <a :class="{ 'nav-item': true, 'is-tab': true, 'is-active': false }" @click="alerta()">
-          Locais de Atendimento
-        </a>
       </div>
     </div>
   </nav>
@@ -15,15 +12,9 @@
 
 <script>
 import { mapState } from 'vuex'
-import izitoast from 'izitoast'
 
 export default {
   methods: {
-    alerta () {
-      izitoast.warning({ title: 'Caution', message: 'Refactoring process started. Global modules are missing. Documentation available on the VueJS website.' })
-      // izitoast.error({ title: 'Error', message: 'Synchronize the new component model, please.' })
-      // izitoast.info({ title: 'Info', message: 'VueJS offers tools for this work.' })
-    },
     isCurrentRoute (module) {
       if (this.$route.name === undefined) return false
       if (this.$route.name === null) return false
@@ -34,7 +25,7 @@ export default {
   computed: {
     ...mapState({
       general: state => {
-        const { general } = state.healthInsurances
+        const { general } = state
         return general
       },
       session: state => {

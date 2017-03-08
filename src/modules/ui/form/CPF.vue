@@ -55,7 +55,6 @@
         return this.label !== undefined && this.label.length > 0
       },
       errorMessage () {
-        console.log('typeof this.vuelidate', typeof this.vuelidate, this.vuelidate)
         if (_.isEmpty(this.vuelidate)) {
           return ''
         }

@@ -16,6 +16,8 @@ import specialties from '../modules/specialties/store/store'
 import holidays from '../modules/holidays/store/store'
 import schedules from '../modules/schedules/store/store'
 import providers from '../modules/providers/store/store'
+import workplaces from '../modules/workplaces/store/store'
+import login from '../modules/login/store/store'
 
 Vue.use(Vuex)
 
@@ -36,6 +38,8 @@ export default new Vuex.Store({
     specialties,
     holidays,
     schedules,
-    providers
+    providers,
+    workplaces,
+    login
   }
 })

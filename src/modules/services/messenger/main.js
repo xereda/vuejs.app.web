@@ -1,7 +1,5 @@
 import izitoast from 'izitoast'
 import _ from 'lodash'
-import store from '../../../store/store'
-console.log('store: ', store.state.config)
 
 const _TOAST_POSITION = 'topRight'
 
