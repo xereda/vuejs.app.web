@@ -25,11 +25,28 @@
                               label="E-mail *"
                               placeholder="Informe o nome"></dm-form-email>
               </div>
-              <div class="column">
-                <dm-form-boolean v-model="formFields.active"
-                                 @click.native="$v.formFields['active'].$touch()"
-                                 label="Ativo"></dm-form-boolean>
+            </div>
+            <div class="columns is-multiline">
+              <div class="column is-5">
+                <dm-form-phone v-model="formFields.phone"
+                              @input="$v.formFields['phone'].$touch()"
+                              :vuelidate="$v.formFields['phone']"
+                              fa-icon="fa fa-phone"
+                              label="Telefone"
+                              placeholder="(99) 9999-9999"></dm-form-phone>
               </div>
+              <div class="column is-4">
+                <dm-form-input v-model="formFields.nationalCode"
+                              label="Código Nacional"
+                              placeholder="Nome abreviado"></dm-form-input>
+                </div>
+                <div class="column">
+                  <dm-form-boolean v-model="formFields.active"
+                                   @click.native="$v.formFields['active'].$touch()"
+                                   label="Ativo"></dm-form-boolean>
+                </div>
+            </div>
+            <div class="columns is-multiline">
               <div class="column">
                 <span class="required-fields-legend-ast">* </span><span class="required-fields-legend">Campos requeridos.</span>
               </div>
@@ -43,6 +60,23 @@
                           placeholder="Informações sobre o prestador"></dm-form-textarea>
           </div>
         </div>
+        <div class="columns is-multiline">
+          <div class="column">
+            <div class="box">
+              <h5 class="subtitle is-5">Endereço</h5>
+              <div class="">
+                <div class="columns is-multiline">
+                  <div class="column">
+coluna 1
+                  </div>
+                  <div class="column">
+coluna 2
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="">
           <dm-buttons :save-enabled="enableSaveButton"
                       :cancel-enabled="true"
@@ -53,9 +87,9 @@
         </div>
         <div class="is-hidden-tablet dm-divisor">
         </div>
-        <div class="abas" v-if="state === 'update'">
+        <!-- <div class="abas" v-if="state === 'update'">
           <dm-abas :workplace-id="workplaceId"></dm-abas>
-        </div>
+        </div> -->
       </div>
 
     </div>
@@ -65,23 +99,29 @@
 
 <script>
 import Vue from 'vue'
+import { mapState } from 'vuex'
 import Vuelidate from 'vuelidate'
 Vue.use(Vuelidate)
 import { required, email } from 'vuelidate/lib/validators'
 
 import _ from 'lodash'
 
-import Http from '../../../../utils/services/http'
+import Http from 'utils/services/http'
 
-import { showAPIErrors, showAPISuccess, showConfirmDelete } from '../../../../utils/services/messenger/main'
+import { showAPIErrors,
+         showAPISuccess,
+         showConfirmDelete } from 'utils/services/messenger/main'
 
-import { mapState } from 'vuex'
-import DmBreadcrumbs from '../../../../utils/ui/Breadcrumbs.vue'
-import DmFormName from '../../../../utils/ui/form/Name.vue'
-import DmFormEmail from '../../../../utils/ui/form/Email.vue'
-import DmFormTextarea from '../../../../utils/ui/form/Textarea.vue'
-import DmFormBoolean from '../../../../utils/ui/form/Boolean.vue'
-import DmButtons from '../../../../utils/ui/form/Buttons.vue'
+import DmBreadcrumbs from 'utils/ui/Breadcrumbs.vue'
+
+import { DmFormName,
+         DmFormEmail,
+         DmFormTextarea,
+         DmFormBoolean,
+         DmFormPhone,
+         DmFormInput,
+         DmButtons } from 'utils/ui/form/main'
+
 import DmAbas from './Abas.vue'
 
 export default {
@@ -109,7 +149,6 @@ export default {
           Type: 'Point'
         },
         phone: '',
-        deadLineUserChoose: '',
         nationalCode: ''
       }
     }
@@ -156,6 +195,8 @@ export default {
     DmFormTextarea,
     DmFormBoolean,
     DmButtons,
+    DmFormPhone,
+    DmFormInput,
     DmAbas
   },
   mounted () {
@@ -171,14 +212,14 @@ export default {
       this.$router.push({ name: 'workplaces' })
     },
     saveForm () {
-      console.log('entrou da saveForm()')
+      console.log('entrou na saveForm()')
       this.state === 'new' ? this.newDoc() : this.updateDoc()
     },
     openDoc (workplaceId) {
       Http.get('/workplaces/' + workplaceId + '/?_populate=city')
       .then(response => {
         console.log('response', response, response.data)
-        this.getFormFieldsFromResponse(response.data)
+        this.hydrateDataForm(response.data)
       })
       .catch(error => {
         console.log(error.response)
@@ -239,7 +280,7 @@ export default {
 
       return _formsFieldsCloned
     },
-    getFormFieldsFromResponse (responseObj) {
+    hydrateDataForm (responseObj) {
       const _cloned = _.cloneDeep(responseObj)
       this.formFields._id = _cloned._id
       this.formFields.name = _cloned.name
@@ -257,7 +298,6 @@ export default {
       this.formFields.geoLocation.coordinates[1] = _cloned.geoLocation.coordinates[1]
       this.formFields.geoLocation.type = _cloned.geoLocation.type
       this.formFields.phone = _cloned.phone
-      this.formFields.deadLineUserChoose = _cloned.deadLineUserChoose
       this.formFields.nationalCode = _cloned.nationalCode
       this.$v.formFields.$touch()
     }
