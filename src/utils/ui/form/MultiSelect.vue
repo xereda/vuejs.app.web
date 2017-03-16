@@ -4,9 +4,9 @@
         <multiselect
           v-model="selectedObject"
           :options="dataList"
-          select-label="[enter] para selecionar"
-          selected-label="selecionado"
-          deselect-label="[enter] para remover"
+          :select-label="selectLabel"
+          :selected-label="selectedLabel"
+          :deselect-label="deselectLabel"
           :placeholder="placeholder"
           :loading="isLoading"
           :local-search="false"
@@ -47,9 +47,7 @@
         this.isLoading = true
         let query = ''
         q !== undefined && q !== null && q !== '' ? query = '&name=/' + q + '/i' : query = ''
-        const _uri = this.apiResource + '/?_limit=' + this.optionsLimit + this.activesOnly + this.filter + '&_fields=_id,name' + query
-        console.log('_uri: ', _uri)
-        Http.get(_uri)
+        Http.get(this.URIResource + query)
         .then(response => {
           this.dataList = response.data
           this.isLoading = false
@@ -72,6 +70,10 @@
     computed: {
       ...mapState({
       }),
+      URIResource () {
+        const _uri = this.apiResource + '/?_limit=' + this.optionsLimit + this.activesOnly + this.filter + '&_fields=_id,name'
+        return _uri
+      },
       activesOnly () {
         return this.actives !== undefined && this.actives === true ? '&active=true' : ''
       },
@@ -137,12 +139,25 @@
       vuelidate: {
         type: Object,
         default: () => Object.assign({})
+      },
+      selectLabel: {
+        type: String,
+        default: '[enter] para selecionar'
+      },
+      deselectLabel: {
+        type: String,
+        default: '[enter] para remover'
+      },
+      selectedLabel: {
+        type: String,
+        default: ''
       }
     }
   }
 </script>
 
 <style lang="css" scoped>
+  @import '~vue-multiselect/dist/vue-multiselect.min.css';
 
   select {
     // padding-left: 35px !important;

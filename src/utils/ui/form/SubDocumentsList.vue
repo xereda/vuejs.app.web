@@ -41,9 +41,11 @@ export default {
   },
   methods: {
     getList () {
+      console.log('vai atualizar a lista')
       this.list = []
       Http.get(this.resourceURI)
       .then(response => {
+        console.log('dentro do subdocumentolist: ', response.data)
         this.hydrateData(response.data)
       })
       .catch(error => {

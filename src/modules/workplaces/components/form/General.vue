@@ -11,7 +11,7 @@
             <div class="columns is-multiline">
               <div class="column is-6">
                 <dm-form-name v-model="formFields.name"
-                              @input="$v.formFields['name'].$touch()"
+                              @input.native="$v.formFields['name'].$touch()"
                               :vuelidate="$v.formFields['name']"
                               fa-icon="fa fa-user-md"
                               label="Nome *"
@@ -19,42 +19,37 @@
               </div>
               <div class="column is-6">
                 <dm-form-email v-model="formFields.email"
-                              @input="$v.formFields['email'].$touch()"
+                              @input.native="$v.formFields['email'].$touch()"
                               :vuelidate="$v.formFields['email']"
                               fa-icon="fa fa-envelope"
                               label="E-mail *"
-                              placeholder="Informe o nome"></dm-form-email>
+                              placeholder="Informe o e-mail"></dm-form-email>
               </div>
             </div>
             <div class="columns is-multiline">
               <div class="column is-5">
                 <dm-form-phone v-model="formFields.phone"
-                              @input="$v.formFields['phone'].$touch()"
+                              @input.native="$v.formFields['phone'].$touch()"
                               :vuelidate="$v.formFields['phone']"
                               fa-icon="fa fa-phone"
-                              label="Telefone"
+                              label="Telefone *"
                               placeholder="(99) 9999-9999"></dm-form-phone>
               </div>
               <div class="column is-4">
                 <dm-form-input v-model="formFields.nationalCode"
-                              label="Código Nacional"
-                              placeholder="Nome abreviado"></dm-form-input>
-                </div>
-                <div class="column">
-                  <dm-form-boolean v-model="formFields.active"
-                                   @click.native="$v.formFields['active'].$touch()"
-                                   label="Ativo"></dm-form-boolean>
-                </div>
-            </div>
-            <div class="columns is-multiline">
+                              label="Código nacional"
+                              placeholder="Código nacional"></dm-form-input>
+              </div>
               <div class="column">
-                <span class="required-fields-legend-ast">* </span><span class="required-fields-legend">Campos requeridos.</span>
+                <dm-form-boolean v-model="formFields.active"
+                                 @click.native="$v.formFields['active'].$touch()"
+                                 label="Ativo"></dm-form-boolean>
               </div>
             </div>
           </div>
           <div class="column">
             <dm-form-textarea v-model="formFields.description"
-                          @input="$v.formFields['description'].$touch()"
+                          @input.native="$v.formFields['description'].$touch()"
                           :vuelidate="$v.formFields['description']"
                           label="Sobre *"
                           placeholder="Informações sobre o prestador"></dm-form-textarea>
@@ -66,15 +61,73 @@
               <h5 class="subtitle is-5">Endereço</h5>
               <div class="">
                 <div class="columns is-multiline">
-                  <div class="column">
-coluna 1
+                  <div class="column is-2">
+                    <dm-form-cep v-model="formFields.address.zipCode"
+                                  @input="$v.formFields.address.zipCode.$touch()"
+                                  :vuelidate="$v.formFields.address.zipCode"
+                                  @change.native="getCEPData()"
+                                  label="CEP *"
+                                  placeholder="CEP"></dm-form-cep>
+                  </div>
+                  <div class="column is-5">
+                    <dm-form-name v-model="formFields.address.name"
+                                  @input="$v.formFields.address.name.$touch()"
+                                  :vuelidate="$v.formFields.address.name"
+                                  label="Nome *"
+                                  placeholder="Informe o logradouro"></dm-form-name>
+                  </div>
+                  <div class="column is-2">
+                    <dm-form-number v-model="formFields.address.number"
+                                    label="Número"
+                                    placeholder="Número"
+                                    fa-icon="fa fa-dot-circle-o"></dm-form-number>
+                  </div>
+                  <div class="column is-3">
+                    <dm-form-name v-model="formFields.address.neighborhood"
+                                  @input="$v.formFields.address.neighborhood.$touch()"
+                                  :vuelidate="$v.formFields.address.neighborhood"
+                                  label="Bairro *"
+                                  placeholder="Bairro"
+                                  fa-icon="fa fa-map-signs"></dm-form-name>
+                  </div>
+                </div>
+                <div class="columns is-multiline">
+                  <div class="column is-3">
+                    <dm-form-input v-model="formFields.address.complement"
+                                  label="Complemento"
+                                  placeholder="Complemento"></dm-form-input>
+                  </div>
+                  <div class="column is-3">
+                    <dm-form-latitude v-model="formFields.geoField.lat"
+                                  @input="$v.formFields.geoField.lat.$touch()"
+                                  :vuelidate="$v.formFields.geoField.lat"
+                                  label="Lat. *"
+                                  placeholder="Latitude"></dm-form-latitude>
+                  </div>
+                  <div class="column is-3">
+                    <dm-form-longitude v-model="formFields.geoField.long"
+                                  @input="$v.formFields.geoField.long.$touch()"
+                                  :vuelidate="$v.formFields.geoField.long"
+                                  label="Long. *"
+                                  placeholder="Longitude"></dm-form-longitude>
                   </div>
                   <div class="column">
-coluna 2
+                    <dm-form-select v-model="formFields.city"
+                               api-resource="cities"
+                               @input="$v.formFields.city.$touch()"
+                               :vuelidate="$v.formFields.city"
+                               :actives="true"
+                               label="Cidade *"
+                             ></dm-form-select>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+        <div class="columns is-multiline">
+          <div class="column">
+            <span class="required-fields-legend-ast">* </span><span class="required-fields-legend">Campos requeridos.</span>
           </div>
         </div>
         <div class="">
@@ -87,9 +140,9 @@ coluna 2
         </div>
         <div class="is-hidden-tablet dm-divisor">
         </div>
-        <!-- <div class="abas" v-if="state === 'update'">
+        <div class="abas" v-if="state === 'update'">
           <dm-abas :workplace-id="workplaceId"></dm-abas>
-        </div> -->
+        </div>
       </div>
 
     </div>
@@ -102,7 +155,8 @@ import Vue from 'vue'
 import { mapState } from 'vuex'
 import Vuelidate from 'vuelidate'
 Vue.use(Vuelidate)
-import { required, email } from 'vuelidate/lib/validators'
+import { required, email, minLength, maxLength, between } from 'vuelidate/lib/validators'
+// import 'izitoast/dist/css/iziToast.css'
 
 import _ from 'lodash'
 
@@ -110,6 +164,7 @@ import Http from 'utils/services/http'
 
 import { showAPIErrors,
          showAPISuccess,
+         showWarning,
          showConfirmDelete } from 'utils/services/messenger/main'
 
 import DmBreadcrumbs from 'utils/ui/Breadcrumbs.vue'
@@ -120,6 +175,11 @@ import { DmFormName,
          DmFormBoolean,
          DmFormPhone,
          DmFormInput,
+         DmFormCep,
+         DmFormNumber,
+         DmFormLatitude,
+         DmFormLongitude,
+         DmFormSelect,
          DmButtons } from 'utils/ui/form/main'
 
 import DmAbas from './Abas.vue'
@@ -127,7 +187,6 @@ import DmAbas from './Abas.vue'
 export default {
   data () {
     return {
-      teste: false,
       formFields: {
         _id: '',
         name: '',
@@ -138,15 +197,20 @@ export default {
           name: '',
           number: '',
           complement: '',
-          zipCode: ''
+          zipCode: '',
+          neighborhood: ''
         },
-        city: {
-          _id: '',
-          name: ''
-        },
+        city: '',
         geoLocation: {
-          coordinates: [],
+          coordinates: [
+            '',
+            ''
+          ],
           Type: 'Point'
+        },
+        geoField: {
+          lat: '',
+          long: ''
         },
         phone: '',
         nationalCode: ''
@@ -171,20 +235,34 @@ export default {
         name: {
           required
         },
-        neighborhood: {
-          required
-        },
         zipCode: {
+          required,
+          minLength: minLength(10),
+          maxLength: maxLength(10)
+        },
+        neighborhood: {
           required
         }
       },
       city: {
-        name: {
-          required
-        }
+        required
       },
       phone: {
         required
+      },
+      geoField: {
+        lat: {
+          required,
+          minLength: minLength(11),
+          maxLength: maxLength(11),
+          between: between(-85, 85)
+        },
+        long: {
+          required,
+          minLength: minLength(11),
+          maxLength: maxLength(12),
+          between: between(-180.0000001, 179.9999999)
+        }
       }
     }
   },
@@ -197,7 +275,12 @@ export default {
     DmButtons,
     DmFormPhone,
     DmFormInput,
-    DmAbas
+    DmAbas,
+    DmFormCep,
+    DmFormLatitude,
+    DmFormLongitude,
+    DmFormNumber,
+    DmFormSelect
   },
   mounted () {
     if (this.state !== 'new' && this.state !== 'update') {
@@ -208,6 +291,44 @@ export default {
     }
   },
   methods: {
+    cleanCEPData () {
+      this.formFields.address.name = ''
+      this.formFields.address.number = ''
+      this.formFields.address.complement = ''
+      this.formFields.address.neighborhood = ''
+      this.formFields.city = ''
+      this.formFields.geoLocation.coordinates[0] = ''
+      this.formFields.geoLocation.coordinates[1] = ''
+      this.formFields.geoField.lat = ''
+      this.formFields.geoField.long = ''
+    },
+    getCEPData () {
+      this.cleanCEPData()
+      console.log('dentro da get cep data')
+      Http.get(this.config.APICEPData + this.formFields.address.zipCode.replace('.', '').replace('-', ''))
+      .then(response => {
+        console.log(response.data)
+        this.formFields.address.name = response.data.logradouro
+        this.formFields.address.neighborhood = response.data.bairro
+        this.getCityData(response.data.cidade)
+      })
+      .catch(error => {
+        console.log(error)
+        showWarning({ title: 'CEP', message: 'CEP não existe ou inválido!', position: 'bottomLeft' })
+      })
+    },
+    getCityData (name) {
+      if (name === undefined || name === '') return false
+      Http.get('cities/?name=' + name.toUpperCase())
+      .then(response => {
+        console.log(response.data)
+        this.formFields.city = response.data[0]._id
+      })
+      .catch(error => {
+        console.log(error)
+        // showWarning({ title: 'CEP', message: 'CEP não existe ou inválido!' })
+      })
+    },
     closeForm () {
       this.$router.push({ name: 'workplaces' })
     },
@@ -232,7 +353,7 @@ export default {
       .then(response => {
         console.log('response', response, response.data)
         this.$router.push({ name: 'workplaces.update', params: { state: 'update', workplaceId: response.data._id } })
-        showAPISuccess({ title: 'OK', message: 'Prestador cadastrado com sucesso!' })
+        showAPISuccess({ title: 'OK', message: 'Local de atendimento cadastrado com sucesso!' })
       })
       .catch(error => {
         console.log(error.response)
@@ -243,7 +364,7 @@ export default {
       Http.put('/workplaces', this.cloneDataFormFields(this.formFields))
       .then(response => {
         console.log('response', response, response.data)
-        showAPISuccess({ title: 'OK', message: 'Prestador alterado com sucesso!' })
+        showAPISuccess({ title: 'OK', message: 'Local de atendimento alterado com sucesso!' })
       })
       .catch(error => {
         console.log(error.response)
@@ -254,7 +375,7 @@ export default {
       Http.delete('/workplaces/' + this.workplaceId)
       .then(response => {
         console.log('response', response, response.data)
-        showAPISuccess({ title: 'OK', message: 'Provider removido com sucesso!' })
+        showAPISuccess({ title: 'OK', message: 'Local de atendimento removido com sucesso!' })
         this.closeForm()
       })
       .catch(error => {
@@ -276,7 +397,12 @@ export default {
         _formsFieldsCloned._id = this.workplaceId
       }
 
-      _formsFieldsCloned.entityType === 'F' ? delete _formsFieldsCloned.cnpj : delete _formsFieldsCloned.cpf
+      _formsFieldsCloned.geoLocation.coordinates[0] = _formsFieldsCloned.geoField.long
+      _formsFieldsCloned.geoLocation.coordinates[1] = _formsFieldsCloned.geoField.lat
+      delete _formsFieldsCloned.geoField
+
+      _formsFieldsCloned.phone = _formsFieldsCloned.phone.replace('(', '').replace(')', '').replace('-', '').replace(' ', '')
+      _formsFieldsCloned.address.zipCode = _formsFieldsCloned.address.zipCode.replace('.', '').replace('-', '')
 
       return _formsFieldsCloned
     },
@@ -288,22 +414,28 @@ export default {
       this.formFields.description = _cloned.description
       this.formFields.active = _cloned.active
       this.formFields.address.name = _cloned.address.name
-      this.formFields.address.number = _cloned.address.number
+      this.formFields.address.number = _cloned.address.number.toString()
       this.formFields.address.complement = _cloned.address.complement
       this.formFields.address.neighborhood = _cloned.address.neighborhood
-      this.formFields.address.zipCode = _cloned.address.zipCode
-      this.formFields.city._id = _cloned.city._id
-      this.formFields.city.name = _cloned.city.name
+      this.formFields.address.zipCode = _cloned.address.zipCode.toString()
+      this.formFields.city = _cloned.city._id
       this.formFields.geoLocation.coordinates[0] = _cloned.geoLocation.coordinates[0]
       this.formFields.geoLocation.coordinates[1] = _cloned.geoLocation.coordinates[1]
       this.formFields.geoLocation.type = _cloned.geoLocation.type
-      this.formFields.phone = _cloned.phone
+      this.formFields.geoField.lat = _cloned.geoLocation.coordinates[1].toString()
+      this.formFields.geoField.long = _cloned.geoLocation.coordinates[0].toString()
+      this.formFields.phone = _cloned.phone.toString()
       this.formFields.nationalCode = _cloned.nationalCode
-      this.$v.formFields.$touch()
+      setTimeout(() => { this.$v.formFields.$touch() }, 200)
+      console.log(this.formFields)
     }
   },
   computed: {
     ...mapState({
+      config: state => {
+        const { config } = state
+        return config
+      },
       general: state => {
         const { general } = state.workplaces
         return general
@@ -322,15 +454,6 @@ export default {
     },
     enableSaveButton () {
       if (_.filter(this.$v.formFields, e => e.$invalid).length > 0) return false
-
-      if (this.formFields.entityType === 'F') {
-        if (this.formFields.cpf === '') return false
-        if (this.$v.formFields.cpf.$invalid) return false
-      }
-      if (this.formFields.entityType === 'J') {
-        if (this.formFields.cnpj === '') return false
-        if (this.$v.formFields.cnpj.$invalid) return false
-      }
       return true
     },
     workplaceId () {
@@ -346,14 +469,15 @@ export default {
         this.closeForm()
       }
     }
-    // 'formFields.entityType' (val) {
-    //   val === 'F' ? this.formFields.cnpj = '' : this.formFields.cpf = ''
+    // 'formFields.address.zipCode' (val) {
+    //   console.log('dentro do watch do cep', val)
     // }
   }
 }
 </script>
 
-<style lang="css" scoped>
+<style lang="scss">
+  @import '~izitoast/dist/css/iziToast.css';
   .main-canvas {
     min-height: 900px;
   }

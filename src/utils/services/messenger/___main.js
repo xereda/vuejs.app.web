@@ -37,9 +37,6 @@ const _humanMessage = (_data) => {
 }
 
 const showAPIErrors = (_objectErrors) => {
-  const _pos = _objectErrors.position !== undefined ? _objectErrors.position : _TOAST_POSITION
-  console.log('dentro da showAPIErrors(): ', _objectErrors, _pos)
-
   console.log('_objectErrors: ', _objectErrors)
   if ((_objectErrors === undefined) || (_objectErrors.data === undefined)) {
     return false
@@ -48,7 +45,7 @@ const showAPIErrors = (_objectErrors) => {
   console.log(1)
 
   if (_objectErrors.status === 0) {
-    izitoast.error({ title: 'AVISO - T0', message: 'Não foi possível acessar a API', position: _pos })
+    izitoast.error({ title: 'AVISO - T0', message: 'Não foi possível acessar a API', position: _TOAST_POSITION })
   }
   console.log(2)
 
@@ -56,41 +53,38 @@ const showAPIErrors = (_objectErrors) => {
     if (_objectErrors.data.err.errors !== undefined) {
       console.log('aaa')
       _.forEach(_objectErrors.data.err.errors, (value, key) => {
-        izitoast.error({ title: 'AVISO - T1', message: _humanMessage(value.message), position: _pos })
+        izitoast.error({ title: 'AVISO - T1', message: _humanMessage(value.message), position: _TOAST_POSITION })
       })
       return true
     }
     console.log(3)
 
     if (_objectErrors.data.err.errmsg !== undefined) {
-      izitoast.error({ title: 'AVISO - T2', message: _humanMessage(_objectErrors.data.err.errmsg), position: _pos })
+      izitoast.error({ title: 'AVISO - T2', message: _humanMessage(_objectErrors.data.err.errmsg), position: _TOAST_POSITION })
       return true
     }
     console.log(4)
 
     if (_objectErrors.data.err.message !== undefined) {
-      izitoast.error({ title: 'AVISO - T3', message: _humanMessage(_objectErrors.data.err.message), position: _pos })
+      izitoast.error({ title: 'AVISO - T3', message: _humanMessage(_objectErrors.data.err.message), position: _TOAST_POSITION })
       return true
     }
     console.log(5)
   }
 
   if (_objectErrors.data.error !== undefined) {
-    izitoast.error({ title: 'AVISO - T4', message: _humanMessage(_objectErrors.data.error), position: _pos })
+    izitoast.error({ title: 'AVISO - T4', message: _humanMessage(_objectErrors.data.error), position: _TOAST_POSITION })
     return true
   }
 }
 
 const showWarning = (_objectWarning) => {
-  const _pos = _objectWarning.position !== undefined ? _objectWarning.position : _TOAST_POSITION
-  izitoast.warning({ title: _objectWarning.title, message: _objectWarning.message, position: _pos })
+  izitoast.warning({ title: _objectWarning.title, message: _objectWarning.message, position: _TOAST_POSITION })
 }
 
 const showAPISuccess = (_objectMessage) => {
-  const _pos = _objectMessage.position !== undefined ? _objectMessage.position : _TOAST_POSITION
-  _objectMessage === undefined ? _objectMessage = { title: 'OK', message: 'Ação realizada com sucesso!' } : null
-  console.log({ title: _objectMessage.title, message: _objectMessage.message, position: _pos })
-  izitoast.success({ title: _objectMessage.title, message: _objectMessage.message, position: _pos })
+  (_objectMessage === undefined) ? _objectMessage = { title: 'OK', message: 'Ação realizada com sucesso!' } : null
+  izitoast.success({ title: _objectMessage.title, message: _objectMessage.message, position: _TOAST_POSITION })
 }
 
 const showConfirmDelete = (callback) => {
@@ -99,9 +93,9 @@ const showConfirmDelete = (callback) => {
     icon: 'fa fa-exclamation-triangle',
     color: 'red',
     title: 'Deseja excluir?',
-    message: 'Você realmente deseja excluir???',
+    message: 'Você realmente deseja excluir?',
     buttons: [
-      ['<button> Excluir </button>', (instance, toast) => {
+      ['<button>Excluir</button>', (instance, toast) => {
         callback()
         instance.hide({
           transitionOut: 'fadeOutUp',
@@ -110,7 +104,7 @@ const showConfirmDelete = (callback) => {
           }
         }, toast)
       }],
-      ['<button> Fechar </button>', (instance, toast) => {
+      ['<button>Fechar</button>', (instance, toast) => {
         instance.hide({
           transitionOut: 'fadeOutUp',
           onClose: (instance, toast, closedBy) => {

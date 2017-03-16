@@ -2,7 +2,7 @@
 <div>
   <label v-if="showLabel" class="label">{{ label }}</label>
   <p class="control has-icon">
-    <input :placeholder="placeholder" v-model="phone" ref="phone" :value="value" @input="applyMask($event.target.value)" :class="{ 'input': true, 'is-danger': hasError }"></input>
+    <input :placeholder="placeholder" v-model="cep" :value="value" @input="applyMask($event.target.value)" :class="{ 'input': true, 'is-danger': hasError }"></input>
     <span class="icon is-small">
       <i :class="faIcon"></i>
     </span>
@@ -17,10 +17,10 @@
   import AwesomeMask from 'awesome-mask'
 
   export default {
-    name: 'dmFormPhone',
+    name: 'dmFormCEP',
     data () {
       return {
-        phone: ''
+        cep: ''
       }
     },
     props: {
@@ -34,7 +34,7 @@
       },
       faIcon: {
         type: String,
-        default: 'fa fa-font'
+        default: 'fa fa-location-arrow'
       },
       label: {
         type: String,
@@ -47,8 +47,9 @@
     },
     methods: {
       applyMask (val) {
-        val.length > 14 ? this.phone = VMasker.toPattern(val, '(99) 99999-9999') : this.phone = VMasker.toPattern(val, '(99) 9999-9999')
-        this.$emit('input', this.phone)
+        // val.length > 14 ? this.phone = VMasker.toPattern(val, '99.999-999') : this.phone = VMasker.toPattern(val, '(99) 9999-9999')
+        this.cep = VMasker.toPattern(val, '99.999-999')
+        this.$emit('input', this.cep)
       }
     },
     computed: {
@@ -86,8 +87,7 @@
     },
     watch: {
       value (val) {
-        this.phone = val
-        val.length > 14 ? this.phone = VMasker.toPattern(val, '(99) 99999-9999') : this.phone = VMasker.toPattern(val, '(99) 9999-9999')
+        this.cep = VMasker.toPattern(val, '99.999-999')
       }
     }
   }

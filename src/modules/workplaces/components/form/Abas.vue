@@ -3,34 +3,25 @@
     <div class="">
       <div class="tabs is-boxed">
         <ul>
-          <li :class="{ 'is-active': isActivated('specialties') }">
-            <a @click="navTabs('specialties')">
-              <span class="icon is-small"><i class="fa fa-wrench"></i></span>
-              <span>Especialidades</span>
+          <li :class="{ 'is-active': isActivated('providers') }">
+            <a @click="navTabs('providers')">
+              <span class="icon is-small"><i class="fa fa-briefcase"></i></span>
+              <span>Prestadores</span>
             </a>
           </li>
-          <li :class="{ 'is-active': isActivated('blockedLives') }">
-            <a @click="navTabs('blockedLives')">
-              <span class="icon is-small"><i class="fa fa-lock"></i></span>
-              <span>Vidas bloqueadas</span>
-            </a>
-          </li>
-          <li :class="{ 'is-active': isActivated('workplaces') }">
-            <a @click="navTabs('workplaces')">
-              <span class="icon is-small"><i class="fa fa-map-marker"></i></span>
-              <span>Locais de atendimento</span>
+          <li :class="{ 'is-active': isActivated('users') }">
+            <a @click="navTabs('users')">
+              <span class="icon is-small"><i class="fa fa-users"></i></span>
+              <span>Usuários</span>
             </a>
           </li>
         </ul>
       </div>
-      <div class="" v-show="isActivated('specialties')">
-        <dm-specialties :providerId="providerId"></dm-specialties>
+      <div class="" v-show="isActivated('providers')">
+        <dm-providers :workplaceId="workplaceId"></dm-providers>
       </div>
-      <div class="" v-show="isActivated('blockedLives')">
-        <dm-blocked-lives :providerId="providerId"></dm-blocked-lives>
-      </div>
-      <div class="" v-show="isActivated('workplaces')">
-        <dm-workplaces :providerId="providerId"></dm-workplaces>
+      <div class="" v-show="isActivated('users')">
+        <dm-users :workplaceId="workplaceId"></dm-users>
       </div>
     </div>
   </transition>
@@ -38,14 +29,13 @@
 </template>
 
 <script>
-import DmSpecialties from './Specialties.vue'
-import DmBlockedLives from './BlockedLives.vue'
-import DmWorkplaces from './Workplaces.vue'
+import DmProviders from './Providers.vue'
+import DmUsers from './Users.vue'
 
 export default {
   data () {
     return {
-      activatedTab: 'specialties'
+      activatedTab: 'providers'
     }
   },
   methods: {
@@ -57,12 +47,11 @@ export default {
     }
   },
   components: {
-    DmSpecialties,
-    DmBlockedLives,
-    DmWorkplaces
+    DmProviders,
+    DmUsers
   },
   props: {
-    providerId: {
+    workplaceId: {
       type: String,
       required: true
     }

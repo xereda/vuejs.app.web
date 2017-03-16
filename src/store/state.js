@@ -61,6 +61,7 @@ export default {
     },
     APIURIBase: 'http://localhost:5000/',
     // APIURIBase: 'http://homologa.docmob.com.br:5000/', // homologacao
+    APICEPData: 'http://api.postmon.com.br/v1/cep/',
     grid: {
       delayLoading: 250,
       textCropLength: 40

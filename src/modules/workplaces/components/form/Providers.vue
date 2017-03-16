@@ -1,31 +1,28 @@
 <template lang="html">
   <transition name="fade">
     <div class="">
-      <div class="columns">
-        <div class="column is-narrow">
+      <div class="columns is-multiline">
+        <div class="column is-4">
           <div class="box">
             <h4 class="subtitle is-4">Adicionar</h4>
             <div class="columns is-multiline">
               <div class="column">
-                <dm-form-select v-model="formFields.professionalActivity"
-                           api-resource="professionalActivities"
-                           @input="$v.formFields['professionalActivity'].$touch()"
+                <dm-form-multi-select v-model="providerSelectedObject"
+                           api-resource="providers"
                            :actives="true"
-                           :vuelidate="$v.formFields['professionalActivity']"
-                           label="Ramo de Atividade *"
-                           ></dm-form-select>
+                           label="Prestador *"
+                           select-label=""
+                         ></dm-form-multi-select>
               </div>
             </div>
             <div class="columns is-multiline">
               <div class="column">
-                <dm-form-select v-model="formFields.specialty"
-                           api-resource="specialties"
-                           @input="$v.formFields['specialty'].$touch()"
+                <dm-form-multi-select v-model="specialtiesSelectedObject"
+                           api-resource="providers/58b8f12a3485d918d15f5f6a/specialties"
                            :actives="true"
-                           :vuelidate="$v.formFields['specialty']"
-                           :filter="specialtiesFilter"
-                           label="Especialidades *"
-                         ></dm-form-select>
+                           label="Prestador *"
+                           select-label=""
+                         ></dm-form-multi-select>
               </div>
             </div>
             <div class="columns is-multiline">
@@ -47,13 +44,13 @@
           </div>
         </div>
         <div class="column">
-         <dm-specialties-list api-resource="providers"
-                              :mainId="providerId"
-                              subDoc="specialties"
+         <dm-list api-resource="workplaces"
+                              :mainId="workplaceId"
+                              subDoc="providers"
                               :update-list="updateList"
                               :data-def="dataTableDef"
-                              del-item-message="Especialidade removida com sucesso!"
-                              ></dm-specialties-list>
+                              del-item-message="Prestador removido com sucesso!"
+                              ></dm-list>
         </div>
       </div>
     </div>
@@ -70,37 +67,51 @@ import { mapState } from 'vuex'
 
 import _ from 'lodash'
 
-import Http from '../../../../utils/services/http'
-import { showAPIErrors, showAPISuccess } from '../../../../utils/services/messenger/main'
+import Http from 'utils/services/http'
+import { showAPIErrors, showAPISuccess } from 'utils/services/messenger/main'
 
-import DmFormSelect from '../../../../utils/ui/form/Select.vue'
-import DmFormInput from '../../../../utils/ui/form/Input.vue'
-import DmFormButtons from '../../../../utils/ui/form/Buttons.vue'
+import DmFormMultiSelect from 'utils/ui/form/MultiSelect.vue'
+import DmFormSelect from 'utils/ui/form/Select.vue'
+import DmFormEmail from 'utils/ui/form/Email.vue'
+import DmFormBoolean from 'utils/ui/form/Boolean.vue'
+import DmFormNumber from 'utils/ui/form/Number.vue'
+import DmFormButtons from 'utils/ui/form/Buttons.vue'
 
-import DmSpecialtiesList from '../../../../utils/ui/form/SubDocumentsList.vue'
+import DmList from 'utils/ui/form/SubDocumentsList.vue'
 
 export default {
   data () {
     return {
+      providerSelectedObject: {
+        _id: '',
+        name: ''
+      },
+      specialtiesSelectedObject: [
+        {
+          _id: '',
+          name: ''
+        }
+      ],
       formFields: {
-        professionalActivity: '',
-        specialty: '',
-        regionalCouncilCode: ''
+        provider: '',
+        specialties: [
+          { specialty: '' }
+        ],
+        phoneExtension: '',
+        email: '',
+        deadlineScheduleCancel: '',
+        lockedCancel: false,
+        alertCancel: ''
       },
       updateList: false,
       dataTableDef: {
         _id: {
-          field: 'specialty._id',
+          field: 'provider._id',
           visible: false
         },
-        specialty: {
-          label: 'Especialidade',
-          field: 'specialty.name',
-          visible: true
-        },
-        regionalCouncilCode: {
-          label: 'Código no CR',
-          field: 'regionalCouncilCode',
+        provider: {
+          label: 'Prestador',
+          field: 'provider.name',
           visible: true
         }
       }
@@ -108,29 +119,34 @@ export default {
   },
   validations: {
     formFields: {
-      professionalActivity: {
+      provider: {
         required
       },
-      specialty: {
-        required
+      specialties: {
+        '0': {
+          required
+        }
       }
     }
   },
   components: {
+    DmFormMultiSelect,
     DmFormSelect,
-    DmFormInput,
+    DmFormNumber,
+    DmFormEmail,
+    DmFormBoolean,
     DmFormButtons,
-    DmSpecialtiesList
+    DmList
   },
   methods: {
     saveForm () {
       this.updateList = false
       console.log('dentro do saveform')
-      Http.post('/providers/' + this.providerId + '/specialties', this.objectDataPost)
+      Http.post('/workplaces/' + this.workplaceId + '/providers', this.cloneDataFormFields())
       .then(response => {
         console.log('response', response, response.data)
         this.updateList = true
-        showAPISuccess({ title: 'OK', message: 'Especialidade relacionada ao prestador com sucesso!' })
+        showAPISuccess({ title: 'OK', message: 'Prestador relacionado ao local de atendimento com sucesso!' })
       })
       .catch(error => {
         console.log(error.response)
@@ -141,24 +157,24 @@ export default {
   computed: {
     ...mapState({
       general: state => {
-        const { general } = state.providers
+        const { general } = state.workplaces
         return general
       },
       session: state => {
         const { user } = state
         return user
-      },
-      breadcrumbs: state => {
-        const { breadcrumbs } = state.providers.general
-        return breadcrumbs
       }
     }),
-    objectDataPost () {
-      return {
-        specialty: this.formFields.specialty,
-        regionalCouncilCode: this.formFields.regionalCouncilCode,
-        createdById: this.session._id
+    cloneDataFormFields () {
+      const _formsFieldsCloned = _.cloneDeep(this.formFields)
+
+      if (this.state === 'new') {
+        _formsFieldsCloned.createdById = this.session._id
+      } else {
+        _formsFieldsCloned.updatedById = this.session._id
       }
+
+      return _formsFieldsCloned
     },
     specialtiesFilter () {
       return '&professionalActivity=' + this.formFields.professionalActivity
@@ -169,7 +185,7 @@ export default {
     }
   },
   props: {
-    providerId: {
+    workplaceId: {
       type: String,
       required: true
     }

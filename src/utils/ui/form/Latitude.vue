@@ -2,7 +2,7 @@
 <div>
   <label v-if="showLabel" class="label">{{ label }}</label>
   <p class="control has-icon">
-    <input :placeholder="placeholder" v-model="phone" ref="phone" :value="value" @input="applyMask($event.target.value)" :class="{ 'input': true, 'is-danger': hasError }"></input>
+    <input :placeholder="placeholder" v-model="geoLocation" ref="geo" :value="value" @input="applyMask($event.target.value)" :class="{ 'input': true, 'is-danger': hasError }"></input>
     <span class="icon is-small">
       <i :class="faIcon"></i>
     </span>
@@ -17,10 +17,10 @@
   import AwesomeMask from 'awesome-mask'
 
   export default {
-    name: 'dmFormPhone',
+    name: 'DmFormLatitude',
     data () {
       return {
-        phone: ''
+        geoLocation: ''
       }
     },
     props: {
@@ -34,7 +34,7 @@
       },
       faIcon: {
         type: String,
-        default: 'fa fa-font'
+        default: 'fa fa-map-marker'
       },
       label: {
         type: String,
@@ -47,8 +47,19 @@
     },
     methods: {
       applyMask (val) {
-        val.length > 14 ? this.phone = VMasker.toPattern(val, '(99) 99999-9999') : this.phone = VMasker.toPattern(val, '(99) 9999-9999')
-        this.$emit('input', this.phone)
+        console.log(val, val.length, this.geoLocation.length, this.geoLocation, this.geoLocation.indexOf('+') > -1)
+        if (this.geoLocation.indexOf('+') > -1) {
+          // console.log('vai aplicar a maskara com positivo')
+          this.geoLocation = VMasker.toPattern(val, '+99.9999999')
+          val.length === 1 ? this.geoLocation = '+' + val.replace('+', '') : null
+          // VMasker(this.$refs.geo).maskPattern('+99.9999999')
+        } else {
+          // console.log('vai aplicar a maskara com negativo')
+          this.geoLocation = VMasker.toPattern(val, '-99.9999999')
+          val.length === 1 ? this.geoLocation = '-' + val.replace('-', '') : null
+          // VMasker(this.$refs.geo).maskPattern('-99.9999999')
+        }
+        this.$emit('input', this.geoLocation)
       }
     },
     computed: {
@@ -75,6 +86,9 @@
         if (this.vuelidate.maxLength !== undefined && this.vuelidate.maxLength === false) {
           return 'Ultrapassou qt máxima de caracteres!'
         }
+        if (this.vuelidate.between !== undefined && this.vuelidate.between === false) {
+          return this.placeholder + ' está fora do intervalo permitido!'
+        }
         return ''
       },
       hasError () {
@@ -86,8 +100,8 @@
     },
     watch: {
       value (val) {
-        this.phone = val
-        val.length > 14 ? this.phone = VMasker.toPattern(val, '(99) 99999-9999') : this.phone = VMasker.toPattern(val, '(99) 9999-9999')
+        this.geoLocation = val
+        this.applyMask(val)
       }
     }
   }
