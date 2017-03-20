@@ -5,7 +5,6 @@
 
       <div class="container box">
         <p class="title is-4">Dados Gerais</p>
-        <pre>{{ formFields }}</pre>
         <div class="columns is-multiline">
           <div class="column is-7">
             <div class="columns is-multiline">

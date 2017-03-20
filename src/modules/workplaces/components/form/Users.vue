@@ -7,11 +7,11 @@
             <h4 class="subtitle is-4">Adicionar</h4>
             <div class="columns is-multiline">
               <div class="column">
-                <dm-form-multi-select v-model="formFields.selectedObject"
+                <dm-form-search-select v-model="formFields.selectedObject"
                            api-resource="users"
                            :actives="true"
                            label="Usuário *"
-                         ></dm-form-multi-select>
+                         ></dm-form-search-select>
               </div>
             </div>
             <div class="columns is-multiline">
@@ -51,7 +51,7 @@ import _ from 'lodash'
 import Http from 'utils/services/http'
 import { showAPIErrors, showAPISuccess } from 'utils/services/messenger/main'
 
-import DmFormMultiSelect from 'utils/ui/form/MultiSelect.vue'
+import DmFormSearchSelect from 'utils/ui/form/SearchSelect.vue'
 import DmList from 'utils/ui/form/SubDocumentsList.vue'
 import DmFormButtons from 'utils/ui/form/Buttons.vue'
 
@@ -94,7 +94,7 @@ export default {
   },
   components: {
     DmList,
-    DmFormMultiSelect,
+    DmFormSearchSelect,
     DmFormButtons
   },
   methods: {

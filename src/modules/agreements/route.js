@@ -2,8 +2,8 @@ import Module from './Main.vue'
 
 export default [
   {
-    path: '/healthInsurances',
-    name: 'healthInsurances',
+    path: '/agreements',
+    name: 'agreements',
     component: Module
   }
 ]

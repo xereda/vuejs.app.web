@@ -6,6 +6,7 @@ import DmFormCPF from './CPF.vue'
 import DmFormDate from './Date.vue'
 import DmFormEmail from './Email.vue'
 import DmFormMultiSelect from './MultiSelect.vue'
+import DmFormSearchSelect from './SearchSelect.vue'
 import DmFormName from './Name.vue'
 import DmFormRadio from './Radio.vue'
 import DmFormSelect from './Select.vue'
@@ -26,6 +27,7 @@ export {
   DmFormDate,
   DmFormEmail,
   DmFormMultiSelect,
+  DmFormSearchSelect,
   DmFormName,
   DmFormRadio,
   DmFormSelect,

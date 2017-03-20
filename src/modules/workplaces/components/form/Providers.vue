@@ -1,44 +1,75 @@
 <template lang="html">
   <transition name="fade">
     <div class="">
+      <pre>{{ formFields }}</pre>
+      <pre>{{ specialtiesSelectedObject }}</pre>
+      <pre>{{ $v }}</pre>
       <div class="columns is-multiline">
         <div class="column is-4">
           <div class="box">
             <h4 class="subtitle is-4">Adicionar</h4>
             <div class="columns is-multiline">
               <div class="column">
-                <dm-form-multi-select v-model="providerSelectedObject"
+                <dm-form-search-select v-model="providerSelectedObject"
                            api-resource="providers"
                            :actives="true"
                            label="Prestador *"
                            select-label=""
-                         ></dm-form-multi-select>
+                         ></dm-form-search-select>
               </div>
             </div>
             <div class="columns is-multiline">
               <div class="column">
                 <dm-form-multi-select v-model="specialtiesSelectedObject"
-                           api-resource="providers/58b8f12a3485d918d15f5f6a/specialties"
-                           :actives="true"
-                           label="Prestador *"
+                           api-resource="providers"
+                           subdoc="specialties"
+                           subdoc-field="specialty"
+                           :doc-id="providerSelectedObject._id"
+                           :disabled="providerSelectedObject._id === ''"
+                           label="Especilidades *"
                            select-label=""
                          ></dm-form-multi-select>
               </div>
             </div>
             <div class="columns is-multiline">
               <div class="column">
-                <dm-form-input v-model="formFields.regionalCouncilCode"
-                              fa-icon="fa fa-credit-card-alt"
-                              label="Código no CR *"
-                              placeholder="cod. no conselho reg."></dm-form-input>
+                <dm-form-email v-model="formFields.email"
+                              @input.native="$v.formFields.email.$touch()"
+                              :vuelidate="$v.formFields.email"
+                              fa-icon="fa fa-envelope"
+                              label="E-mail *"
+                              placeholder="Informe o e-mail"></dm-form-email>
+              </div>
+            </div>
+            <div class="columns is-multiline">
+              <div class="column is-6">
+                <dm-form-number v-model="formFields.phoneExtension"
+                              fa-icon="fa fa-phone"
+                              label="Fone/Ramal"
+                              placeholder="Ramal"></dm-form-number>
+              </div>
+              <div class="column is-6">
+                <dm-form-number v-model="formFields.deadlineScheduleCancel"
+                              fa-icon="fa fa-exclamation"
+                              label="Prazo canc."
+                              placeholder="Minutos"></dm-form-email>
+              </div>
+              <div class="column is-11">
+                <dm-form-boolean v-model="formFields.lockedCancel"
+                              label="Bloqueia canc."></dm-form-boolean>
+              </div>
+              <div class="column">
+                <dm-form-textarea v-model="formFields.alertCancel"
+                               :disabled="!formFields.lockedCancel"
+                               label="Alerta bloqueio"></dm-form-textarea>
               </div>
             </div>
             <div class="columns is-multiline">
               <div class="column">
-                <dm-form-buttons :save-enabled="enableSaveButton"
+                <dm-buttons :save-enabled="enableSaveButton"
                             :show-cancel="false"
                             :show-delete="false"
-                            @action-save="saveForm"></dm-form-buttons>
+                            @action-save="saveForm"></dm-buttons>
               </div>
             </div>
           </div>
@@ -61,7 +92,7 @@
 import Vue from 'vue'
 import Vuelidate from 'vuelidate'
 Vue.use(Vuelidate)
-import { required } from 'vuelidate/lib/validators'
+import { required, email } from 'vuelidate/lib/validators'
 
 import { mapState } from 'vuex'
 
@@ -70,12 +101,13 @@ import _ from 'lodash'
 import Http from 'utils/services/http'
 import { showAPIErrors, showAPISuccess } from 'utils/services/messenger/main'
 
-import DmFormMultiSelect from 'utils/ui/form/MultiSelect.vue'
-import DmFormSelect from 'utils/ui/form/Select.vue'
-import DmFormEmail from 'utils/ui/form/Email.vue'
-import DmFormBoolean from 'utils/ui/form/Boolean.vue'
-import DmFormNumber from 'utils/ui/form/Number.vue'
-import DmFormButtons from 'utils/ui/form/Buttons.vue'
+import { DmFormMultiSelect,
+         DmFormSearchSelect,
+         DmFormEmail,
+         DmFormBoolean,
+         DmFormNumber,
+         DmFormTextarea,
+         DmButtons } from 'utils/ui/form/main'
 
 import DmList from 'utils/ui/form/SubDocumentsList.vue'
 
@@ -94,9 +126,7 @@ export default {
       ],
       formFields: {
         provider: '',
-        specialties: [
-          { specialty: '' }
-        ],
+        specialties: [],
         phoneExtension: '',
         email: '',
         deadlineScheduleCancel: '',
@@ -122,20 +152,19 @@ export default {
       provider: {
         required
       },
-      specialties: {
-        '0': {
-          required
-        }
+      email: {
+        email
       }
     }
   },
   components: {
+    DmFormSearchSelect,
     DmFormMultiSelect,
-    DmFormSelect,
     DmFormNumber,
     DmFormEmail,
     DmFormBoolean,
-    DmFormButtons,
+    DmButtons,
+    DmFormTextarea,
     DmList
   },
   methods: {
@@ -191,8 +220,13 @@ export default {
     }
   },
   watch: {
-    'formFields.professionalActivity' (val) {
-      this.formFields.specialty = ''
+    providerSelectedObject (val) {
+      console.log('dentro do watch - providerSelectedObject: ', val)
+      this.formFields.provider = val._id
+    },
+    specialtiesSelectedObject (val) {
+      console.log('dentro do watch - specialtiesSelectedObject: ', val)
+      this.formFields.specialties = val.map(e => { return e._id })
     }
   }
 }

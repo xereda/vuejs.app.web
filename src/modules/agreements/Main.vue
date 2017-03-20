@@ -49,7 +49,7 @@
           </div>
           <!-- Right side -->
           <div class="level-right">
-            <p class="level-item" v-if="isNotEmpty(booleanColumns)"><a :class="getCSSState()" @click="hi_removeAllBooleanFilter([])"><strong>Todos</strong></a></p>
+            <p class="level-item" v-if="isNotEmpty(booleanColumns)"><a :class="getCSSState()" @click="agreements_removeAllBooleanFilter([])"><strong>Todos</strong></a></p>
             <p class="level-item"
                v-for="(col, index) in booleanColumns">
               <a :class="getCSSState()" @click="localAddBooleanFilter(index)" v-if="isBooleanApplied(index) === false">{{ col.label }}</a>
@@ -184,13 +184,13 @@ export default {
       return !_.isEmpty(_booleanColumns)
     },
     ...mapActions([
-      'hi_updateCurrentPag',
-      'hi_updateTotalDocs',
-      'hi_updateFiltersSearch',
-      'hi_addBooleanFilter',
-      'hi_removeBooleanFilter',
-      'hi_removeAllBooleanFilter',
-      'hi_addSortColumn'
+      'agreements_updateCurrentPag',
+      'agreements_updateTotalDocs',
+      'agreements_updateFiltersSearch',
+      'agreements_addBooleanFilter',
+      'agreements_removeBooleanFilter',
+      'agreements_removeAllBooleanFilter',
+      'agreements_addSortColumn'
     ]),
     newDocument () {
       this.control.modal.documentId = ''
@@ -243,13 +243,13 @@ export default {
     },
     localUpdateSearchFilters () {
       const _search = this.control.filters.search
-      this.hi_updateFiltersSearch({ text: _search.text, fieldName: _search.fieldName, state: 'applied' })
+      this.agreements_updateFiltersSearch({ text: _search.text, fieldName: _search.fieldName, state: 'applied' })
     },
     localRemoveBooleanFilter (field) {
-      this.hi_removeBooleanFilter(field)
+      this.agreements_removeBooleanFilter(field)
     },
     localAddBooleanFilter (field) {
-      this.hi_addBooleanFilter(field)
+      this.agreements_addBooleanFilter(field)
     },
     isBooleanApplied (index) {
       const _boolean = this.filters.boolean
@@ -261,11 +261,11 @@ export default {
     clearSearchFields () {
       const _obj = { text: '', fieldName: 'q', state: '' } // defino o objeto para zerar as propriedades
       this.control.filters.search = _.clone(_obj) // esta em meu data
-      this.hi_updateFiltersSearch(_obj) // eh uma mutations invocada por uma action no vuex
+      this.agreements_updateFiltersSearch(_obj) // eh uma mutations invocada por uma action no vuex
     },
     changePag (pag) {
       if (pag !== undefined) {
-        this.hi_updateCurrentPag(pag)
+        this.agreements_updateCurrentPag(pag)
       }
       this.getAll()
     },
@@ -338,7 +338,7 @@ export default {
     localAddSortColumn (column) {
       if (this.isLoading() === false) {
         this.control.disableSortColumns = true
-        this.hi_addSortColumn({ field: column, sort: this.getSortColumnState(column) })
+        this.agreements_addSortColumn({ field: column, sort: this.getSortColumnState(column) })
         this.changePag(1)
       }
     },
@@ -392,7 +392,7 @@ export default {
       // GET /someUrl
       const _uri = this.config.APIURIBase + this.API.resource + '/?_fields=' + _fields + _params + '&_sort=' + _sort
       this.$http.get(_uri).then((response) => {
-        this.hi_updateTotalDocs(response.headers.get('X-Total-Count'))
+        this.agreements_updateTotalDocs(response.headers.get('X-Total-Count'))
         response.body[0]._id !== undefined ? this.docs = response.body : this.docs = []
         this.stopLoading()
         clearTimeout(startProcess)
@@ -410,19 +410,19 @@ export default {
   computed: {
     ...mapState({
       general: state => {
-        const { general } = state.healthInsurances
+        const { general } = state.agreements
         return general
       },
       API: state => {
-        const { API } = state.healthInsurances
+        const { API } = state.agreements
         return API
       },
       collection: state => {
-        const { collection } = state.healthInsurances
+        const { collection } = state.agreements
         return collection
       },
       booleanColumns: state => {
-        const { collection } = state.healthInsurances
+        const { collection } = state.agreements
         let _obj = {}
         Object.keys(collection).forEach((element, index) => {
           if (collection[element].type === 'boolean') {
@@ -433,7 +433,7 @@ export default {
         return _obj
       },
       returnableColumnFields: state => {
-        const { collection } = state.healthInsurances
+        const { collection } = state.agreements
         let _arr = []
         Object.keys(collection).forEach((element) => {
           if (collection[element].APIReturnable === true) {
@@ -455,16 +455,16 @@ export default {
         return config.spinner
       },
       pagination: state => {
-        const { pagination } = state.healthInsurances
+        const { pagination } = state.agreements
         return pagination
       },
       filters: state => {
-        const { filters } = state.healthInsurances
+        const { filters } = state.agreements
         return filters
       },
       sort: state => {
         let _arr = []
-        const { sort } = state.healthInsurances
+        const { sort } = state.agreements
         sort.forEach((element, index) => {
           element['sort'] === 'desc' ? _arr.push('-' + element['field']) : _arr.push(element['field'])
         })
@@ -481,11 +481,11 @@ export default {
   },
   watch: {
     'filters.search.state' (val, oldVal) {
-      this.hi_updateCurrentPag(1)
+      this.agreements_updateCurrentPag(1)
       this.getAll()
     },
     'filters.boolean' (val, oldVal) {
-      this.hi_updateCurrentPag(1)
+      this.agreements_updateCurrentPag(1)
       this.getAll()
     }
   }

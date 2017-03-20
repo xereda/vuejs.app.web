@@ -13,11 +13,7 @@
           @search-change="asyncFind"
           :searchable="true"
           track-by="_id"
-          :disabled="disabled"
-          :multiple="true"
-          :close-on-select="false"
-          :clear-on-select="true"
-          :hide-selected="true"
+          :multiple="multiple"
           label="name">
           <span slot="noResult" class="noResult">Não há elementos com a pesquisa.</span>
         </multiselect>
@@ -34,7 +30,7 @@
   import Multiselect from 'vue-multiselect'
 
   export default {
-    name: 'dmFormMultiSelect',
+    name: 'dmFormSearchSelect',
     data () {
       return {
         isLoading: false,
@@ -50,32 +46,18 @@
     },
     methods: {
       asyncFind (q) {
-        if (this.subdoc === '' || this.docId === '') return false
-        this.dataList = []
         this.isLoading = true
         let query = ''
-        q !== undefined && q !== null && q !== '' ? query = '&' + this.subdocField + '.name=/' + q + '/i' : query = ''
+        q !== undefined && q !== null && q !== '' ? query = '&name=/' + q + '/i' : query = ''
         Http.get(this.URIResource + query)
         .then(response => {
-          this.hidratyDataList(response.data)
+          this.dataList = response.data
           this.isLoading = false
         })
         .catch(error => {
           console.log(error)
           this.isLoading = false
         })
-      },
-      // hidratyDataList (data) {
-      //   const _list = []
-      //   data.map(element => {
-      //     _list.push({ _id: element[this.subdocField]._id, name: element[this.subdocField].name })
-      //   })
-      //   this.dataList = _list
-      // }
-      hidratyDataList (data) {
-        this.dataList = (data.map(e => {
-          return e[this.subdocField]
-        })).map(e => { return { '_id': e._id, 'name': _.startCase(_.toLower(e.name)) } })
       }
     },
     watch: {
@@ -84,18 +66,15 @@
       },
       selectedObject (val) {
         console.log('vai passar este objeto: ', val)
-        this.$emit('input', val === null ? [{ _id: '', name: '' }] : val)
-      },
-      docId (val) {
-        this.selectedObject = null
-        this.asyncFind()
+        this.$emit('input', val === null ? { _id: '', name: '' } : val)
       }
     },
     computed: {
       ...mapState({
       }),
       URIResource () {
-        return this.apiResource + '/' + this.docId + '/' + this.subdoc + '/?_limit=' + this.optionsLimit + this.activesOnly + this.filter
+        const _uri = this.apiResource + '/?_limit=' + this.optionsLimit + this.activesOnly + this.filter + '&_fields=_id,name'
+        return _uri
       },
       activesOnly () {
         return this.actives !== undefined && this.actives === true ? '&active=true' : ''
@@ -138,8 +117,7 @@
         default: 20
       },
       disabled: {
-        type: Boolean,
-        default: false
+        type: Boolean
       },
       apiResource: {
         type: String,
@@ -166,33 +144,25 @@
       },
       selectLabel: {
         type: String,
-        default: ''
+        default: '[enter] para selecionar'
       },
       deselectLabel: {
         type: String,
-        default: ''
+        default: '[enter] para remover'
       },
       selectedLabel: {
         type: String,
         default: ''
       },
-      subdoc: {
-        type: String,
-        default: ''
-      },
-      subdocField: {
-        type: String,
-        default: ''
-      },
-      docId: {
-        type: String,
-        default: ''
+      multiple: {
+        type: Boolean,
+        default: false
       }
     }
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
   @import '~vue-multiselect/dist/vue-multiselect.min.css';
 
   .noResult {

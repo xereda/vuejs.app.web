@@ -56,6 +56,7 @@
 
 <script>
 export default {
+  name: 'dmFormButtons',
   data () {
     return {
       saveButtonIsLoading: false

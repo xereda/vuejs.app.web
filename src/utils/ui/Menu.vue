@@ -33,17 +33,13 @@ export default {
       (this.$route.name === 'professionalActivities') ||
       (this.$route.name === 'specialties') ||
       (this.$route.name === 'users') ||
-      (this.$route.name === 'healthInsurances') ||
+      (this.$route.name === 'agreements') ||
       (this.$route.name === 'operators') ||
       (this.$route.name === 'people') ||
       (this.$route.name === 'holidays') ||
       (this.$route.name === 'cities'))
     },
     ...mapState({
-      general: state => {
-        const { general } = state.healthInsurances
-        return general
-      },
       session: state => {
         const { user } = state
         return user

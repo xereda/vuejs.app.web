@@ -37,46 +37,31 @@ const _humanMessage = (_data) => {
 }
 
 const showAPIErrors = (_objectErrors) => {
-  const _pos = _objectErrors.position !== undefined ? _objectErrors.position : _TOAST_POSITION
-  console.log('dentro da showAPIErrors(): ', _objectErrors, _pos)
-
-  console.log('_objectErrors: ', _objectErrors)
   if ((_objectErrors === undefined) || (_objectErrors.data === undefined)) {
     return false
   }
-
-  console.log(1)
-
   if (_objectErrors.status === 0) {
-    izitoast.error({ title: 'AVISO - T0', message: 'Não foi possível acessar a API', position: _pos })
+    izitoast.error({ title: 'AVISO - T0', message: 'Não foi possível acessar a API', position: _TOAST_POSITION })
   }
-  console.log(2)
-
   if (_objectErrors.data.err !== undefined) {
     if (_objectErrors.data.err.errors !== undefined) {
-      console.log('aaa')
       _.forEach(_objectErrors.data.err.errors, (value, key) => {
-        izitoast.error({ title: 'AVISO - T1', message: _humanMessage(value.message), position: _pos })
+        izitoast.error({ title: 'AVISO - T1', message: _humanMessage(value.message), position: _TOAST_POSITION })
       })
       return true
     }
-    console.log(3)
-
     if (_objectErrors.data.err.errmsg !== undefined) {
-      izitoast.error({ title: 'AVISO - T2', message: _humanMessage(_objectErrors.data.err.errmsg), position: _pos })
+      izitoast.error({ title: 'AVISO - T2', message: _humanMessage(_objectErrors.data.err.errmsg), position: _TOAST_POSITION })
       return true
     }
-    console.log(4)
-
     if (_objectErrors.data.err.message !== undefined) {
-      izitoast.error({ title: 'AVISO - T3', message: _humanMessage(_objectErrors.data.err.message), position: _pos })
+      izitoast.error({ title: 'AVISO - T3', message: _humanMessage(_objectErrors.data.err.message), position: _TOAST_POSITION })
       return true
     }
-    console.log(5)
   }
 
   if (_objectErrors.data.error !== undefined) {
-    izitoast.error({ title: 'AVISO - T4', message: _humanMessage(_objectErrors.data.error), position: _pos })
+    izitoast.error({ title: 'AVISO - T4', message: _humanMessage(_objectErrors.data.error), position: _TOAST_POSITION })
     return true
   }
 }

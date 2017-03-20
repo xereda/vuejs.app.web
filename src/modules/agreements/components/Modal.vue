@@ -143,7 +143,7 @@ export default {
   computed: {
     ...mapState({
       modelFactory: state => {
-        const { collection } = state.healthInsurances
+        const { collection } = state.agreements
         const _model = {}
         Object.keys(collection).forEach((element, index) => {
           switch (collection[element].type) {
@@ -182,15 +182,15 @@ export default {
         return config
       },
       API: state => {
-        const { API } = state.healthInsurances
+        const { API } = state.agreements
         return API
       },
       collection: state => {
-        const { collection } = state.healthInsurances
+        const { collection } = state.agreements
         return collection
       },
       general: state => {
-        const { general } = state.healthInsurances
+        const { general } = state.agreements
         return general
       },
       session: state => {
@@ -198,7 +198,7 @@ export default {
         return user
       },
       ux: state => {
-        const { ux } = state.healthInsurances
+        const { ux } = state.agreements
         return ux
       }
     }),

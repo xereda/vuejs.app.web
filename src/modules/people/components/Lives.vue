@@ -21,7 +21,7 @@
             <td class="is-hidden-mobile">{{ live.cpf }}</td>
             <td class="is-hidden-mobile">{{ moment(live.birthday, 'DD/MM/YYYY') }}</td>
             <td class="is-hidden-mobile">{{ live.mothersName }}</td>
-            <td class="is-hidden-mobile">{{ getHI(live.healthInsurances) }}</td>
+            <td class="is-hidden-mobile">{{ getHI(live.agreements) }}</td>
             <td class="is-icon">
               <a @click="updateLife(live._id)">
                 <span class="icon">
@@ -88,7 +88,7 @@ export default {
       }
     }),
     requestURI () {
-      return '/lives/?_populate=healthInsurances.healthInsurance&person=' + this.personId
+      return '/lives/?_populate=agreements.agreement&person=' + this.personId
     }
   },
   mounted () {
@@ -100,7 +100,7 @@ export default {
       return moment.utc(str).format(format)
     },
     getHI (hiList) {
-      return _.map(hiList, 'healthInsurance.shortName').join(', ')
+      return _.map(hiList, 'agreement.shortName').join(', ')
     },
     newLife () {
       this.state = 'new'

@@ -21,7 +21,7 @@ export default {
       { route: '/professionalActivities', name: 'professionalActivities', label: 'Ramos de Atividade' },
       { route: '/specialties', name: 'specialties', label: 'Especializações' },
       { route: '/users', name: 'users', label: 'Usuários' },
-      { route: '/healthInsurances', name: 'healthInsurances', label: 'Convênios' },
+      { route: '/agreements', name: 'agreements', label: 'Convênios' },
       { route: '/operators', name: 'operators', label: 'Operadoras' },
       { route: '/cities', name: 'cities', label: 'Cidades' },
       { route: '/people', name: 'people', label: 'Pessoas' },

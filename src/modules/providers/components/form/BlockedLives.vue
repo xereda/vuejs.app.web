@@ -7,11 +7,11 @@
             <h4 class="subtitle is-4">Adicionar</h4>
             <div class="columns is-multiline">
               <div class="column">
-                <dm-form-multi-select v-model="formFields.selectedObject"
+                <dm-form-search-select v-model="formFields.selectedObject"
                            api-resource="lives"
                            :actives="true"
                            label="Vida *"
-                         ></dm-form-multi-select>
+                         ></dm-form-search-select>
               </div>
             </div>
             <div class="columns is-multiline">
@@ -81,7 +81,7 @@ import _ from 'lodash'
 import Http from '../../../../utils/services/http'
 import { showAPIErrors, showAPISuccess } from '../../../../utils/services/messenger/main'
 
-import DmFormMultiSelect from '../../../../utils/ui/form/MultiSelect.vue'
+import DmFormSearchSelect from '../../../../utils/ui/form/SearchSelect.vue'
 import DmFormDate from '../../../../utils/ui/form/Date.vue'
 import DmFormButtons from '../../../../utils/ui/form/Buttons.vue'
 import DmFormTextarea from '../../../../utils/ui/form/Textarea.vue'
@@ -148,7 +148,7 @@ export default {
   components: {
     DmFormButtons,
     DmBlockedLivesList,
-    DmFormMultiSelect,
+    DmFormSearchSelect,
     DmFormDate,
     DmFormTextarea
   },

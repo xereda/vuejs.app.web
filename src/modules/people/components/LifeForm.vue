@@ -139,7 +139,7 @@ import dmFormCpf from '../../../utils/ui/form/CPF.vue'
 import dmFormDate from '../../../utils/ui/form/Date.vue'
 import dmFormBoolean from '../../../utils/ui/form/Boolean.vue'
 
-import dmLifeHi from './LifeHi.vue'
+import dmLifeHi from './LifeAgreements.vue'
 
 export default {
   data () {

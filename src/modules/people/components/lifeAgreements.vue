@@ -4,12 +4,12 @@
       <h2 class="subtitle">Convênios</h2>
       <div class="columns is-multiline">
         <div class="column is-12">
-          <dm-form-select v-model="formFields.healthInsurance"
+          <dm-form-select v-model="formFields.agreement"
                           placeholder="Selecione um convênio"
                           :actives="true"
                           label="convênio"
                           fa-icon="fa fa-credit-card-alt"
-                          api-resource="healthInsurances"
+                          api-resource="agreements"
                           :disabled="state === 'new'"></dm-form-select>
       </div>
       <div class="column is-12">
@@ -22,7 +22,7 @@
                        placeholder="Selecione um convênio"></dm-form-input>
       </div>
       <div class="column is-12">
-        <a @click="hiAdd()" :class="{ 'button': true, 'is-success': true, 'is-disabled': !addButtonIsActive }">
+        <a @click="agreementAdd()" :class="{ 'button': true, 'is-success': true, 'is-disabled': !addButtonIsActive }">
           <span class="icon is-small">
             <i class="fa fa-check"></i>
           </span>
@@ -30,7 +30,7 @@
         </a>
       </div>
       <div class="column is-12">
-        <table class="table" v-show="healthInsurances.length > 0">
+        <table class="table" v-show="agreements.length > 0">
           <thead>
             <tr>
               <th class="">Convênio</th>
@@ -39,11 +39,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="hi in hiList">
-              <td class="">{{ hi.name }}</td>
-              <td class="is-hidden-mobile">{{ hi.code }}</td>
+            <tr v-for="agreement in agreementsList">
+              <td class="">{{ agreement.name }}</td>
+              <td class="is-hidden-mobile">{{ agreement.code }}</td>
               <td class="is-icon">
-                <a @click="hiDelete(hi.healthInsurance)">
+                <a @click="agreementDelete(agreement.agreement)">
                   <span class="icon">
                     <i class="fa fa-trash"></i>
                   </span>
@@ -71,12 +71,12 @@ import dmFormSelect from '../../../utils/ui/form/Select.vue'
 import dmFormInput from '../../../utils/ui/form/Input.vue'
 
 export default {
-  name: 'dmLifeHi',
+  name: 'dmLifeAgreements',
   data () {
     return {
-      healthInsurances: [],
+      agreements: [],
       formFields: {
-        healthInsurance: '',
+        agreement: '',
         name: '',
         code: '',
         createdById: ''
@@ -95,15 +95,15 @@ export default {
   mounted () {
   },
   methods: {
-    hiGet () {
-      Http.get('/lives/' + this.lifeIdUpdate + '/healthInsurances')
+    agreementsGet () {
+      Http.get('/lives/' + this.lifeIdUpdate + '/agreements')
       .then(response => {
-        this.healthInsurances = []
+        this.agreements = []
         response.data.forEach((element) => {
           console.log('element: ', element)
-          const _obj = { healthInsurance: element.healthInsurance._id, name: element.healthInsurance.shortName, code: element.code }
+          const _obj = { agreement: element.agreement._id, name: element.agreement.shortName, code: element.code }
           console.log('olha como ficou o _obj: ', _obj)
-          this.healthInsurances.push(_obj)
+          this.agreements.push(_obj)
         })
         console.log(response)
       })
@@ -112,29 +112,29 @@ export default {
         showAPIErrors(error.response)
       })
     },
-    hiAdd () {
+    agreementAdd () {
       this.formFields.createdById = this.session._id
-      const _uri = '/lives/' + this.lifeIdUpdate + '/healthInsurances'
+      const _uri = '/lives/' + this.lifeIdUpdate + '/agreements'
       console.log('_uri do post: ', _uri)
       Http.post(_uri, this.formFields)
       .then(response => {
         console.log(response.status, response)
         showAPISuccess({ title: 'OK', message: 'Convênio relaciomado a vida com sucesso!' })
-        this.hiGet()
+        this.agreementsGet()
       })
       .catch((error) => {
         console.log('error.response: ', error.response)
         showAPIErrors(error.response)
       })
     },
-    hiDelete (hiIdDelete) {
-      const _uri = '/lives/' + this.lifeIdUpdate + '/healthInsurances/' + hiIdDelete
+    agreementDelete (agreementIdDelete) {
+      const _uri = '/lives/' + this.lifeIdUpdate + '/agreements/' + agreementIdDelete
       console.log('_uri do delete: ', _uri)
       Http.delete(_uri)
       .then(response => {
         console.log(response.status, response)
         showAPISuccess({ title: 'OK', message: 'Convênio removido com sucesso!' })
-        this.hiGet()
+        this.agreementsGet()
       })
       .catch((error) => {
         console.log('error.response: ', error.response)
@@ -157,12 +157,12 @@ export default {
         return user
       }
     }),
-    hiList () {
-      return this.healthInsurances
+    agreementsList () {
+      return this.agreements
     },
     addButtonIsActive () {
       if (this.state !== 'update') return false
-      if (this.formFields.healthInsurance === '') return false
+      if (this.formFields.agreement === '') return false
       if (this.formFields.code === '') return false
       if (this.$v.formFields['code'].$invalid) return false
       return true
@@ -171,9 +171,9 @@ export default {
   watch: {
     state (val) {
       if (val === 'update') {
-        this.hiGet()
+        this.agreementsGet()
       } else {
-        this.healthInsurances = []
+        this.agreements = []
       }
     }
   },

@@ -1,7 +1,7 @@
 export default {
   general: {
     title: 'Operadoras',
-    subTitle: 'operadoras de plano de saúde',
+    subTitle: 'operadoras de um convênio',
     modal: {
       titleNewDocument: 'Nova Operadora',
       titleUpdateDocument: 'Alterando uma Operadora'
@@ -36,10 +36,10 @@ export default {
         }
       }
     },
-    healthInsurance: {
+    agreement: {
       type: 'vueSelect',
-      label: 'Plano de Saúde',
-      placeHolder: 'Relacione o plano de saúde',
+      label: 'Convênio',
+      placeHolder: 'Relacione o convênio',
       error: '',
       filter: false,
       APIReturnable: false,

@@ -43,34 +43,34 @@
                 <span class="help is-danger">{{ errors.first('name') }}&nbsp;</span>
               </p>
             </div>
-            <div :class="collection['healthInsurance'].modal.responsiveCSS">
-              <label class="label">{{ collection['healthInsurance'].label }}</label>
+            <div :class="collection['agreement'].modal.responsiveCSS">
+              <label class="label">{{ collection['agreement'].label }}</label>
               <p class="control has-icon">
-                <!-- <input v-model="modalDoc.healthInsurance"
+                <!-- <input v-model="modalDoc.agreement"
                        v-validate
-                       :data-vv-rules="getDataRules(collection['healthInsurance'])"
-                       :data-vv-as="collection['healthInsurance'].label"
+                       :data-vv-rules="getDataRules(collection['agreement'])"
+                       :data-vv-as="collection['agreement'].label"
                        :data-vv-delay="config.delayApplyRule"
-                       :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(collection['healthInsurance']), 'is-danger': errors.has('healthInsurance') }"
-                       name="healthInsurance"
+                       :class="{ 'input': true, 'is-disabled': isReadOnlyOnUpdate(collection['agreement']), 'is-danger': errors.has('agreement') }"
+                       name="agreement"
                        type="text"
-                       :placeholder="collection['healthInsurance'].placeHolder"> -->
-                 <input v-model="modalDoc.healthInsurance"
+                       :placeholder="collection['agreement'].placeHolder"> -->
+                 <input v-model="modalDoc.agreement"
                         v-validate
-                        :data-vv-rules="getDataRules(collection['healthInsurance'])"
-                        :data-vv-as="collection['healthInsurance'].label"
-                        name="healthInsurance"
+                        :data-vv-rules="getDataRules(collection['agreement'])"
+                        :data-vv-as="collection['agreement'].label"
+                        name="agreement"
                         class="is-hidden"
                         type="text">
 
                  <multiselect
-                   :value="vueSelect.HI.selectedObject"
-                   :options="vueSelect.HI.list"
+                   :value="vueSelect.Agreements.selectedObject"
+                   :options="vueSelect.Agreements.list"
                    select-label="[enter] para selecionar"
                    selected-label="selecionado"
                    deselect-label="[enter] para remover"
-                   placeholder="Selecione um plano de saúde"
-                   :loading="vueSelect.HI.isLoading"
+                   placeholder="Selecione um convênio"
+                   :loading="vueSelect.Agreements.isLoading"
                    :local-search="false"
                    @search-change="vueSelectAsyncFind"
                    :searchable="true"
@@ -81,9 +81,9 @@
                  </multiselect>
 
                  <span class="icon is-small">
-                   <i :class="collection['healthInsurance'].modal.cssIcon"></i>
+                   <i :class="collection['agreement'].modal.cssIcon"></i>
                  </span>
-                <span class="help is-danger" v-if="modalDoc.healthInsurance === ''">{{ errors.first('healthInsurance') }}&nbsp;</span>
+                <span class="help is-danger" v-if="modalDoc.agreement === ''">{{ errors.first('agreement') }}&nbsp;</span>
                 <span class="help is-danger" v-else>&nbsp;</span>
 
 
@@ -188,13 +188,13 @@
               </label>
             </div>
           </div>
-          <!-- modalDoc: {{ modalDoc }}
+          modalDoc: {{ modalDoc }}
           <hr>
           clonedDoc: {{ clonedDoc }}
           <hr>
           modelFactory: {{ modelFactory }}
           <hr>
-          vueSelect: {{ vueSelect }} -->
+          vueSelect: {{ vueSelect }}
         </form>
         <dm-modal-audit :mutation-prefix="API.mutationPrefix" :resource="API.resource" :last-doc-update-date="getLastDocUpdateDate()" :document-id="documentId" v-if="isUpdateDocument() "></dm-modal-audit>
       </section>
@@ -242,7 +242,7 @@ export default {
   data () {
     return {
       vueSelect: {
-        HI: {
+        Agreements: {
           isLoading: false,
           selectedObject: null,
           list: []
@@ -339,20 +339,20 @@ export default {
   methods: {
     ...mapActions([]),
     vueSelectUpdateSelected (newSelected) {
-      this.vueSelect.HI.selectedObject = newSelected
+      this.vueSelect.Agreements.selectedObject = newSelected
     },
     vueSelectAsyncFind (query) {
       query !== '' ? query = '&name=/' + query + '/i' : null
-      this.vueSelect.HI.isLoading = true
+      this.vueSelect.Agreements.isLoading = true
       console.log(query)
-      const _uri = this.config.APIURIBase + 'healthInsurances/?_fields=name' + query
+      const _uri = this.config.APIURIBase + 'agreements/?_fields=name' + query
       console.log('_uri: ', _uri)
       this.$http.get(_uri).then((response) => {
-        this.vueSelect.HI.list = response.body
-        this.vueSelect.HI.isLoading = false
+        this.vueSelect.Agreements.list = response.body
+        this.vueSelect.Agreements.isLoading = false
       }, (response) => {
         console.log('deu erro no select: ', response)
-        this.vueSelect.HI.isLoading = false
+        this.vueSelect.Agreements.isLoading = false
       })
     },
     isPristine () {
@@ -402,16 +402,16 @@ export default {
     },
     getDoc () {
       this.startLoading()
-      const _uri = this.config.APIURIBase + this.API.resource + '/' + this.documentId + '/?_populate=healthInsurance'
+      const _uri = this.config.APIURIBase + this.API.resource + '/' + this.documentId + '/?_populate=agreement'
       this.$http.get(_uri).then((response) => {
         this.modalDoc = response.body
         console.log('modalDoc: ', JSON.stringify(response.body))
-        const _selectedObjectHI = {
-          _id: response.body.healthInsurance._id,
-          name: response.body.healthInsurance.name
+        const _selectedObjectAgreements = {
+          _id: response.body.agreement._id,
+          name: response.body.agreement.name
         }
-        this.$set(this.vueSelect.HI, 'selectedObject', _selectedObjectHI)
-        this.$set(this.modalDoc, 'healthInsurance', response.body.healthInsurance._id)
+        this.$set(this.vueSelect.Agreements, 'selectedObject', _selectedObjectAgreements)
+        this.$set(this.modalDoc, 'agreement', response.body.agreement._id)
         this.$set(this, 'clonedDoc', JSON.parse(JSON.stringify(this.modalDoc)))
         this.stopLoading(0)
       }, (response) => {
@@ -429,7 +429,7 @@ export default {
         this.$emit('set-pag', 1)
         this.$set(this, 'clonedDoc', JSON.parse(JSON.stringify(this.modelFactory)))
         this.$set(this, 'modalDoc', JSON.parse(JSON.stringify(this.modelFactory)))
-        this.vueSelect.HI.selectedObject = null
+        this.vueSelect.Agreements.selectedObject = null
         this.stopLoading(0)
       }, (response) => {
         showAPIErrors(response)
@@ -540,12 +540,12 @@ export default {
       },
       deep: true
     },
-    'vueSelect.HI.selectedObject': {
+    'vueSelect.Agreements.selectedObject': {
       deep: true,
       handler (val, oldVal) {
         console.log('oldVal: ', oldVal)
         console.log('val: ', val)
-        val === null ? this.$set(this.modalDoc, 'healthInsurance', '') : this.$set(this.modalDoc, 'healthInsurance', val._id)
+        val === null ? this.$set(this.modalDoc, 'agreement', '') : this.$set(this.modalDoc, 'agreement', val._id)
       }
     }
   },

@@ -1,27 +1,27 @@
 export default {
-  'HI.UPDATE_CURRENT_PAG' (state, pag) {
+  'AGREEMENTS.UPDATE_CURRENT_PAG' (state, pag) {
     state.pagination.currentPag = pag
   },
-  'HI.UPDATE_TOTAL_DOCS' (state, total) {
+  'AGREEMENTS.UPDATE_TOTAL_DOCS' (state, total) {
     state.pagination.total = total
   },
-  'HI.UPDATE_FILTERS_SEARCH' (state, obj) {
+  'AGREEMENTS.UPDATE_FILTERS_SEARCH' (state, obj) {
     state.filters.search = obj
   },
-  'HI.ADD_BOOLEAN_FILTER' (state, field) {
+  'AGREEMENTS.ADD_BOOLEAN_FILTER' (state, field) {
     state.filters.boolean.push(field)
   },
-  'HI.REMOVE_BOOLEAN_FILTER' (state, field) {
+  'AGREEMENTS.REMOVE_BOOLEAN_FILTER' (state, field) {
     // abaixo funciona!
     let _arr = state.filters.boolean
     _arr.splice(_arr.indexOf(field), 1)
   },
-  'HI.REMOVE_ALL_BOOLEAN_FILTER' (state, array) {
+  'AGREEMENTS.REMOVE_ALL_BOOLEAN_FILTER' (state, array) {
     if (state.filters.boolean.length > 0) {
       state.filters.boolean = array
     }
   },
-  'HI.ADD_SORT_COLUMN' (state, obj) {
+  'AGREEMENTS.ADD_SORT_COLUMN' (state, obj) {
     let _sort = state.sort
     _sort = _sort.filter((element) => {
       return element.field !== obj.field
@@ -33,7 +33,7 @@ export default {
     }
     state.sort = _sort
   },
-  'HI.UX_MODAL_COLLAPSE_STATE' (state, opened) {
+  'AGREEMENTS.UX_MODAL_COLLAPSE_STATE' (state, opened) {
     state.ux.userDecisions.modal.AuditInfo.collapseOpened = opened
   }
 }

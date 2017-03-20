@@ -7,7 +7,7 @@ import Users from './modules/users/route'
 import Dashboard from './modules/dashboard/route'
 import Configurator from './modules/configurator/route'
 import Administrative from './modules/administrative/route'
-import HealthInsurances from './modules/healthInsurances/route'
+import Agreements from './modules/agreements/route'
 import Cities from './modules/cities/route'
 import People from './modules/people/route'
 import Operators from './modules/operators/route'
@@ -24,7 +24,7 @@ const routes = [
   ...Dashboard,
   ...Configurator,
   ...Administrative,
-  ...HealthInsurances,
+  ...Agreements,
   ...Cities,
   ...People,
   ...Operators,
