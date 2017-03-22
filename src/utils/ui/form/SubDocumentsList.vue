@@ -4,12 +4,20 @@
       <thead>
         <tr>
           <th :class="dataTableDef[propertie].class" v-for="propertie in dataTableProperties" v-if="dataTableDef[propertie].visible">{{ dataTableDef[propertie].label }}</th>
+          <th v-if="!updateItemDisabled"></th>
           <th v-if="!delItemDisabled"></th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="item in list">
           <td :class="dataTableDef[propertie].class" v-for="propertie in dataTableProperties" v-if="dataTableDef[propertie].visible">{{ item[propertie] }}</td>
+          <td class="is-icon" v-if="!updateItemDisabled">
+            <a @click="updateItem(item._id)">
+              <span class="icon">
+                <i class="fa fa-folder-open"></i>
+              </span>
+            </a>
+          </td>
           <td class="is-icon" v-if="!delItemDisabled">
             <a @click="deleteItem(item._id)">
               <span class="icon">
@@ -57,12 +65,17 @@ export default {
       Http.delete(this.resourceURI + '/' + item)
       .then(response => {
         showAPISuccess({ title: 'OK', message: this.delItemMessage })
+        if (this.actionAfterDelete) this.$emit('action-after-delete')
         this.getList()
       })
       .catch(error => {
         console.log(error.response)
         showAPIErrors(error.response)
       })
+    },
+    updateItem (item) {
+      console.log('vai abrir o documento: ', item)
+      this.$emit('update-action', item)
     },
     hydrateData (data) {
       data.forEach(element => {
@@ -129,6 +142,14 @@ export default {
       default: 'Item removido com sucesso!'
     },
     delItemDisabled: {
+      type: Boolean,
+      default: false
+    },
+    updateItemDisabled: {
+      type: Boolean,
+      default: true
+    },
+    actionAfterDelete: {
       type: Boolean,
       default: false
     }

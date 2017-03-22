@@ -188,13 +188,13 @@
               </label>
             </div>
           </div>
-          modalDoc: {{ modalDoc }}
+          <!-- modalDoc: {{ modalDoc }}
           <hr>
           clonedDoc: {{ clonedDoc }}
           <hr>
           modelFactory: {{ modelFactory }}
           <hr>
-          vueSelect: {{ vueSelect }}
+          vueSelect: {{ vueSelect }} -->
         </form>
         <dm-modal-audit :mutation-prefix="API.mutationPrefix" :resource="API.resource" :last-doc-update-date="getLastDocUpdateDate()" :document-id="documentId" v-if="isUpdateDocument() "></dm-modal-audit>
       </section>

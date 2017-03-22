@@ -6,7 +6,7 @@
           <span class="icon is-small">
             <i class="fa fa-check"></i>
           </span>
-          <span>Salvar</span>
+          <span>{{ labelSave }}</span>
         </a>
       </p>
       <p class="control" v-if="showCancel">
@@ -32,7 +32,7 @@
           <span class="icon is-small">
             <i class="fa fa-check"></i>
           </span>
-          <span>Salvar</span>
+          <span>{{ labelSave }}</span>
         </a>
       </p>
       <p class="control" v-if="showCancel">
@@ -106,6 +106,10 @@ export default {
     deleteEnabled: {
       type: Boolean,
       default: false
+    },
+    labelSave: {
+      type: String,
+      default: 'Salvar'
     }
   }
 }

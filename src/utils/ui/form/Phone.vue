@@ -1,9 +1,9 @@
 <template lang="html">
 <div>
   <label v-if="showLabel" class="label">{{ label }}</label>
-  <p class="control has-icon">
+  <p :class="pClass">
     <input :placeholder="placeholder" v-model="phone" ref="phone" :value="value" @input="applyMask($event.target.value)" :class="{ 'input': true, 'is-danger': hasError }"></input>
-    <span class="icon is-small">
+    <span class="icon is-small" v-show="!hiddenIcon">
       <i :class="faIcon"></i>
     </span>
     <span v-if="errorMessage !== ''" class="help is-danger">{{ errorMessage }}</span>
@@ -43,6 +43,10 @@
       vuelidate: {
         type: Object,
         default: () => Object.assign({})
+      },
+      hiddenIcon: {
+        type: Boolean,
+        default: false
       }
     },
     methods: {
@@ -52,6 +56,9 @@
       }
     },
     computed: {
+      pClass () {
+        return this.hiddenIcon ? 'control' : 'control has-icon'
+      },
       showLabel () {
         return this.label !== undefined && this.label.length > 0
       },

@@ -25,7 +25,7 @@ export default {
       APIReturnable: true,
       required: true,
       modal: {
-        veeValidate: 'min:3|regex:^[a-zA-Z\\s]*$',
+        veeValidate: 'min:3',
         cssIcon: 'fa fa-medkit',
         responsiveCSS: 'column is-6'
       },
@@ -45,7 +45,7 @@ export default {
       APIReturnable: true,
       required: true,
       modal: {
-        veeValidate: 'min:2|regex:^[a-zA-Z\\s]*$',
+        veeValidate: 'min:2',
         cssIcon: 'fa fa-compress',
         responsiveCSS: 'column is-6'
       },

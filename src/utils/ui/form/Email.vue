@@ -1,9 +1,9 @@
 <template lang="html">
 <div>
   <label v-if="showLabel" class="label">{{ label }}</label>
-  <p class="control has-icon">
+  <p :class="pClass">
     <input :placeholder="placeholder" :value="value" @input="$emit('input', $event.target.value)" :class="{ 'input': true, 'is-danger': hasError }"></input>
-    <span class="icon is-small">
+    <span class="icon is-small" v-show="!hiddenIcon">
       <i :class="faIcon"></i>
     </span>
     <span v-if="hasError" class="help is-danger">{{ errorMessage }}</span>
@@ -27,7 +27,7 @@ export default {
     },
     faIcon: {
       type: String,
-      default: 'fa fa-font'
+      default: 'fa fa-envelope'
     },
     label: {
       type: String,
@@ -36,9 +36,16 @@ export default {
     vuelidate: {
       type: Object,
       default: () => Object.assign({})
+    },
+    hiddenIcon: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
+    pClass () {
+      return this.hiddenIcon ? 'control' : 'control has-icon'
+    },
     showLabel () {
       return this.label !== undefined && this.label.length > 0
     },
@@ -69,4 +76,5 @@ export default {
 </script>
 
 <style lang="css" scoped>
+
 </style>

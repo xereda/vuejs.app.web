@@ -9,11 +9,14 @@
           :deselect-label="deselectLabel"
           :placeholder="placeholder"
           :loading="isLoading"
+          :disabled="disabled"
           :local-search="false"
           @search-change="asyncFind"
           :searchable="true"
           track-by="_id"
           :multiple="multiple"
+          :value="value"
+          :style="'z-index:' + zIndex"
           label="name">
           <span slot="noResult" class="noResult">Não há elementos com a pesquisa.</span>
         </multiselect>
@@ -157,6 +160,10 @@
       multiple: {
         type: Boolean,
         default: false
+      },
+      zIndex: {
+        type: String,
+        default: ''
       }
     }
   }

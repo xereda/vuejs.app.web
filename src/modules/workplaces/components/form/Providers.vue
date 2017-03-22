@@ -1,19 +1,18 @@
 <template lang="html">
   <transition name="fade">
     <div class="">
-      <pre>{{ formFields }}</pre>
-      <pre>{{ specialtiesSelectedObject }}</pre>
-      <pre>{{ $v }}</pre>
       <div class="columns is-multiline">
         <div class="column is-4">
           <div class="box">
-            <h4 class="subtitle is-4">Adicionar</h4>
+            <h4 class="subtitle is-4">{{ title }}</h4>
             <div class="columns is-multiline">
               <div class="column">
                 <dm-form-search-select v-model="providerSelectedObject"
                            api-resource="providers"
+                           :disabled="localState === 'update'"
                            :actives="true"
                            label="Prestador *"
+                           z-index=""
                            select-label=""
                          ></dm-form-search-select>
               </div>
@@ -25,9 +24,20 @@
                            subdoc="specialties"
                            subdoc-field="specialty"
                            :doc-id="providerSelectedObject._id"
-                           :disabled="providerSelectedObject._id === ''"
+                           :disabled="disableSpecialtiesMulti"
                            label="Especilidades *"
+                           z-index=""
                            select-label=""
+                         ></dm-form-multi-select>
+              </div>
+            </div>
+            <div class="columns is-multiline">
+              <div class="column">
+                <dm-form-multi-select v-model="agreementsSelectedObject"
+                           api-resource="agreements"
+                           label="Convênios *"
+                           select-label=""
+                           z-index=""
                          ></dm-form-multi-select>
               </div>
             </div>
@@ -36,8 +46,8 @@
                 <dm-form-email v-model="formFields.email"
                               @input.native="$v.formFields.email.$touch()"
                               :vuelidate="$v.formFields.email"
-                              fa-icon="fa fa-envelope"
-                              label="E-mail *"
+                              label="E-mail"
+                              :hidden-icon="true"
                               placeholder="Informe o e-mail"></dm-form-email>
               </div>
             </div>
@@ -45,12 +55,15 @@
               <div class="column is-6">
                 <dm-form-number v-model="formFields.phoneExtension"
                               fa-icon="fa fa-phone"
+                              :hidden-icon="true"
                               label="Fone/Ramal"
                               placeholder="Ramal"></dm-form-number>
               </div>
               <div class="column is-6">
                 <dm-form-number v-model="formFields.deadlineScheduleCancel"
                               fa-icon="fa fa-exclamation"
+                              :hidden-icon="true"
+                              mask="99"
                               label="Prazo canc."
                               placeholder="Minutos"></dm-form-email>
               </div>
@@ -67,9 +80,12 @@
             <div class="columns is-multiline">
               <div class="column">
                 <dm-buttons :save-enabled="enableSaveButton"
-                            :show-cancel="false"
+                            :show-cancel="true"
+                            :cancel-enabled="true"
+                            @action-cancel="cancelForm"
                             :show-delete="false"
-                            @action-save="saveForm"></dm-buttons>
+                            @action-save="saveForm"
+                            :label-save="labelButtonSave"></dm-buttons>
               </div>
             </div>
           </div>
@@ -81,6 +97,9 @@
                               :update-list="updateList"
                               :data-def="dataTableDef"
                               del-item-message="Prestador removido com sucesso!"
+                              @action-after-delete="clearDataForm"
+                              :update-item-disabled="false"
+                              @update-action="readDoc"
                               ></dm-list>
         </div>
       </div>
@@ -92,7 +111,7 @@
 import Vue from 'vue'
 import Vuelidate from 'vuelidate'
 Vue.use(Vuelidate)
-import { required, email } from 'vuelidate/lib/validators'
+import { required, email, minLength, maxLength } from 'vuelidate/lib/validators'
 
 import { mapState } from 'vuex'
 
@@ -114,19 +133,20 @@ import DmList from 'utils/ui/form/SubDocumentsList.vue'
 export default {
   data () {
     return {
+      localState: 'new',
+      temp: {},
       providerSelectedObject: {
-        _id: '',
-        name: ''
       },
       specialtiesSelectedObject: [
-        {
-          _id: '',
-          name: ''
-        }
+      ],
+      agreementsSelectedObject: [
       ],
       formFields: {
         provider: '',
-        specialties: [],
+        specialties: [
+        ],
+        agreements: [
+        ],
         phoneExtension: '',
         email: '',
         deadlineScheduleCancel: '',
@@ -154,6 +174,10 @@ export default {
       },
       email: {
         email
+      },
+      deadlineScheduleCancel: {
+        minLength: minLength(1),
+        maxLength: maxLength(2)
       }
     }
   },
@@ -168,19 +192,79 @@ export default {
     DmList
   },
   methods: {
-    saveForm () {
-      this.updateList = false
-      console.log('dentro do saveform')
-      Http.post('/workplaces/' + this.workplaceId + '/providers', this.cloneDataFormFields())
+    cancelForm () {
+      console.log('dentro de cancelForm')
+      this.localState = 'new'
+      this.clearDataForm()
+    },
+    clearDataForm () {
+      this.formFields.provider = ''
+      this.formFields.specialties = []
+      this.formFields.agreements = []
+      this.formFields.email = ''
+      this.formFields.phoneExtension = ''
+      this.formFields.deadlineScheduleCancel = ''
+      this.formFields.lockedCancel = false
+      this.formFields.alertCancel = ''
+      this.providerSelectedObject = {}
+      this.specialtiesSelectedObject = []
+      this.agreementsSelectedObject = []
+    },
+    hidrateDataForm (data) {
+      this.temp = data
+      console.log(data, data.agreements)
+      this.providerSelectedObject = { _id: data.provider._id, name: data.provider.name }
+      this.formFields.email = data.email
+      this.formFields.phoneExtension = data.phoneExtension.toString()
+      this.formFields.deadlineScheduleCancel = data.deadlineScheduleCancel.toString()
+      this.formFields.lockedCancel = data.lockedCancel
+      this.formFields.alertCancel = data.alertCancel
+      setTimeout(() => {
+        this.agreementsSelectedObject = data.agreements.map(e => { return { '_id': e.agreement, 'name': e.name } })
+        this.specialtiesSelectedObject = data.specialties.map(e => { return { '_id': e.specialty, 'name': e.name } })
+      }, 100)
+    },
+    readDoc (providerId) {
+      Http.get('/workplaces/' + this.workplaceId + '/providers/?provider=' + providerId)
       .then(response => {
-        console.log('response', response, response.data)
+        this.localState = 'update'
+        console.log(response.data)
+        this.hidrateDataForm(response.data[0])
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+    createDoc () {
+      Http.post('/workplaces/' + this.workplaceId + '/providers', this.cloneDataFormFields)
+      .then(response => {
         this.updateList = true
         showAPISuccess({ title: 'OK', message: 'Prestador relacionado ao local de atendimento com sucesso!' })
+        this.localState = 'update'
       })
       .catch(error => {
         console.log(error.response)
         showAPIErrors(error.response)
       })
+    },
+    updateDoc () {
+      Http.put('/workplaces/' + this.workplaceId + '/providers/' + this.formFields.provider, this.cloneDataFormFields)
+      .then(response => {
+        this.updateList = true
+        showAPISuccess({ title: 'OK', message: 'Prestador atualizado com sucesso!' })
+        // this.localState = 'new'
+        // setTimeout(() => {
+        //   this.clearDataForm()
+        // }, 200)
+      })
+      .catch(error => {
+        console.log(error.response)
+        showAPIErrors(error.response)
+      })
+    },
+    saveForm () {
+      this.updateList = false
+      this.localState === 'new' ? this.createDoc() : this.updateDoc()
     }
   },
   computed: {
@@ -194,19 +278,21 @@ export default {
         return user
       }
     }),
+    title () {
+      return this.localState === 'new' ? 'Adicionar' : 'Alterar'
+    },
+    labelButtonSave () {
+      return this.localState === 'new' ? 'Adicionar' : 'Alterar'
+    },
+    disableSpecialtiesMulti () {
+      if (this.formFields.provider === '') return true
+      return false
+    },
     cloneDataFormFields () {
       const _formsFieldsCloned = _.cloneDeep(this.formFields)
-
-      if (this.state === 'new') {
-        _formsFieldsCloned.createdById = this.session._id
-      } else {
-        _formsFieldsCloned.updatedById = this.session._id
-      }
-
+      this.localState === 'new' ? _formsFieldsCloned.createdById = this.session._id : _formsFieldsCloned.updatedById = this.session._id
+      console.log('_formsFieldsCloned: ', _formsFieldsCloned)
       return _formsFieldsCloned
-    },
-    specialtiesFilter () {
-      return '&professionalActivity=' + this.formFields.professionalActivity
     },
     enableSaveButton () {
       if (_.filter(this.$v.formFields, e => e.$invalid).length > 0) return false
@@ -220,17 +306,25 @@ export default {
     }
   },
   watch: {
-    providerSelectedObject (val) {
-      console.log('dentro do watch - providerSelectedObject: ', val)
+    providerSelectedObject (val, oldVal) {
       this.formFields.provider = val._id
     },
     specialtiesSelectedObject (val) {
-      console.log('dentro do watch - specialtiesSelectedObject: ', val)
-      this.formFields.specialties = val.map(e => { return e._id })
+      console.log('dentro de specialtiesSelectedObject: ', val.length, val)
+      val.length > 0 ? this.formFields.specialties = val.map(e => { return { 'specialty': e._id, 'name': e.name } }) : this.formFields.specialties = []
+    },
+    agreementsSelectedObject (val) {
+      console.log('dentro de agreementsSelectedObject: ', val.length, val)
+      val.length > 0 ? this.formFields.agreements = val.map(e => { return { 'agreement': e._id, 'name': e.name } }) : this.formFields.agreements = []
     }
   }
 }
 </script>
 
-<style lang="css">
+<style lang="scss" scoped>
+
+  .teste {
+    z-index: 9;
+  }
+
 </style>

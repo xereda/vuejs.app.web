@@ -64,6 +64,11 @@ const showAPIErrors = (_objectErrors) => {
     izitoast.error({ title: 'AVISO - T4', message: _humanMessage(_objectErrors.data.error), position: _TOAST_POSITION })
     return true
   }
+
+  if (_objectErrors.data.response !== undefined) {
+    izitoast.error({ title: 'AVISO - T5', message: _humanMessage(_objectErrors.data.response), position: _TOAST_POSITION })
+    return true
+  }
 }
 
 const showWarning = (_objectWarning) => {
