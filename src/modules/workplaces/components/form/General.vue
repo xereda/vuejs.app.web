@@ -308,6 +308,8 @@ export default {
       this.formFields.geoField.long = ''
     },
     getCEPData () {
+      SPIN.spin(this.$refs.spin)
+      topbar.show()
       this.cleanCEPData()
       console.log('dentro da get cep data')
       Http.get(this.config.APICEPData + this.formFields.address.zipCode.replace('.', '').replace('-', ''))
@@ -316,10 +318,14 @@ export default {
         this.formFields.address.name = response.data.logradouro
         this.formFields.address.neighborhood = response.data.bairro
         this.getCityData(response.data.cidade)
+        SPIN.stop()
+        topbar.hide()
       })
       .catch(error => {
         console.log(error)
         showWarning({ title: 'CEP', message: 'CEP não existe ou inválido!', position: 'bottomLeft' })
+        SPIN.stop()
+        topbar.hide()
       })
     },
     getCityData (name) {
@@ -358,24 +364,36 @@ export default {
       })
     },
     newDoc () {
+      SPIN.spin(this.$refs.spin)
+      topbar.show()
       Http.post('/workplaces', this.cloneDataFormFields(this.formFields))
       .then(response => {
         console.log('response', response, response.data)
         this.$router.push({ name: 'workplaces.update', params: { state: 'update', workplaceId: response.data._id } })
         showAPISuccess({ title: 'OK', message: 'Local de atendimento cadastrado com sucesso!' })
+        SPIN.stop()
+        topbar.hide()
       })
       .catch(error => {
         console.log(error.response)
         showAPIErrors(error.response)
+        SPIN.stop()
+        topbar.hide()
       })
     },
     updateDoc () {
+      SPIN.spin(this.$refs.spin)
+      topbar.show()
       Http.put('/workplaces', this.cloneDataFormFields(this.formFields))
       .then(response => {
+        SPIN.stop()
+        topbar.hide()
         console.log('response', response, response.data)
         showAPISuccess({ title: 'OK', message: 'Local de atendimento alterado com sucesso!' })
       })
       .catch(error => {
+        SPIN.stop()
+        topbar.hide()
         console.log(error.response)
         showAPIErrors(error.response)
       })

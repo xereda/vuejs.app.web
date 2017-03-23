@@ -65,8 +65,8 @@ export default {
       Http.delete(this.resourceURI + '/' + item)
       .then(response => {
         showAPISuccess({ title: 'OK', message: this.delItemMessage })
-        if (this.actionAfterDelete) this.$emit('action-after-delete')
         this.getList()
+        if (this.actionAfterDelete) this.$emit('action-after-delete', item)
       })
       .catch(error => {
         console.log(error.response)

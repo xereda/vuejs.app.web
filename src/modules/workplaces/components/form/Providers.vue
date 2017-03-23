@@ -61,10 +61,12 @@
               </div>
               <div class="column is-6">
                 <dm-form-number v-model="formFields.deadlineScheduleCancel"
+                              @input.native="$v.formFields.deadlineScheduleCancel.$touch()"
+                              :vuelidate="$v.formFields.deadlineScheduleCancel"
                               fa-icon="fa fa-exclamation"
                               :hidden-icon="true"
                               mask="99"
-                              label="Prazo canc."
+                              label="Prazo canc. *"
                               placeholder="Minutos"></dm-form-email>
               </div>
               <div class="column is-11">
@@ -97,10 +99,14 @@
                               :update-list="updateList"
                               :data-def="dataTableDef"
                               del-item-message="Prestador removido com sucesso!"
-                              @action-after-delete="clearDataForm"
+                              @action-after-delete="deleteDocRelWorkplace"
+                              :action-after-delete="true"
                               :update-item-disabled="false"
                               @update-action="readDoc"
                               ></dm-list>
+                              <!-- <pre>{{ formFields }}</pre>
+                              <pre>{{ specialtiesSelectedObject }}</pre>
+                              <pre>{{ agreementsSelectedObject }}</pre> -->
         </div>
       </div>
     </div>
@@ -177,6 +183,7 @@ export default {
         email
       },
       deadlineScheduleCancel: {
+        required,
         minLength: minLength(1),
         maxLength: maxLength(2)
       }
@@ -203,9 +210,6 @@ export default {
       this.clearDataForm()
     },
     clearDataForm () {
-      this.formFields.provider = ''
-      this.formFields.specialties = []
-      this.formFields.agreements = []
       this.formFields.email = ''
       this.formFields.phoneExtension = ''
       this.formFields.deadlineScheduleCancel = ''
@@ -214,6 +218,11 @@ export default {
       this.providerSelectedObject = {}
       this.specialtiesSelectedObject = []
       this.agreementsSelectedObject = []
+      this.formFields.provider = ''
+      this.formFields.specialties = []
+      this.formFields.agreements = []
+      this.localState = 'new'
+      this.$v.formFields.$reset()
     },
     hidrateDataForm (data) {
       this.temp = data
@@ -251,6 +260,37 @@ export default {
       .then(response => {
         this.updateList = true
         showAPISuccess({ title: 'OK', message: 'Prestador relacionado ao local de atendimento com sucesso!' })
+        this.createDocWorkplaceRel()
+        this.localState = 'update'
+      })
+      .catch(error => {
+        console.log(error.response)
+        showAPIErrors(error.response)
+        topbar.hide()
+      })
+    },
+    deleteDocRelWorkplace (provider) {
+      console.log('vai deletar o doc relacionado em workplace')
+      topbar.show()
+      Http.delete('/providers/' + provider + '/workplaces/' + this.workplaceId)
+      .then(response => {
+        console.log('deletou o doc relacionado em workplace!!!')
+        topbar.hide()
+        this.clearDataForm()
+      })
+      .catch(error => {
+        console.log(error.response)
+        showAPIErrors(error.response)
+        topbar.hide()
+      })
+    },
+    createDocWorkplaceRel () {
+      const _obj = {
+        workplace: this.workplaceId,
+        createdById: this.session._id
+      }
+      Http.post('/providers/' + this.formFields.provider + '/workplaces', _obj)
+      .then(response => {
         topbar.hide()
         this.localState = 'update'
       })
@@ -327,11 +367,19 @@ export default {
   },
   watch: {
     providerSelectedObject (val, oldVal) {
-      this.formFields.provider = val._id
+      if (val !== undefined && val !== null & val._id !== undefined) {
+        this.formFields.provider = val._id
+      } else {
+        this.formFields.provider = ''
+      }
     },
     specialtiesSelectedObject (val) {
       console.log('dentro de specialtiesSelectedObject: ', val.length, val)
-      val.length > 0 ? this.formFields.specialties = val.map(e => { return { 'specialty': e._id, 'name': e.name } }) : this.formFields.specialties = []
+      if (val !== undefined && val[0] !== undefined && val[0]._id !== undefined && val[0]._id !== '') {
+        this.formFields.specialties = val.map(e => { return { 'specialty': e._id, 'name': e.name } })
+      } else {
+        this.formFields.specialties = []
+      }
     },
     agreementsSelectedObject (val) {
       console.log('dentro de agreementsSelectedObject: ', val.length, val)

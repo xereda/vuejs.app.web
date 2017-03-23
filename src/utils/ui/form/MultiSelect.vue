@@ -90,7 +90,7 @@
         this.asyncFind()
       },
       selectedObject (val) {
-        this.$emit('input', val === null ? [{ _id: '', name: '' }] : val)
+        this.$emit('input', val === null ? [] : val)
       },
       docId (val) {
         this.selectedObject = null
