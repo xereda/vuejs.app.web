@@ -2,7 +2,7 @@
   <transition name="fade">
     <div class="">
       <div class="columns is-multiline">
-        <div class="column is-4">
+        <div class="column is-4" ref="form">
           <div class="box">
             <h4 class="subtitle is-4">{{ title }}</h4>
             <div class="columns is-multiline">
@@ -112,11 +112,8 @@ import Vue from 'vue'
 import Vuelidate from 'vuelidate'
 Vue.use(Vuelidate)
 import { required, email, minLength, maxLength } from 'vuelidate/lib/validators'
-
 import { mapState } from 'vuex'
-
 import _ from 'lodash'
-
 import Http from 'utils/services/http'
 import { showAPIErrors, showAPISuccess } from 'utils/services/messenger/main'
 
@@ -129,6 +126,10 @@ import { DmFormMultiSelect,
          DmButtons } from 'utils/ui/form/main'
 
 import DmList from 'utils/ui/form/SubDocumentsList.vue'
+
+import topbar from 'topbar'
+import Spinner from 'spin'
+let SPIN = {}
 
 export default {
   data () {
@@ -181,6 +182,10 @@ export default {
       }
     }
   },
+  mounted () {
+    topbar.config(this.config.topbar)
+    SPIN = new Spinner(this.config.spinner)
+  },
   components: {
     DmFormSearchSelect,
     DmFormMultiSelect,
@@ -215,16 +220,20 @@ export default {
       console.log(data, data.agreements)
       this.providerSelectedObject = { _id: data.provider._id, name: data.provider.name }
       this.formFields.email = data.email
-      this.formFields.phoneExtension = data.phoneExtension.toString()
-      this.formFields.deadlineScheduleCancel = data.deadlineScheduleCancel.toString()
+      this.formFields.phoneExtension = data.phoneExtension !== null ? data.phoneExtension.toString() : ''
+      this.formFields.deadlineScheduleCancel = data.deadlineScheduleCancel !== null ? data.deadlineScheduleCancel.toString() : ''
       this.formFields.lockedCancel = data.lockedCancel
       this.formFields.alertCancel = data.alertCancel
       setTimeout(() => {
         this.agreementsSelectedObject = data.agreements.map(e => { return { '_id': e.agreement, 'name': e.name } })
         this.specialtiesSelectedObject = data.specialties.map(e => { return { '_id': e.specialty, 'name': e.name } })
+        topbar.hide()
+        SPIN.stop()
       }, 100)
     },
     readDoc (providerId) {
+      SPIN.spin(this.$refs.form)
+      topbar.show()
       Http.get('/workplaces/' + this.workplaceId + '/providers/?provider=' + providerId)
       .then(response => {
         this.localState = 'update'
@@ -233,25 +242,31 @@ export default {
       })
       .catch(error => {
         console.log(error)
+        topbar.hide()
       })
     },
     createDoc () {
+      topbar.show()
       Http.post('/workplaces/' + this.workplaceId + '/providers', this.cloneDataFormFields)
       .then(response => {
         this.updateList = true
         showAPISuccess({ title: 'OK', message: 'Prestador relacionado ao local de atendimento com sucesso!' })
+        topbar.hide()
         this.localState = 'update'
       })
       .catch(error => {
         console.log(error.response)
         showAPIErrors(error.response)
+        topbar.hide()
       })
     },
     updateDoc () {
+      topbar.show()
       Http.put('/workplaces/' + this.workplaceId + '/providers/' + this.formFields.provider, this.cloneDataFormFields)
       .then(response => {
         this.updateList = true
         showAPISuccess({ title: 'OK', message: 'Prestador atualizado com sucesso!' })
+        topbar.hide()
         // this.localState = 'new'
         // setTimeout(() => {
         //   this.clearDataForm()
@@ -260,6 +275,7 @@ export default {
       .catch(error => {
         console.log(error.response)
         showAPIErrors(error.response)
+        topbar.hide()
       })
     },
     saveForm () {
@@ -269,6 +285,10 @@ export default {
   },
   computed: {
     ...mapState({
+      config: state => {
+        const { config } = state
+        return config
+      },
       general: state => {
         const { general } = state.workplaces
         return general

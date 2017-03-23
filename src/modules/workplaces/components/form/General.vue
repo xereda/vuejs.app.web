@@ -5,7 +5,7 @@
 
       <div class="container box">
         <p class="title is-4">Dados Gerais</p>
-        <div class="columns is-multiline">
+        <div class="columns is-multiline" ref="spin">
           <div class="column is-7">
             <div class="columns is-multiline">
               <div class="column is-6">
@@ -139,7 +139,7 @@
         </div>
         <div class="is-hidden-tablet dm-divisor">
         </div>
-        <div class="abas" v-if="state === 'update'">
+        <div class="abas" v-show="state === 'update'">
           <dm-abas :workplace-id="workplaceId"></dm-abas>
         </div>
       </div>
@@ -182,6 +182,10 @@ import { DmFormName,
          DmButtons } from 'utils/ui/form/main'
 
 import DmAbas from './Abas.vue'
+
+import topbar from 'topbar'
+import Spinner from 'spin'
+let SPIN = {}
 
 export default {
   data () {
@@ -282,6 +286,8 @@ export default {
     DmFormSelect
   },
   mounted () {
+    topbar.config(this.config.topbar)
+    SPIN = new Spinner(this.config.spinner)
     if (this.state !== 'new' && this.state !== 'update') {
       this.closeForm()
     }
@@ -336,6 +342,8 @@ export default {
       this.state === 'new' ? this.newDoc() : this.updateDoc()
     },
     openDoc (workplaceId) {
+      SPIN.spin(this.$refs.spin)
+      topbar.show()
       Http.get('/workplaces/' + workplaceId + '/?_populate=city')
       .then(response => {
         console.log('response', response, response.data)
@@ -345,6 +353,8 @@ export default {
         console.log(error.response)
         showAPIErrors(error.response)
         this.closeForm()
+        SPIN.stop()
+        topbar.hide()
       })
     },
     newDoc () {
@@ -425,7 +435,11 @@ export default {
       this.formFields.geoField.long = _cloned.geoLocation.coordinates[0].toString()
       this.formFields.phone = _cloned.phone.toString()
       this.formFields.nationalCode = _cloned.nationalCode
-      setTimeout(() => { this.$v.formFields.$touch() }, 200)
+      setTimeout(() => {
+        this.$v.formFields.$touch()
+        SPIN.stop()
+        topbar.hide()
+      }, 200)
       console.log(this.formFields)
     }
   },
