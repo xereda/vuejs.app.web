@@ -1,9 +1,7 @@
 <template>
   <section class="section">
     <div class="container">
-      <h1 class="title">{{ general.title }}</h1>
-      <h2 class="subtitle">{{ general.subTitle }}</h2>
-      <hr>
+      <h1 class="title is-4">acesso aos módulos administrativos</h1>
     </div>
   </section>
 </template>

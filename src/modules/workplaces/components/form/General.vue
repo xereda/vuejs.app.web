@@ -139,7 +139,7 @@
         </div>
         <div class="is-hidden-tablet dm-divisor">
         </div>
-        <div class="abas" v-show="state === 'update'">
+        <div class="abas" v-if="state === 'update'">
           <dm-abas :workplace-id="workplaceId"></dm-abas>
         </div>
       </div>

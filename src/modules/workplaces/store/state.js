@@ -50,18 +50,6 @@ export default {
         }
       }
     },
-    city: {
-      type: 'reference',
-      label: 'Cidade',
-      filter: false,
-      APIReturnable: true,
-      table: {
-        header: {
-          visible: true,
-          class: 'is-hidden-mobile'
-        }
-      }
-    },
     description: {
       type: 'text',
       label: 'Descrição',

@@ -1,11 +1,17 @@
 import List from './components/List.vue'
 import Main from './Main.vue'
 import GeneralForm from './components/form/General.vue'
+// import { validate as ValidateToken } from '../../utils/services/auth/auth'
 
 export default [
   {
     path: '/workplaces',
     component: Main,
+    // beforeEnter: (to, from, next) => {
+    //   ValidateToken((route) => {
+    //     next(route)
+    //   })
+    // },
     children: [
       {
         path: '',

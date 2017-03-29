@@ -1,9 +1,10 @@
 <template lang="html">
-  <nav class="nav has-shadow">
+  <nav class="nav has-shadow is-hidden-mobile">
     <div class="container">
+      <!-- {{ subMenuList }} -->
       <div class="nav-left">
-        <a :class="{ 'nav-item': true, 'is-tab': true, 'is-active': isCurrentRoute(module) }" v-for="module in config.modules">
-          <router-link :to="module.route">{{ module.label }}</router-link>
+        <a :class="{ 'nav-item': true, 'is-tab': true, 'is-active': isCurrentRoute(menu) }" v-for="menu in subMenuList">
+          <router-link :to="menu.route">{{ menu.label }}</router-link>
         </a>
       </div>
     </div>
@@ -35,8 +36,18 @@ export default {
       config: state => {
         const { config } = state
         return config
+      },
+      menu: state => {
+        const { menu } = state.config
+        return menu
       }
-    })
+    }),
+    activeMenu () {
+      return this.menu.filter(e => { return e.active })[0] || {}
+    },
+    subMenuList () {
+      return this.activeMenu.modules
+    }
   }
 }
 </script>

@@ -67,12 +67,16 @@
                               :hidden-icon="true"
                               mask="99"
                               label="Prazo canc. *"
-                              placeholder="Minutos"></dm-form-email>
+                              placeholder="Minutos"></dm-form-number>
               </div>
-              <div class="column is-11">
+            </div>
+            <div class="columns is-multiline">
+              <div class="column">
                 <dm-form-boolean v-model="formFields.lockedCancel"
                               label="Bloqueia canc."></dm-form-boolean>
               </div>
+            </div>
+            <div class="columns is-multiline">
               <div class="column">
                 <dm-form-textarea v-model="formFields.alertCancel"
                                :disabled="!formFields.lockedCancel"

@@ -1,33 +1,70 @@
+import _ from 'lodash'
+
+const _getLocalItem = (item, JSONParse = false) => {
+  const localValue = localStorage.getItem(item)
+  if (_.isEmpty(localValue)) return ''
+  console.log(localValue, typeof localValue)
+  if (JSONParse) return JSON.parse(localValue)
+  return localValue
+}
+
 export default {
-  user: {
-    _id: '58124f84c5560561f8e2dfbf',
-    // _id: '58a67e385e721f451ca19aab', // homologacao
-    name: '',
-    email: '',
-    workplace: {
-      _id: '',
-      name: 'Administrador'
-    },
-    provider: {
-      _id: '',
-      name: 'Xereda'
-    },
-    lastSessionDate: new Date()
-  },
+  accessToken: _getLocalItem('state.accessToken'),
+  user: _getLocalItem('state.user', true),
   config: {
-    adminUserId: '58124f84c5560561f8e2dfbf',
-    // adminUserId: '58a67e385e721f451ca19aab', // homologacao
-    modules: [
-      { route: '/professionalActivities', name: 'professionalActivities', label: 'Ramos de Atividade' },
-      { route: '/specialties', name: 'specialties', label: 'Especializações' },
-      { route: '/users', name: 'users', label: 'Usuários' },
-      { route: '/agreements', name: 'agreements', label: 'Convênios' },
-      { route: '/operators', name: 'operators', label: 'Operadoras' },
-      { route: '/cities', name: 'cities', label: 'Cidades' },
-      { route: '/people', name: 'people', label: 'Pessoas' },
-      { route: '/holidays', name: 'holidays', label: 'Feriados' },
-      { route: '/providers', name: 'providers', label: 'Prestadores' },
-      { route: '/workplaces', name: 'workplaces', label: 'Locais de Atendimento' }
+    // adminUserId: '58124f84c5560561f8e2dfbf',
+    adminUserId: '58a67e385e721f451ca19aab', // homologacao
+    menu: [
+      {
+        name: 'Dashboard',
+        adminOnly: false,
+        active: false,
+        route: 'dashboard',
+        icon: 'fa fa-bar-chart',
+        modules: [
+          { route: 'dashboard', name: 'dashboard', label: 'Padrão', adminOnly: false, icon: 'fa fa-pie-chart' }
+        ]
+      },
+      {
+        name: 'Agenda',
+        adminOnly: false,
+        active: false,
+        route: 'schedules',
+        icon: 'fa fa-calendar',
+        modules: [
+          { route: 'scheduleDefinitions', name: 'scheduleDefinitions', label: 'Definição de agenda', adminOnly: false, icon: 'fa fa-calendar-check-o' },
+          { route: 'schedules', name: 'schedules', label: 'Agenda', adminOnly: false, icon: 'fa fa-calendar' }
+        ]
+      },
+      {
+        name: 'Administrativo',
+        adminOnly: false,
+        active: false,
+        route: 'administrative',
+        icon: 'fa fa-briefcase',
+        modules: [
+          { route: 'professionalActivities', name: 'professionalActivities', label: 'Ramos de Atividade', adminOnly: true, icon: 'fa fa-list' },
+          { route: 'specialties', name: 'specialties', label: 'Especializações', adminOnly: true, icon: 'fa fa-user-md' },
+          { route: 'users', name: 'users', label: 'Usuários', adminOnly: true, icon: 'fa fa-users' },
+          { route: 'agreements', name: 'agreements', label: 'Convênios', adminOnly: true, icon: 'fa fa-handshake-o' },
+          { route: 'operators', name: 'operators', label: 'Operadoras', adminOnly: true, icon: 'fa fa-credit-card' },
+          { route: 'cities', name: 'cities', label: 'Cidades', adminOnly: true, icon: 'fa fa-map-marker' },
+          { route: 'people', name: 'people', label: 'Pessoas', adminOnly: false, icon: 'fa fa-user-circle-o' },
+          { route: 'holidays', name: 'holidays', label: 'Feriados', adminOnly: false, icon: 'fa fa-plane' },
+          { route: 'providers', name: 'providers', label: 'Prestadores', adminOnly: true, icon: 'fa fa-product-hunt' },
+          { route: 'workplaces', name: 'workplaces', label: 'Locais de Atendimento', adminOnly: true, icon: 'fa fa-thumb-tack' }
+        ]
+      },
+      {
+        name: 'Configurações',
+        route: 'configurator',
+        icon: 'fa fa-wrench',
+        active: false,
+        adminOnly: false,
+        modules: [
+          { route: 'configurator', name: 'configurator', label: 'Editar Configurações', adminOnly: false, icon: 'fa fa-wrench' }
+        ]
+      }
     ],
     spinner: {
       lines: 11, // The number of lines to draw
@@ -59,8 +96,10 @@ export default {
       shadowBlur: 7,
       shadowColor: 'rgba(0, 0, 0, .99)'
     },
-    APIURIBase: 'http://localhost:5000/',
-    // APIURIBase: 'http://homologa.docmob.com.br:5000/', // homologacao
+    // APIAuth: 'http://localhost:3000/',
+    APIAuth: 'http://homologa.docmob.com.br:3000/',
+    // APIURIBase: 'http://localhost:5000/',
+    APIURIBase: 'http://homologa.docmob.com.br:5000/', // homologacao
     APICEPData: 'http://api.postmon.com.br/v1/cep/',
     grid: {
       delayLoading: 250,

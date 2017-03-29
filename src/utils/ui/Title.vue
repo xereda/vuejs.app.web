@@ -1,16 +1,16 @@
 <template lang="html">
-<div>
+<div class="is-hidden-mobile">
   <div class="hero-body">
     <div class="container has-text-centered">
       <h1 class="title">
-        {{ session.workplace.name }}
+        {{ workplaceName }}
       </h1>
       <h2 class="subtitle">
-        {{ session.provider.name }}
-        <span class="tag">
-          sair
-          <button class="delete is-small"></button>
-        </span>
+        {{ userIdentification }}
+        <!-- <span class="tag">
+          &nbsp;sair&nbsp;
+          <button class="delete is-small" @click="logOff()"></button>
+        </span> -->
       </h2>
     </div>
   </div>
@@ -18,22 +18,23 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import _ from 'lodash'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   methods: {
+    ...mapActions([
+      'sessionLogOff'
+    ]),
     logOff () {
       console.log('logOff')
+      this.sessionLogOff(this.$router)
     }
   },
   mounted () {
   },
   computed: {
     ...mapState({
-      general: state => {
-        const { general } = state.healthInsurances
-        return general
-      },
       session: state => {
         const { user } = state
         return user
@@ -42,7 +43,16 @@ export default {
         const { config } = state
         return config
       }
-    })
+    }),
+    workplaceName () {
+      if (this.session.workplaces === undefined || _.isEmpty(this.session.workplaces)) return 'Usuário sem local definido'
+      if (_.isEmpty(this.session.workplaces[0].name) === false) return this.session.workplaces[0].name
+      if (this.session.admin) return 'Administrador (sem local de trabalho definido)'
+      return 'Você não tem um local de trabalho defenido.'
+    },
+    userIdentification () {
+      return _.startCase(_.lowerCase(this.session.name)) + ' - ' + this.session.email
+    }
   }
 }
 </script>

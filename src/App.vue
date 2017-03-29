@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import 'lodash'
 import 'sweetalert'
 import 'sweetalert/dist/sweetalert.css'
@@ -24,12 +24,20 @@ export default {
     return {
     }
   },
-  beforeCreate () {
+  mounted () {
+    // this.updateUserSession(localStorage.getItem('state.user'))
+    // this.updateTokenSession(localStorage.getItem('state.accessToken'))
   },
   components: {
     dmHeader,
     dmSubMenu,
     dmFooter
+  },
+  methods: {
+    ...mapActions([
+      'updateUserSession',
+      'updateTokenSession'
+    ])
   },
   computed: {
     ...mapState({

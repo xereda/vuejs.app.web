@@ -2,7 +2,7 @@
 <div>
   <label v-if="showLabel" class="label">{{ label }}</label>
   <p :class="pClass">
-    <input :placeholder="placeholder" :value="value" @input="$emit('input', $event.target.value)" :class="defineClass"></input>
+    <input :placeholder="placeholder" type="password" :value="value" @input="$emit('input', $event.target.value)" :class="defineClass"></input>
     <span :class="'icon ' + size" v-show="!hiddenIcon">
       <i :class="faIcon"></i>
     </span>
@@ -15,7 +15,7 @@
 import _ from 'lodash'
 
 export default {
-  name: 'dmFormEmail',
+  name: 'dmFormPassword',
   props: {
     placeholder: {
       type: String,
@@ -27,7 +27,7 @@ export default {
     },
     faIcon: {
       type: String,
-      default: 'fa fa-envelope'
+      default: 'fa fa-lock'
     },
     label: {
       type: String,
@@ -36,6 +36,10 @@ export default {
     vuelidate: {
       type: Object,
       default: () => Object.assign({})
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     },
     hiddenIcon: {
       type: Boolean,
@@ -74,18 +78,20 @@ export default {
           return this.label.replace(' *', '') + ' é requerido!'
         }
       }
-      if (this.vuelidate.email !== undefined && this.vuelidate.email === false) {
-        return 'E-mail inválido!'
+      if (this.vuelidate.minLength !== undefined && this.vuelidate.minLength === false) {
+        return 'Qt mínima de caracteres não atendida!'
       }
+      if (this.vuelidate.maxLength !== undefined && this.vuelidate.maxLength === false) {
+        return 'Ultrapassou qt máxima de caracteres!'
+      }
+
       return ''
     },
     hasError () {
       return this.errorMessage !== ''
-    }
-  }
+    }}
 }
 </script>
 
 <style lang="css" scoped>
-
 </style>

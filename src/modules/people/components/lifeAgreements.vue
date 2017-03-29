@@ -11,6 +11,7 @@
                           fa-icon="fa fa-credit-card-alt"
                           api-resource="agreements"
                           :disabled="state === 'new'"></dm-form-select>
+        </div>
       </div>
       <div class="column is-12">
         <dm-form-input v-model="formFields.code"

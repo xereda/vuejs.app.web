@@ -268,10 +268,13 @@ export default {
     },
     getDoc () {
       this.startLoading()
-      const _uri = this.config.APIURIBase + this.API.resource + '/' + this.documentId
+      const _uri = this.config.APIURIBase + this.API.resource + '/' + this.documentId + '/?_fields=_id,name,email,admin,active,createdById,updatedById,createdAt,updatedAt'
 
       this.$http.get(_uri).then((response) => {
         this.modalDoc = response.body
+        console.log('##################')
+        console.log('dentro da get doc user: ', this.modalDoc)
+        console.log('##################')
         this.$set(this, 'clonedDoc', JSON.parse(JSON.stringify(this.modalDoc)))
         this.stopLoading(0)
       }, (response) => {

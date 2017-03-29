@@ -135,7 +135,7 @@ import dmPagination from '../../../utils/ui/Pagination.vue'
 import { showAPIErrors } from '../../../utils/services/messenger/main'
 
 export default {
-  name: 'dmProviders',
+  name: 'dmWorkplaces',
   data () {
     return {
       transitionTable: false,
@@ -374,6 +374,7 @@ export default {
 
       // GET /someUrl
       const _uri = this.config.APIURIBase + this.API.resource + '/?_populate=city&_fields=' + _fields + _params + '&_sort=' + _sort
+      console.log('_uri: ', _uri)
       this.$http.get(_uri).then((response) => {
         this.workplaces_updateTotalDocs(response.headers.get('X-Total-Count'))
         response.body[0]._id !== undefined ? this.docs = response.body : this.docs = []

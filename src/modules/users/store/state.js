@@ -72,7 +72,7 @@ export default {
         veeValidate: 'confirmed:password2|min:3',
         cssIcon: 'fa fa-lock',
         responsiveCSS: 'column is-6',
-        hiddenOnUpdate: true
+        hiddenOnUpdate: false
       }
     },
     password2: {
@@ -84,7 +84,7 @@ export default {
       modal: {
         cssIcon: 'fa fa-lock',
         responsiveCSS: 'column is-6',
-        hiddenOnUpdate: true
+        hiddenOnUpdate: false
       }
     },
     admin: {

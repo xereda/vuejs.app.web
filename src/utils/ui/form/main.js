@@ -1,4 +1,5 @@
 import DmFormInput from './Input.vue'
+import DmFormPassword from './Password.vue'
 import DmFormBoolean from './Boolean.vue'
 import DmButtons from './Buttons.vue'
 import DmFormCNPJ from './CNPJ.vue'
@@ -20,6 +21,7 @@ import DmFormLongitude from './Longitude.vue'
 
 export {
   DmFormInput,
+  DmFormPassword,
   DmFormBoolean,
   DmButtons,
   DmFormCNPJ,
