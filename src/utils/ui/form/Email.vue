@@ -2,8 +2,8 @@
 <div>
   <label v-if="showLabel" class="label">{{ label }}</label>
   <p :class="pClass">
-    <input :placeholder="placeholder" :value="value" @input="$emit('input', $event.target.value)" :class="defineClass"></input>
-    <span :class="'icon ' + size" v-show="!hiddenIcon">
+    <input :placeholder="placeholder" ref="email" :value="value" @input="$emit('input', $event.target.value)" :class="defineClass"></input>
+    <span :class="'icon ' + iconSize" v-show="!hiddenIcon">
       <i :class="faIcon"></i>
     </span>
     <span v-if="hasError" class="help is-danger">{{ errorMessage }}</span>
@@ -16,6 +16,9 @@ import _ from 'lodash'
 
 export default {
   name: 'dmFormEmail',
+  mounted () {
+    if (this.autofocus) this.$refs.email.focus()
+  },
   props: {
     placeholder: {
       type: String,
@@ -44,6 +47,18 @@ export default {
     size: {
       type: String,
       default: ''
+    },
+    iconSize: {
+      type: String,
+      default: 'is-small'
+    },
+    autofocus: {
+      type: Boolean,
+      default: false
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {

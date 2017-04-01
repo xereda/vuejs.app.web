@@ -4,7 +4,7 @@
     <div class="hero-body">
       <div class="container">
         <div class="columns is-vcentered">
-          <div class="column is-6 is-offset-3">
+          <div class="column is-4 is-offset-4">
             <h1 class="title">
               Acesso ao DocMob
             </h1>
@@ -15,7 +15,9 @@
                                 @input="$v.formFields.email.$touch()"
                                 :vuelidate="$v.formFields.email"
                                 label="E-mail"
-                                size="is-medium"
+                                :disabled="isLoading"
+                                :autofocus="true"
+                                @keyup.enter.native="loginAction()"
                                 placeholder="Informe seu e-mail"></dm-form-email>
                 </div>
               </div>
@@ -25,18 +27,19 @@
                                 @input="$v.formFields.password.$touch()"
                                 :vuelidate="$v.formFields.password"
                                 label="Senha"
-                                size="is-medium"
+                                :disabled="isLoading"
+                                @keyup.enter.native="loginAction()"
                                 placeholder="********"></dm-form-password>
                 </div>
               </div>
               <hr>
-              <a :class="{ 'button': true, 'is-medium': true, 'is-primary': true, 'is-disabled': isInvalidLogin, 'is-loading': isLoading }" @click="loginAction()">
-                <span class="icon is-medium">
+              <a :class="{ 'button': true, 'is-primary': true, 'is-disabled': isInvalidLogin, 'is-loading': isLoading }" @click="loginAction()">
+                <span class="icon">
                   <i class="fa fa-sign-in"></i>
                 </span>
                 <span>Login</span>
               </a>
-              <a class="button is-medium is-default cancelButton" @click="cancelAction()">
+              <a class="button is-default cancelButton" @click="cancelAction()">
                 <span class="icon">
                   <i class="fa fa-ban"></i>
                 </span>
@@ -68,7 +71,7 @@ import { required, email, minLength } from 'vuelidate/lib/validators'
 import { DmFormEmail, DmFormPassword } from '../../utils/ui/form/main'
 import { authorization } from '../../utils/services/auth/auth'
 import _ from 'lodash'
-import { showWarning } from '../../utils/services/messenger/main'
+import { showWarning, showAPIErrors } from '../../utils/services/messenger/main'
 
 export default {
   name: 'dmProviders',
@@ -100,18 +103,31 @@ export default {
   beforeMount () {
     if (_.isEmpty(this.accessToken) === false) this.$router.push({ name: 'dashboard' })
   },
+  mounted () {
+  },
   methods: {
     loginAction () {
+      if (this.$v.$invalid) return false
       this.isLoading = true
       console.log('botao login')
       authorization(this.formFields.email, this.formFields.password, (accessToken, payload) => {
         console.log('dentro do callback enviado')
         if (_.isEmpty(accessToken) || _.isEmpty(payload)) {
           showWarning({ title: 'Erro', message: 'Não foi possível acessar o sistema com os dados informados. Por favor, revise seu email e senha!', position: 'topCenter' })
+        } else if (_.isEmpty(payload.workplaces) && (payload.admin === false)) {
+          showWarning({ title: 'Erro', message: 'Não há nenhum local de trabalho relacionado ao usuário!', position: 'topCenter' })
         } else {
           this.updateUserSession(payload)
           this.updateTokenSession(accessToken)
-          this.$router.push({ path: '/' })
+          this.$router.push({ name: 'dashboard' })
+        }
+        this.isLoading = false
+      }, (error) => {
+        console.log('dentro da callbackErrors', error.config, error.response, error)
+        if (error.response === undefined) {
+          showAPIErrors(error.response)
+        } else {
+          showWarning({ title: 'Erro', message: 'Não foi possível acessar o sistema com os dados informados. Por favor, revise seu email e senha!', position: 'topCenter' })
         }
         this.isLoading = false
       })
@@ -148,6 +164,9 @@ export default {
   directives: {
   },
   watch: {
+    'formFields.email' (val) {
+      this.formFields.email = val.toLowerCase()
+    }
   }
 }
 </script>

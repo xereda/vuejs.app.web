@@ -37,11 +37,16 @@ const _humanMessage = (_data) => {
 }
 
 const showAPIErrors = (_objectErrors) => {
-  if ((_objectErrors === undefined) || (_objectErrors.data === undefined)) {
-    return false
-  }
-  if (_objectErrors.status === 0) {
+  if (_objectErrors === undefined || _objectErrors.status === 0) {
     izitoast.error({ title: 'AVISO - T0', message: 'Não foi possível acessar a API', position: _TOAST_POSITION })
+    return true
+  }
+  if (_objectErrors.status === 401) {
+    izitoast.error({ title: 'AVISO - T401', message: 'Dados não autorizados', position: _TOAST_POSITION })
+    return true
+  }
+  if (_objectErrors.data === undefined) {
+    return false
   }
   if (_objectErrors.data.err !== undefined) {
     if (_objectErrors.data.err.errors !== undefined) {

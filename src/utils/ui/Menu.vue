@@ -11,7 +11,7 @@
             <li :class="($route.name === 'configurator') ? 'is-active' : ''"><router-link to="/configurator">Configuração</router-link></li>
           </ul> -->
           <ul>
-            <li :class="{ 'is-active': isActive(menu.route) || menu.active }" v-for="menu in menuList"><a @click="activateMenu(menu.route)">{{ menu.name }}</a></li>
+            <li :class="{ 'is-active': isCurrentMenu(menu.route) }" v-for="menu in menuList"><a @click="activateMenu(menu.route)">{{ menu.name }}</a></li>
           </ul>
         </div>
       </nav>
@@ -21,19 +21,18 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-// import _ from 'lodash'
+import mixins from 'mixins/main'
 
 export default {
+  mixins: [
+    mixins
+  ],
   methods: {
     ...mapActions([
       'setActiveMenu'
     ]),
-    isActive (route) {
-      return route === this.$route.name
-    },
     activateMenu (route) {
       console.log('dentro da activateMenu: ', route)
-      this.setActiveMenu(route)
       this.$router.push({ name: route })
     }
   },

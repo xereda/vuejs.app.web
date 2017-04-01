@@ -9,8 +9,5 @@ export default {
     context.commit('UPDATE_USER_SESSION', {})
     context.commit('UPDATE_TOKEN_SESSION', '')
     router.push({ name: 'login' })
-  },
-  setActiveMenu (context, menu) {
-    context.commit('SET_ACTIVE_MENU', menu)
   }
 }

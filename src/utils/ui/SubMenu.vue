@@ -1,10 +1,10 @@
 <template lang="html">
   <nav class="nav has-shadow is-hidden-mobile">
+    <!-- {{ moduleList }} -->
     <div class="container">
-      <!-- {{ subMenuList }} -->
       <div class="nav-left">
-        <a :class="{ 'nav-item': true, 'is-tab': true, 'is-active': isCurrentRoute(menu) }" v-for="menu in subMenuList">
-          <router-link :to="menu.route">{{ menu.label }}</router-link>
+        <a :class="{ 'nav-item': true, 'is-tab': true, 'is-active': isCurrentMenu(module.route) }" v-for="module in moduleList">
+          <router-link :to="module.route">{{ module.label }}</router-link>
         </a>
       </div>
     </div>
@@ -13,14 +13,17 @@
 
 <script>
 import { mapState } from 'vuex'
+import mixins from 'mixins/main'
 
 export default {
+  mixins: [
+    mixins
+  ],
   methods: {
-    isCurrentRoute (module) {
-      if (this.$route.name === undefined) return false
-      if (this.$route.name === null) return false
-      if (this.$route.name.indexOf(module.name) === -1) return false
-      return true
+    activeMenu () {
+      return this.menu.filter(e => {
+        return this.isCurrentMenu(e.route)
+      })
     }
   },
   computed: {
@@ -42,11 +45,9 @@ export default {
         return menu
       }
     }),
-    activeMenu () {
-      return this.menu.filter(e => { return e.active })[0] || {}
-    },
-    subMenuList () {
-      return this.activeMenu.modules
+    moduleList () {
+      const _list = this.activeMenu()
+      return _list[0].modules
     }
   }
 }

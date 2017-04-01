@@ -1,5 +1,5 @@
 import Http from '../httpAuth'
-import store from '../../../store/store'
+import store from 'store/store'
 
 const validate = (callback) => {
   Http.get('validate-token', {
@@ -17,7 +17,7 @@ const validate = (callback) => {
   })
 }
 
-const authorization = (email, password, callback) => {
+const authorization = (email, password, callback, callbackError) => {
   console.log(email, password)
   Http.post('credential', { email, password })
   .then(response => {
@@ -26,7 +26,7 @@ const authorization = (email, password, callback) => {
   })
   .catch(error => {
     console.log('Error: ', error)
-    callback()
+    callbackError(error)
   })
 }
 
