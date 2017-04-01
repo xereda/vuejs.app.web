@@ -11,7 +11,7 @@
             <li :class="($route.name === 'configurator') ? 'is-active' : ''"><router-link to="/configurator">Configuração</router-link></li>
           </ul> -->
           <ul>
-            <li :class="{ 'is-active': isCurrentMenu(menu.route) }" v-for="menu in menuList"><a @click="activateMenu(menu.route)">{{ menu.name }}</a></li>
+            <li :class="{ 'is-active': isCurrentMenu(menu.route.name) }" v-for="menu in menuList"><a @click="activateMenu(menu.route.to)">{{ menu.name }}</a></li>
           </ul>
         </div>
       </nav>
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 import mixins from 'mixins/main'
 
 export default {
@@ -28,9 +28,6 @@ export default {
     mixins
   ],
   methods: {
-    ...mapActions([
-      'setActiveMenu'
-    ]),
     activateMenu (route) {
       console.log('dentro da activateMenu: ', route)
       this.$router.push({ name: route })
@@ -40,23 +37,14 @@ export default {
   },
   computed: {
     menuList () {
-      if (this.session.admin === false) return this.menu.filter(e => { return e.adminOnly === false })
-      return this.menu
+      if (this.session.admin === false) return this.mainModules.filter(e => { return e.adminOnly === false })
+      return this.mainModules
     },
-    ...mapState({
-      session: state => {
-        const { user } = state
-        return user
-      },
-      menu: state => {
-        const { menu } = state.config
-        return menu
-      },
-      config: state => {
-        const { config } = state
-        return config
-      }
-    })
+    ...mapGetters([
+      'session',
+      'mainModules',
+      'config'
+    ])
   }
 }
 </script>

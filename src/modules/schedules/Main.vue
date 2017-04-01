@@ -1,60 +1,34 @@
 <template>
-  <section class="section">
-    <div class="container">
-
-      <hr>
-    </div>
-  </section>
+  <div class="">
+    <sub-menu :modules="modules"></sub-menu>
+    <section class="section">
+      <div class="container">
+        <h1 class="title">Agenda</h1>
+        <h2 class="subtitle">Módulo de controle de agendas</h2>
+        <hr>
+        <router-view></router-view>
+      </div>
+    </section>
+  </div>
 </template>
-
 
 <script>
 import { mapState } from 'vuex'
-import prestadores from './components/prestadores.vue'
-import convenios from './components/convenios.vue'
-// import fullCalendar from 'vue-fullcalendar'
-
+import SubMenu from 'utils/ui/SubMenu.vue'
 export default {
-  data () {
-    return {
-      fcEvents: []
-    }
-  },
-  components: {
-    // fullCalendar,
-    prestadores,
-    convenios
-  },
   computed: {
     ...mapState({
-      config: state => {
-        const { config } = state
-        return config
+      modules: state => {
+        const { modules } = state.schedules
+        return modules
       }
     })
+  },
+  components: {
+    SubMenu
   }
 }
 </script>
 
-<style lang="scss" scoped>
-
-  div#lateral {
-    margin-left: -70px;
-    width: 230px;
-    height: 100px;
-  }
-  div#agenda {
-    margin-left: -20px;
-  }
-  .botoes {
-    margin-left:840px;
-  }
-  .panel-block {
-    font-size: 15px;
-    margin-left: -10px;
-  }
-  h1 {
-    font-size: 20px;
-    color: rgb(54, 62, 62);
-  }
+<style scope>
 </style>

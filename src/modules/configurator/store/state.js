@@ -1,6 +1,5 @@
 export default {
-  general: {
-    title: 'Configuração do sistema',
-    subTitle: 'Parâtros do sistema DocMob'
-  }
+  modules: [
+    { route: 'config', name: 'config', label: 'Editar Configurações', adminOnly: false, active: true, icon: 'fa fa-wrench' }
+  ]
 }

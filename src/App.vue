@@ -1,7 +1,6 @@
 <template>
   <div>
     <dm-header v-if="$route.name !== 'login'"></dm-header>
-    <dm-sub-menu v-if="$route.name !== 'login'"></dm-sub-menu>
     <router-view></router-view>
     <dm-footer v-if="$route.name !== 'login'"></dm-footer>
   </div>

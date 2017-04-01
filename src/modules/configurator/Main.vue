@@ -1,43 +1,34 @@
 <template>
-  <section class="section">
-    <div class="container">
-      <h1 class="title">{{ general.title }}</h1>
-      <h2 class="subtitle">{{ general.subTitle }}</h2>
-      <hr>
-
-
-    </div>
-  </section>
+  <div class="">
+    <sub-menu :modules="modules"></sub-menu>
+    <section class="section">
+      <div class="container">
+        <h1 class="title">Ajustes gerais</h1>
+        <h2 class="subtitle">Personalização do sistema</h2>
+        <hr>
+        <router-view></router-view>
+      </div>
+    </section>
+  </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-
+import SubMenu from 'utils/ui/SubMenu.vue'
 export default {
-  data () {
-    return {
-    }
-  },
-  components: {
-  },
-  mounted () {
-  },
-  methods: {
-  },
   computed: {
     ...mapState({
-      config: state => {
-        const { config } = state
-        return config
-      },
-      general: state => {
-        const { general } = state.configurator
-        return general
+      modules: state => {
+        const { modules } = state.configurator
+        return modules
       }
     })
+  },
+  components: {
+    SubMenu
   }
 }
 </script>
 
-<style>
+<style scope>
 </style>

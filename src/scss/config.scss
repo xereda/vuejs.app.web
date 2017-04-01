@@ -9,5 +9,6 @@ $fadeModalTabsTime: 1s;
 $fadeGridTime: $fadeBaseTime;
 $fadeModal: $fadeBaseTime;
 $columnHeaderLink: rgba(0,0,0,0.5);
-$tableDivHeight: 30em !important;
+// $tableDivHeight: 30em !important;
+$tableDivHeight: auto !important;
 $tableDivBgColor: white;
