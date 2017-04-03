@@ -107,12 +107,16 @@ export default {
       console.log(_uri)
       Http.get(_uri)
       .then((response) => {
+        console.log(response.data)
         this.formFields._id = response.data._id
         this.formFields.name = response.data.name
         this.formFields.date = response.data.date
         this.formFields.recurrent = response.data.recurrent
         this.formFields.regional = response.data.regional
-        this.formFields.city = response.data.city._id
+        this.formFields.city = ''
+        if (response.data.city !== undefined && response.data.city._id !== undefined) {
+          this.formFields.city = response.data.city._id
+        }
 
         setTimeout(() => {
           this.$v.formFields.$reset()
@@ -120,7 +124,8 @@ export default {
         // this.formFields.date = response.data.date.split('T')[0]
       })
       .catch((error) => {
-        this.showErrors(error.response)
+        this.showErrors(error.response || error)
+        console.log('error dentro do modal do feriados: ', error)
       })
     }
   },

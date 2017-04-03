@@ -323,6 +323,7 @@ export default {
         this.stopLoading(0)
       }, (response) => {
         showAPIErrors(response)
+        console.log(response)
         this.stopLoading(this.config.modal.delayModalSaveButton)
       })
     },
