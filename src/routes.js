@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from 'store/store'
 import { validate as ValidateToken } from 'utils/services/auth/auth'
 
 Vue.use(VueRouter)
@@ -24,9 +25,14 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.name === 'login') next()
+  if (to.name === 'login') return next()
+  console.log('to: ', to.name)
+  console.log('state: ', store.state[to.path.split('/')[1]])
+  const module = store.state[to.path.split('/')[1]].modules.filter(e => { return to.name === e.name })[0]
+  console.log(module)
+  if (store.state.user.admin === false && module.adminOnly) return next('/')
   ValidateToken((route) => {
-    next(route)
+    return next(route)
   })
 })
 

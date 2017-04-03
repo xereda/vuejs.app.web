@@ -1,7 +1,7 @@
 <template lang="html">
 <div>
   <footer class="footer">
-    <div class="container">
+    <div class="container is-fluid">
       <div class="content has-text-centered">
         <p>
           <img src="../../img/docmob_footer.svg" alt="" class="logo_footer" />

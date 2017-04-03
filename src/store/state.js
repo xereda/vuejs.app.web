@@ -40,7 +40,7 @@ export default {
         active: false,
         route: {
           name: 'administrative',
-          to: 'professionalActivities'
+          to: 'admin'
         },
         icon: 'fa fa-briefcase'
       },

@@ -8,11 +8,11 @@ export default {
     },
     breadcrumbs: {
       new: [
-        { route: '/workplaces', name: 'Locais de Atendimento', activedLink: true },
+        { route: '/administrative/workplaces', name: 'Locais de Atendimento', activedLink: true },
         { route: '', name: 'Novo', activedLink: false }
       ],
       update: [
-        { route: '/workplaces', name: 'Locais de Atendimento', activedLink: true },
+        { route: '/administrative/workplaces', name: 'Locais de Atendimento', activedLink: true },
         { route: '', name: 'Atualizando', activedLink: false }
       ]
     }

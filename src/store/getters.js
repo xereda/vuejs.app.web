@@ -10,5 +10,9 @@ export default {
   config: state => {
     const { config } = state
     return config
+  },
+  accessToken: state => {
+    const { accessToken } = state
+    return accessToken
   }
 }

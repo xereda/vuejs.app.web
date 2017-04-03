@@ -2,7 +2,7 @@
   <div class="">
     <sub-menu :modules="modules"></sub-menu>
     <section class="section">
-      <div class="container">
+      <div class="container is-fluid">
         <h1 class="title">Ajustes gerais</h1>
         <h2 class="subtitle">Personalização do sistema</h2>
         <hr>

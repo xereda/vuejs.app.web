@@ -8,11 +8,11 @@ export default {
     },
     breadcrumbs: {
       new: [
-        { route: '/providers', name: 'Prestadores', activedLink: true },
+        { route: '/administrative/providers', name: 'Prestadores', activedLink: true },
         { route: '', name: 'Novo', activedLink: false }
       ],
       update: [
-        { route: '/providers', name: 'Prestadores', activedLink: true },
+        { route: '/administrative/providers', name: 'Prestadores', activedLink: true },
         { route: '', name: 'Atualizando', activedLink: false }
       ]
     }

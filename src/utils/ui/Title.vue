@@ -1,7 +1,7 @@
 <template lang="html">
 <div class="is-hidden-mobile">
   <div class="hero-body">
-    <div class="container has-text-centered">
+    <div class="container is-fluid">
       <h1 class="title">
         {{ workplaceName }}
       </h1>

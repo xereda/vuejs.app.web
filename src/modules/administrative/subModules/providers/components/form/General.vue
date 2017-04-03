@@ -1,12 +1,9 @@
 <template lang="html">
   <transition name="fade">
     <div class="main-canvas">
-      <!-- providerId: <pre>{{ providerId }}</pre>
-      state: <pre>{{ state }}</pre>
-      form: <pre>{{ formFields }}</pre> -->
       <dm-breadcrumbs :object-links="breadcrumbs" :state="state"></dm-breadcrumbs>
 
-      <div class="container box">
+      <div class="is-fluid box">
         <p class="title is-4">Dados Gerais</p>
         <div class="columns is-multiline">
           <div class="column is-7">

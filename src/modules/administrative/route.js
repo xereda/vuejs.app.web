@@ -1,4 +1,5 @@
 import Main from './Main.vue'
+import Admin from './subModules/admin/Main.vue'
 import ProfessionalActivities from './subModules/professionalActivities/Main.vue'
 import Specialties from './subModules/specialties/Main.vue'
 import Users from './subModules/users/Main.vue'
@@ -20,6 +21,11 @@ export default [
     name: 'administrative',
     component: Main,
     children: [
+      {
+        path: '/administrative/admin',
+        name: 'admin',
+        component: Admin
+      },
       {
         path: '/administrative/professionalActivities',
         name: 'professionalActivities',
@@ -62,7 +68,6 @@ export default [
       },
       {
         path: '/administrative/providers',
-        name: 'providers',
         component: Providers,
         children: [
           {
@@ -84,7 +89,6 @@ export default [
       },
       {
         path: '/administrative/workplaces',
-        name: 'workplaces',
         component: Workplaces,
         children: [
           {

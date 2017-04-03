@@ -7,6 +7,7 @@ import getters from './getters'
 import dashboard from '../modules/dashboard/store/store'
 import configurator from '../modules/configurator/store/store'
 import administrative from '../modules/administrative/store/store'
+import admin from '../modules/administrative/subModules/admin/store/store'
 import specialties from '../modules/administrative/subModules/specialties/store/store'
 import professionalActivities from '../modules/administrative/subModules/professionalActivities/store/store'
 import users from '../modules/administrative/subModules/users/store/store'
@@ -33,6 +34,7 @@ export default new Vuex.Store({
     configurator,
     dashboard,
     administrative,
+    admin,
     agreements,
     cities,
     people,

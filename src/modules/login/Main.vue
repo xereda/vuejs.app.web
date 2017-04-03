@@ -74,7 +74,7 @@ import _ from 'lodash'
 import { showWarning, showAPIErrors } from '../../utils/services/messenger/main'
 
 export default {
-  name: 'dmProviders',
+  name: 'DmLogin',
   data () {
     return {
       isLoading: false,
@@ -101,7 +101,9 @@ export default {
     DmFormPassword
   },
   beforeMount () {
-    if (_.isEmpty(this.accessToken) === false) this.$router.push({ name: 'dashboard' })
+    console.log('antes de beforeMount')
+    if (_.isEmpty(this.accessToken) === false) this.$router.push({ name: 'dashboard1' })
+    console.log('depois de beforeMount')
   },
   mounted () {
   },
@@ -119,7 +121,7 @@ export default {
         } else {
           this.updateUserSession(payload)
           this.updateTokenSession(accessToken)
-          this.$router.push({ name: 'dashboard' })
+          this.$router.push({ name: 'dashboard1' })
         }
         this.isLoading = false
       }, (error) => {
@@ -144,19 +146,10 @@ export default {
     ])
   },
   computed: {
-    ...mapState({
-      user: state => {
-        const { user } = state
-        return user
-      },
-      accessToken: state => {
-        const { accessToken } = state
-        return accessToken
-      },
-      teste () {
-        return localStorage.getItem('state.user')
-      }
-    }),
+    ...mapState([
+      'session',
+      'accessToken'
+    ]),
     isInvalidLogin () {
       return this.$v.formFields.$invalid
     }

@@ -1,126 +1,124 @@
 <template>
   <div class="">
-    <div class="container">
-            <h1 class="title">{{ general.title }}</h1>
-            <h2 class="subtitle">{{ general.subTitle }}</h2>
-            <hr>
-            <!-- Main container -->
-            <nav class="level">
-              <!-- Left side -->
-              <div class="level-left" v-if="appliedFilters()">
-                <div class="level-item">
-                  <p class="subtitle is-5">
-                    (<strong>{{ pagination.total }}</strong> {{ general.title }})
-                  </p>
-                </div>
-                <span class="">Filtro aplicado:&nbsp;</span>
-                <span class="tag is-warning is-medium">
-                  [{{ (filters.search.fieldName === 'q') ? 'Todos' : filters.search.fieldName }}] {{ filters.search.text }}
-                  <button @click="clearSearchFields()" class="delete is-small"></button>
-                </span>
-              </div>
-              <div class="level-left" v-else>
-                <div class="level-item">
-                  <p class="subtitle is-5">
-                    (<strong>{{ pagination.total }}</strong> {{ general.title }})
-                  </p>
-                </div>
-                <div class="level-item">
-                  <p class="control has-addons">
-                    <span class="select is-hidden-mobile">
-                      <select :class="getCSSState()" @change="selectChanged" v-model="control.filters.search.fieldName">
-                        <option value="q">Todos</option>
-                        <option v-for="(col, index) in collection" v-if="isSearchFilter(col)" :value="index">{{ col.label }}</option>
-                      </select>
-                    </span>
-                    <input :class="'input ' + getCSSState()" type="text"
-                          ref="searchTextField"
-                           v-focus
-                           v-model="control.filters.search.text"
-                           @keyup.enter="(control.filters.search.text.length > 3) ? localUpdateSearchFilters() : null"
-                           placeholder="Filtrar o resultado">
-                    <button class="button is-info"
-                            :disabled="control.filters.search.text.length <= 3"
-                            @click="localUpdateSearchFilters">
-                      Filtrar
-                    </button>
-                  </p>
-                </div>
-              </div>
-              <!-- Right side -->
-              <div class="level-right">
-                <p class="level-item" v-if="isNotEmpty(booleanColumns)"><a :class="getCSSState()" @click="agreements_removeAllBooleanFilter([])"><strong>Todos</strong></a></p>
-                <p class="level-item"
-                   v-for="(col, index) in booleanColumns">
-                  <a :class="getCSSState()" @click="localAddBooleanFilter(index)" v-if="isBooleanApplied(index) === false">{{ col.label }}</a>
-                  <span v-else class="tag is-warning is-medium">
-                    {{ col.label }}
-                    <button @click="localRemoveBooleanFilter(index)" :class="'delete is-small ' + getCSSState()"></button>
-                  </span>
-                </p>
-                <p class="level-item">
-                  <a :class="'button is-success ' + getCSSState()" @click="newDocument()">
-                    <span class="icon is-small">
-                      <i class="fa fa-file-o"></i>
-                    </span>
-                    <span>Novo</span>
-                  </a>
-                </p>
-              </div>
-            </nav>
+    <h1 class="title">{{ general.title }}</h1>
+    <h2 class="subtitle">{{ general.subTitle }}</h2>
+    <hr>
+    <!-- Main container -->
+    <nav class="level">
+      <!-- Left side -->
+      <div class="level-left" v-if="appliedFilters()">
+        <div class="level-item">
+          <p class="subtitle is-5">
+            (<strong>{{ pagination.total }}</strong> {{ general.title }})
+          </p>
+        </div>
+        <span class="">Filtro aplicado:&nbsp;</span>
+        <span class="tag is-warning is-medium">
+          [{{ (filters.search.fieldName === 'q') ? 'Todos' : filters.search.fieldName }}] {{ filters.search.text }}
+          <button @click="clearSearchFields()" class="delete is-small"></button>
+        </span>
+      </div>
+      <div class="level-left" v-else>
+        <div class="level-item">
+          <p class="subtitle is-5">
+            (<strong>{{ pagination.total }}</strong> {{ general.title }})
+          </p>
+        </div>
+        <div class="level-item">
+          <p class="control has-addons">
+            <span class="select is-hidden-mobile">
+              <select :class="getCSSState()" @change="selectChanged" v-model="control.filters.search.fieldName">
+                <option value="q">Todos</option>
+                <option v-for="(col, index) in collection" v-if="isSearchFilter(col)" :value="index">{{ col.label }}</option>
+              </select>
+            </span>
+            <input :class="'input ' + getCSSState()" type="text"
+                  ref="searchTextField"
+                   v-focus
+                   v-model="control.filters.search.text"
+                   @keyup.enter="(control.filters.search.text.length > 3) ? localUpdateSearchFilters() : null"
+                   placeholder="Filtrar o resultado">
+            <button class="button is-info"
+                    :disabled="control.filters.search.text.length <= 3"
+                    @click="localUpdateSearchFilters">
+              Filtrar
+            </button>
+          </p>
+        </div>
+      </div>
+      <!-- Right side -->
+      <div class="level-right">
+        <p class="level-item" v-if="isNotEmpty(booleanColumns)"><a :class="getCSSState()" @click="agreements_removeAllBooleanFilter([])"><strong>Todos</strong></a></p>
+        <p class="level-item"
+           v-for="(col, index) in booleanColumns">
+          <a :class="getCSSState()" @click="localAddBooleanFilter(index)" v-if="isBooleanApplied(index) === false">{{ col.label }}</a>
+          <span v-else class="tag is-warning is-medium">
+            {{ col.label }}
+            <button @click="localRemoveBooleanFilter(index)" :class="'delete is-small ' + getCSSState()"></button>
+          </span>
+        </p>
+        <p class="level-item">
+          <a :class="'button is-success ' + getCSSState()" @click="newDocument()">
+            <span class="icon is-small">
+              <i class="fa fa-file-o"></i>
+            </span>
+            <span>Novo</span>
+          </a>
+        </p>
+      </div>
+    </nav>
 
-            <div ref="tableDiv" class="tableDivClass">
-              <transition name="fade">
-                <table class="table" v-show="transitionTable">
-                  <thead>
-                    <tr>
-                      <th v-for="(col, index) in collection" v-if="isVisibleHeader(col)" :class="col.table.header.class">
-                        <a :class="control.disableSortColumns === true ? 'is-disabled': ''" @click="localAddSortColumn(index)">
-                          <i :class="getCSSSorteColumnSate(index)" aria-hidden="true"></i> {{ col.label }}
-                        </a>
-                      </th>
-                      <th class="is-hidden-touch">
-                        <a :class="control.disableSortColumns === true ? 'is-disabled': ''" @click="localAddSortColumn('createdAt')">
-                          <i :class="getCSSSorteColumnSate('createdAt')" aria-hidden="true"></i> Criado em
-                        </a>
-                      </th><!-- criado em  -->
-                      <th></th><!-- botao editar -->
-                      <th></th><!-- excluir -->
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="doc in docs">
-                      <td v-for="(col, index) in collection" v-if="isVisibleHeader(col)" :class="col.table.header.class">{{ getValueField(doc, col, index) }}</td>
-                      <td class="is-hidden-touch" v-if="doc['createdAt'] !== undefined">
-                        {{  doc['createdAt'] | moment('DD/MM/YYYY HH:mm') }}
-                      </td>
-                      <td class="is-hidden-touch" v-else>
-                      </td>
-                      <td class="is-icon">
-                        <a @click="updateDocument(doc)">
-                          <span class="icon">
-                            <i class="fa fa-folder-open"></i>
-                          </span>
-                        </a>
-                      </td>
-                      <td class="is-icon">
-                        <a @click="removeDocumentConfirme({ documentId: doc._id, documentIdentify: doc.name })">
-                          <span class="icon">
-                            <i class="fa fa-trash"></i>
-                          </span>
-                        </a>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </transition>
-            </div>
-            <dm-pagination :current-pag="pagination.currentPag"
-                           :total="pagination.total"
-                           :page-limite="pagination.limit"
-                           :is-loading="isLoading()"
-                           @set-current-pag="changePag"></dm-pagination>
-          </div>
+    <div ref="tableDiv" class="tableDivClass">
+      <transition name="fade">
+        <table class="table" v-show="transitionTable">
+          <thead>
+            <tr>
+              <th v-for="(col, index) in collection" v-if="isVisibleHeader(col)" :class="col.table.header.class">
+                <a :class="control.disableSortColumns === true ? 'is-disabled': ''" @click="localAddSortColumn(index)">
+                  <i :class="getCSSSorteColumnSate(index)" aria-hidden="true"></i> {{ col.label }}
+                </a>
+              </th>
+              <th class="is-hidden-touch">
+                <a :class="control.disableSortColumns === true ? 'is-disabled': ''" @click="localAddSortColumn('createdAt')">
+                  <i :class="getCSSSorteColumnSate('createdAt')" aria-hidden="true"></i> Criado em
+                </a>
+              </th><!-- criado em  -->
+              <th></th><!-- botao editar -->
+              <th></th><!-- excluir -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="doc in docs">
+              <td v-for="(col, index) in collection" v-if="isVisibleHeader(col)" :class="col.table.header.class">{{ getValueField(doc, col, index) }}</td>
+              <td class="is-hidden-touch" v-if="doc['createdAt'] !== undefined">
+                {{  doc['createdAt'] | moment('DD/MM/YYYY HH:mm') }}
+              </td>
+              <td class="is-hidden-touch" v-else>
+              </td>
+              <td class="is-icon">
+                <a @click="updateDocument(doc)">
+                  <span class="icon">
+                    <i class="fa fa-folder-open"></i>
+                  </span>
+                </a>
+              </td>
+              <td class="is-icon">
+                <a @click="removeDocumentConfirme({ documentId: doc._id, documentIdentify: doc.name })">
+                  <span class="icon">
+                    <i class="fa fa-trash"></i>
+                  </span>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </transition>
+    </div>
+    <dm-pagination :current-pag="pagination.currentPag"
+                   :total="pagination.total"
+                   :page-limite="pagination.limit"
+                   :is-loading="isLoading()"
+                   @set-current-pag="changePag"></dm-pagination>
     <dm-modal :control="modalIsOpened()" v-if="modalIsOpened()" :modal-state="getModalState()" :document-id="control.modal.documentId" @remove-document="removeDocumentConfirme" @set-pag="changePag" @close-modal="setModalClosed"></dm-modal>
   </div>
 </template>

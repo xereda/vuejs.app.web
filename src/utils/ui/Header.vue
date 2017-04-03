@@ -3,7 +3,7 @@
     <!-- Hero header: will stick at the top -->
     <div class="hero-head">
       <header class="nav">
-        <div class="container">
+        <div class="container is-fluid">
           <div class="nav-left">
             <router-link class="nav-item is-brand" to="/dashboard">
               <img src="../../img/docmob_header.svg" alt="Logo">

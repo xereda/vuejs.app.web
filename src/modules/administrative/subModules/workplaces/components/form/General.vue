@@ -3,7 +3,7 @@
     <div class="main-canvas">
       <dm-breadcrumbs :object-links="breadcrumbs" :state="state"></dm-breadcrumbs>
 
-      <div class="container box">
+      <div class="is-fluid box">
         <p class="title is-4">Dados Gerais</p>
         <div class="columns is-multiline" ref="spin">
           <div class="column is-7">

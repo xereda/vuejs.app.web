@@ -11,6 +11,14 @@ export default {
       if (this.$route.name.indexOf(route + '.new') > -1) return true
       if (this.$route.name.indexOf(route + '.update') > -1) return true
       return false
+    },
+    goRouteByName (route) {
+      this.$router.push({ name: route })
+    },
+    checkPermission (module) {
+      if (this.session.admin) return true
+      if (module.adminOnly === false) return true
+      return false
     }
   }
 }

@@ -1,12 +1,10 @@
 <template>
-  <section class="section">
-    <div class="container">
-      <h1 class="title">{{ general.title }}</h1>
-      <h2 class="subtitle">{{ subTitle }}</h2>
-      <hr>
-      <router-view></router-view>
-    </div>
-  </section>
+  <div class="">
+    <h1 class="title">{{ general.title }}</h1>
+    <h2 class="subtitle">{{ subTitle }}</h2>
+    <hr>
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>

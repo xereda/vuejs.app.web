@@ -2,7 +2,7 @@
   <div class="">
     <sub-menu :modules="modules"></sub-menu>
     <section class="section">
-      <div class="container">
+      <div class="container is-fluid">
         <router-view></router-view>
       </div>
     </section>
