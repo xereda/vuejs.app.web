@@ -1,9 +1,9 @@
 <template>
   <div>
     <dm-header v-if="$route.name !== 'login'"></dm-header>
-    <transition name="fade">
+    <!-- <transition name="fade"> -->
       <router-view></router-view>
-    </transition>
+    <!-- </transition> -->
     <dm-footer v-if="$route.name !== 'login'"></dm-footer>
     <dm-loading v-show="masterLoading"></dm-loading>
   </div>

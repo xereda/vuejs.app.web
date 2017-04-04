@@ -19,7 +19,6 @@ import holidays from '../modules/administrative/subModules/holidays/store/store'
 import providers from '../modules/administrative/subModules/providers/store/store'
 import workplaces from '../modules/administrative/subModules/workplaces/store/store'
 import schedules from '../modules/schedules/store/store'
-import scheduleDefinitions from '../modules/scheduleDefinitions/store/store'
 import login from '../modules/login/store/store'
 
 Vue.use(Vuex)
@@ -43,7 +42,6 @@ export default new Vuex.Store({
     specialties,
     holidays,
     schedules,
-    scheduleDefinitions,
     providers,
     workplaces,
     login

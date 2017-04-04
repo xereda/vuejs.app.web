@@ -12,8 +12,8 @@ export default {
   accessToken: _getLocalItem('state.accessToken'),
   user: _getLocalItem('state.user', true),
   config: {
-    adminUserId: '58124f84c5560561f8e2dfbf',
-    // adminUserId: '58a67e385e721f451ca19aab', // homologacao
+    // adminUserId: '58124f84c5560561f8e2dfbf',
+    adminUserId: '58a67e385e721f451ca19aab', // homologacao
     mainModules: [
       {
         name: 'Dashboard',
@@ -86,10 +86,10 @@ export default {
       shadowBlur: 7,
       shadowColor: 'rgba(0, 0, 0, .99)'
     },
-    APIAuth: 'http://localhost:3000/',
-    // APIAuth: 'http://homologa.docmob.com.br:3000/',
-    APIURIBase: 'http://localhost:5000/',
-    // APIURIBase: 'http://homologa.docmob.com.br:5000/', // homologacao
+    // APIAuth: 'http://localhost:3000/',
+    APIAuth: 'http://homologa.docmob.com.br:3000/',
+    // APIURIBase: 'http://localhost:5000/',
+    APIURIBase: 'http://homologa.docmob.com.br:5000/', // homologacao
     APICEPData: 'http://api.postmon.com.br/v1/cep/',
     grid: {
       delayLoading: 250,

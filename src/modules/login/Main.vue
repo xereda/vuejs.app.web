@@ -104,6 +104,7 @@ export default {
     console.log('antes de beforeMount')
     if (_.isEmpty(this.accessToken) === false) this.$router.push({ name: 'dashboard1' })
     console.log('depois de beforeMount')
+    this.masterLoadingStop()
   },
   mounted () {
   },
@@ -142,7 +143,8 @@ export default {
     },
     ...mapActions([
       'updateUserSession',
-      'updateTokenSession'
+      'updateTokenSession',
+      'masterLoadingStop'
     ])
   },
   computed: {

@@ -5,7 +5,7 @@
       <header class="nav">
         <div class="container is-fluid">
           <div class="nav-left">
-            <router-link class="nav-item is-brand" to="/dashboard">
+            <router-link class="nav-item is-brand" to="/">
               <img src="../../img/docmob_header.svg" alt="Logo">
             </router-link>
           </div>

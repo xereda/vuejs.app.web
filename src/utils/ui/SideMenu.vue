@@ -45,7 +45,7 @@
             </a>
           </span>
         </div>
-        <span class="nav-item button-exit">
+        <span class="nav-item">
           <a class="button is-danger" @click="sessionLogOff($router)">
             <span class="icon is-small">
               <i class="fa fa-close"></i>
@@ -53,7 +53,8 @@
             <span>Sair</span>
           </a>
         </span>
-        <span id="teste" class="nav-item fake-footer">kalsjd kalsdjjlas</span>
+        <span class="nav-item is-hidden-tablet fake-footer">
+        </span>
       </div>
     </div>
   </div>
@@ -145,8 +146,8 @@ export default {
   }
 
   .fake-footer {
-      min-height: 1000px;
-      background-color: white;
+    background-color: white;
+    height: 300px;
   }
 
   .subModule {

@@ -13,16 +13,18 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapActions } from 'vuex'
 import SubMenu from 'utils/ui/SubMenu.vue'
 export default {
+  methods: {
+    ...mapActions([
+      'masterLoadingStop'
+    ])
+  },
+  beforeMounte () {
+    this.masterLoadingStop()
+  },
   computed: {
-    ...mapState({
-      modules: state => {
-        const { modules } = state.dashboard
-        return modules
-      }
-    })
   },
   components: {
     SubMenu
