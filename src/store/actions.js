@@ -9,5 +9,11 @@ export default {
     context.commit('UPDATE_USER_SESSION', {})
     context.commit('UPDATE_TOKEN_SESSION', '')
     router.push({ name: 'login' })
+  },
+  masterLoadingStart (context) {
+    context.commit('MASTERLOADING_CONTROL', true)
+  },
+  masterLoadingStop (context) {
+    context.commit('MASTERLOADING_CONTROL', false)
   }
 }

@@ -14,5 +14,9 @@ export default {
   accessToken: state => {
     const { accessToken } = state
     return accessToken
+  },
+  masterLoading: state => {
+    const { masterLoading } = state
+    return masterLoading
   }
 }

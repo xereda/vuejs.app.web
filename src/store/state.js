@@ -8,6 +8,7 @@ const _getLocalItem = (item, JSONParse = false) => {
 }
 
 export default {
+  masterLoading: false,
   accessToken: _getLocalItem('state.accessToken'),
   user: _getLocalItem('state.user', true),
   config: {

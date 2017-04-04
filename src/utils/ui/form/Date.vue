@@ -1,9 +1,9 @@
 <template lang="html">
   <div>
     <label v-if="showLabel" class="label">{{ label }}</label>
-    <p class="control has-icon">
+    <p :class="pClass">
       <input :value="value" ref="flatpickr" @input="eventField($event.target.value)" :class="{ 'input': true, 'is-disabled': readonly, 'is-danger': hasError }">
-      <span class="icon is-small">
+      <span class="icon is-small" v-show="!hiddenIcon">
         <i :class="faIcon"></i>
       </span>
       <span v-if="hasError" class="help is-danger">{{ errorMessage }}</span>
@@ -40,6 +40,9 @@
       this.flatPickerInit()
     },
     computed: {
+      pClass () {
+        return this.hiddenIcon ? 'control' : 'control has-icon'
+      },
       showLabel () {
         return this.label !== undefined && this.label.length > 0
       },
@@ -86,15 +89,16 @@
         if (val === true) {
           this.Calendar.clear()
         }
+      },
+      minDate (val) {
+        console.log('minDate: ', val)
+        this.Calendar.set('minDate', val)
+        // this.Calendar.setDate(this.value)
+      },
+      maxDate (val) {
+        this.Calendar.set('maxDate', val)
+        // this.Calendar.setDate(this.value)
       }
-      // minDate (val) {
-      //   this.Calendar.set('minDate', val)
-      //   // this.Calendar.setDate(this.value)
-      // },
-      // maxDate (val) {
-      //   this.Calendar.set('minDate', val)
-      //   // this.Calendar.setDate(this.value)
-      // }
     },
     props: {
       placeholder: {
@@ -126,18 +130,22 @@
         default: 'Data'
       },
       minDate: {
-        type: Date,
-        default: () => new Date('1900-01-01')
+        type: String,
+        default: ''
       },
       maxDate: {
-        type: Date,
-        default: () => new Date('2100-12-31')
+        type: String,
+        default: ''
       },
       vuelidate: {
         type: Object,
         default: () => Object.assign({})
       },
       clear: {
+        type: Boolean,
+        default: false
+      },
+      hiddenIcon: {
         type: Boolean,
         default: false
       }

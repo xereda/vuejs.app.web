@@ -6,5 +6,8 @@ export default {
   'UPDATE_TOKEN_SESSION' (state, accessToken) {
     localStorage.setItem('state.accessToken', accessToken)
     state.accessToken = accessToken
+  },
+  'MASTERLOADING_CONTROL' (state, control) {
+    state.masterLoading = control
   }
 }

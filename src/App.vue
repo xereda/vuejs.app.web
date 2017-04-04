@@ -1,13 +1,16 @@
 <template>
   <div>
     <dm-header v-if="$route.name !== 'login'"></dm-header>
-    <router-view></router-view>
+    <transition name="fade">
+      <router-view></router-view>
+    </transition>
     <dm-footer v-if="$route.name !== 'login'"></dm-footer>
+    <dm-loading v-show="masterLoading"></dm-loading>
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import 'lodash'
 import 'sweetalert'
 import 'sweetalert/dist/sweetalert.css'
@@ -16,6 +19,7 @@ import 'font-awesome/css/font-awesome.css'
 import dmHeader from './utils/ui/Header.vue'
 import dmSubMenu from './utils/ui/SubMenu.vue'
 import dmFooter from './utils/ui/Footer.vue'
+import DmLoading from './utils/ui/Loading.vue'
 
 export default {
   name: 'app',
@@ -23,28 +27,20 @@ export default {
     return {
     }
   },
-  mounted () {
-    // this.updateUserSession(localStorage.getItem('state.user'))
-    // this.updateTokenSession(localStorage.getItem('state.accessToken'))
-  },
   components: {
     dmHeader,
     dmSubMenu,
-    dmFooter
+    dmFooter,
+    DmLoading
   },
   methods: {
     ...mapActions([
-      'updateUserSession',
-      'updateTokenSession'
     ])
   },
   computed: {
-    ...mapState({
-      config: state => {
-        const { config } = state
-        return config
-      }
-    })
+    ...mapGetters([
+      'masterLoading'
+    ])
   }
 }
 </script>

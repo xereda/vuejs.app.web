@@ -18,21 +18,23 @@
               <div class="column is-6">
                 <dm-form-date v-model="formFields.startDate"
                               fa-icon="fa fa-calendar"
+                              :hidden-icon="true"
                               :readonly="false"
                               @input="$v.formFields['startDate'].$touch()"
                               format="Y-m-d"
                               input-format="d/m/Y"
-                              :min-date="new Date()"
+                              min-date="Today"
                               label="Data Início"
                               placeholder="Data de início"></dm-form-date>
               </div>
               <div class="column">
                 <dm-form-date v-model="formFields.endDate"
                               fa-icon="fa fa-calendar"
+                              :hidden-icon="true"
                               :readonly="false"
                               format="Y-m-d"
                               input-format="d/m/Y"
-                              :min-date="new Date(this.formFields.startDate)"
+                              :min-date="this.formFields.startDate"
                               label="Data Fim"
                               placeholder="Data de Fim"></dm-form-date>
               </div>
@@ -73,7 +75,6 @@ import Vue from 'vue'
 import Vuelidate from 'vuelidate'
 Vue.use(Vuelidate)
 import { required } from 'vuelidate/lib/validators'
-
 import { mapState } from 'vuex'
 
 import _ from 'lodash'

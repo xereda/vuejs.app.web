@@ -25,6 +25,9 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  store.dispatch('masterLoadingStart')
+  // store._actions.masterLoadingStart()
+  window.scrollTo(0, 0)
   if (to.name === 'login') return next()
   console.log('to: ', to.name)
   console.log('state: ', store.state[to.path.split('/')[1]])
@@ -34,6 +37,10 @@ router.beforeEach((to, from, next) => {
   ValidateToken((route) => {
     return next(route)
   })
+})
+
+router.afterEach((to, from) => {
+  store.dispatch('masterLoadingStop')
 })
 
 export default router
