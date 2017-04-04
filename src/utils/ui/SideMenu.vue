@@ -46,15 +46,15 @@
           </span>
         </div>
         <span class="nav-item">
-          <a class="button is-danger" @click="sessionLogOff($router)">
+          <a class="button is-danger" @click="sessionLogOff()">
             <span class="icon is-small">
               <i class="fa fa-close"></i>
             </span>
             <span>Sair</span>
           </a>
         </span>
-        <span class="nav-item is-hidden-tablet fake-footer">
-        </span>
+        <!-- <span class="nav-item is-hidden-tablet fake-footer">
+        </span> -->
       </div>
     </div>
   </div>

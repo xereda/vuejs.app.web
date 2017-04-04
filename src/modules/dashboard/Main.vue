@@ -3,7 +3,7 @@
     <sub-menu :modules="modules"></sub-menu>
     <section class="section">
       <div class="container is-fluid">
-        <h1 class="title">Dashboard Main</h1>
+        <h1 class="title">Dashboard</h1>
         <h2 class="subtitle">Visão dos dashboard do sistema</h2>
         <hr>
         <router-view></router-view>
@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import SubMenu from 'utils/ui/SubMenu.vue'
 export default {
   methods: {
@@ -25,6 +25,12 @@ export default {
     this.masterLoadingStop()
   },
   computed: {
+    ...mapState({
+      modules: state => {
+        const { modules } = state.dashboard
+        return modules
+      }
+    })
   },
   components: {
     SubMenu

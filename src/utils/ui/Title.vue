@@ -28,7 +28,7 @@ export default {
     ]),
     logOff () {
       console.log('logOff')
-      this.sessionLogOff(this.$router)
+      this.sessionLogOff()
     }
   },
   mounted () {

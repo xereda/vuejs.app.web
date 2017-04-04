@@ -1,10 +1,8 @@
 <template>
   <div>
     <dm-header v-if="$route.name !== 'login'"></dm-header>
-    <!-- <transition name="fade"> -->
-      <router-view></router-view>
-    <!-- </transition> -->
-    <dm-footer v-if="$route.name !== 'login'"></dm-footer>
+    <router-view></router-view>
+    <dm-footer v-if="$route.name !== 'login' && masterLoading === false"></dm-footer>
     <dm-loading v-show="masterLoading"></dm-loading>
   </div>
 </template>
@@ -35,12 +33,22 @@ export default {
   },
   methods: {
     ...mapActions([
+      'sessionLogOff'
     ])
   },
   computed: {
     ...mapGetters([
-      'masterLoading'
+      'masterLoading',
+      'accessToken'
     ])
+  },
+  watch: {
+    accessToken (val, oldVal) {
+      console.log('mudou o token de acesso, vai fazer logoff: ', val, oldVal)
+      if (val === '') {
+        this.$router.push({ name: 'login' })
+      }
+    }
   }
 }
 </script>

@@ -1,7 +1,17 @@
 <template>
   <div class="">
-    <h4 class="title is-4 has-text-centered">Atendimentos 2017</h4>
-    <div class="echarts" ref="echart1" style="width:100%;height:300px;"></div>
+    <div class="columns is-multiline">
+      <div class="column is-6">
+        <h4 class="title is-4 has-text-centered">Atendimentos 2017</h4>
+        <div class="echarts" ref="echart1" style="width:100%;height:300px;"></div>
+        <hr class="is-hidden-tablet">
+      </div>
+      <div class="column is-6">
+        <h4 class="title is-4 is-hidden has-text-centered">Por Profisional</h4>
+        <div class="echarts" ref="echart2" style="width:100%;height:300px;"></div>
+        <hr class="is-hidden-tablet">
+      </div>
+    </div>
   </div>
 </template>
 
@@ -15,6 +25,8 @@ export default {
     window.addEventListener('resize', this.onResize)
     this.echart = Echarts.init(this.$refs.echart1)
     this.echart.setOption(this.option)
+    this.echart2 = Echarts.init(this.$refs.echart2)
+    this.echart2.setOption(this.option2)
   },
   beforeDestroy () {
     if (window) {
@@ -70,35 +82,100 @@ export default {
             type: 'line',
             stack: '总量',
             areaStyle: {normal: {}},
-            data: [ 230, 300, 230, 20 ]
+            data: [ 87, 125, 110, 130 ]
           },
           {
             name: 'Bradesco',
             type: 'line',
             stack: '总量',
             areaStyle: {normal: {}},
-            data: [ 220, 182, 191, 14 ]
+            data: [ 38, 45, 61, 83 ]
           },
           {
             name: 'Amil',
             type: 'line',
             stack: '总量',
             areaStyle: {normal: {}},
-            data: [ 150, 232, 201, 4 ]
+            data: [ 8, 15, 20, 26 ]
           },
           {
             name: 'Unimed',
             type: 'line',
             stack: '总量',
             areaStyle: {normal: {}},
-            data: [ 350, 380, 400, 39 ]
+            data: [ 139, 150, 234, 297 ]
           },
           {
             name: 'Particular',
             type: 'line',
             stack: '总量',
             areaStyle: {normal: {}},
-            data: [ 320, 332, 301, 334 ]
+            data: [ 140, 280, 310, 410 ]
+          }
+        ]
+      },
+      option2: {
+        backgroundColor: '',
+        title: {
+          show: true,
+          text: 'Por profissional',
+          left: 'center',
+          top: 20,
+          textStyle: {
+            color: 'rgba(0, 0, 0, 0.5)'
+          }
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        visualMap: {
+          show: false,
+          min: 80,
+          max: 600,
+          inRange: {
+            colorLightness: [0, 1]
+          }
+        },
+        series: [
+          {
+            name: 'Atendimentos',
+            type: 'pie',
+            radius: '30%',
+            center: [ '50%', '50%' ],
+            data: [
+              { value: 469, name: 'Prestador A' },
+              { value: 354, name: 'Prestador B' },
+              { value: 253, name: 'Prestador C' }
+            ].sort(function (a, b) { return a.value - b.value }),
+            roseType: 'angle',
+            label: {
+              normal: {
+                textStyle: {
+                  color: 'black'
+                }
+              }
+            },
+            labelLine: {
+              normal: {
+                lineStyle: {
+                  color: 'black'
+                },
+                smooth: 0.2,
+                length: 10,
+                length2: 20
+              }
+            },
+            itemStyle: {
+              normal: {
+                color: '#c23531',
+                shadowBlur: 200,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            },
+            animationType: 'scale',
+            animationEasing: 'elasticOut',
+            animationDelay: function (idx) { return Math.random() * 200 }
           }
         ]
       }
@@ -106,10 +183,9 @@ export default {
   },
   methods: {
     onResize () {
-      this.width = this.$refs.echart1.offsetWidth
-      if (this.echart) {
-        this.echart.resize()
-      }
+      // this.width = this.$refs.echart1.offsetWidth
+      if (this.echart) this.echart.resize()
+      if (this.echart2) this.echart2.resize()
     }
   },
   components: {

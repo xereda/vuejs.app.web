@@ -5,10 +5,9 @@ export default {
   updateTokenSession (context, accessToken) {
     context.commit('UPDATE_TOKEN_SESSION', accessToken)
   },
-  sessionLogOff (context, router) {
+  sessionLogOff (context) {
     context.commit('UPDATE_USER_SESSION', {})
     context.commit('UPDATE_TOKEN_SESSION', '')
-    router.push({ name: 'login' })
   },
   masterLoadingStart (context) {
     context.commit('MASTERLOADING_CONTROL', true)

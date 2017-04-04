@@ -100,13 +100,11 @@ export default {
     DmFormEmail,
     DmFormPassword
   },
-  beforeMount () {
-    console.log('antes de beforeMount')
+  beforeCreate () {
     if (_.isEmpty(this.accessToken) === false) this.$router.push({ name: 'dashboard1' })
-    console.log('depois de beforeMount')
-    this.masterLoadingStop()
   },
   mounted () {
+    this.masterLoadingStop()
   },
   methods: {
     loginAction () {
