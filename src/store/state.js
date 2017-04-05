@@ -9,6 +9,10 @@ const _getLocalItem = (item, JSONParse = false) => {
 
 export default {
   masterLoading: false,
+  sideMenuState: {
+    sideMenuIsActive: false,
+    slideOut: false
+  },
   accessToken: _getLocalItem('state.accessToken'),
   user: _getLocalItem('state.user', true),
   config: {

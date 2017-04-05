@@ -9,5 +9,11 @@ export default {
   },
   'MASTERLOADING_CONTROL' (state, control) {
     state.masterLoading = control
+  },
+  'SET_SIDE_MENU_STATE_ISACTIVE' (state, control) {
+    state.sideMenuState.sideMenuIsActive = control
+  },
+  'SET_SIDE_MENU_STATE_SLIDEOUT' (state, control) {
+    state.sideMenuState.slideOut = control
   }
 }

@@ -5,9 +5,9 @@
       <header class="nav">
         <div class="container is-fluid">
           <div class="nav-left">
-            <router-link class="nav-item is-brand" to="/">
+            <a class="nav-item is-brand" @click="goHome()">
               <img src="../../img/docmob_header.svg" alt="Logo">
-            </router-link>
+            </a>
           </div>
           <dm-side-menu></dm-side-menu>
         </div>
@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import { mapState, mapActions, mapGetters } from 'vuex'
 import DmMenu from './Menu.vue'
 import DmTitle from './Title.vue'
 import DmSideMenu from './SideMenu.vue'
@@ -30,6 +31,19 @@ export default {
     }
   },
   methods: {
+    goHome () {
+      this.setSideMenuStateSlideOut(true)
+      // this.$router.push({ path: '/dashboard/dashboard1/?key=' + Date.now() / 1000 })
+      this.$router.push({ path: '/' })
+      setTimeout(() => {
+        this.setSideMenuStateIsActive(false)
+        this.setSideMenuStateSlideOut(false)
+      }, 300)
+    },
+    ...mapActions([
+      'setSideMenuStateIsActive',
+      'setSideMenuStateSlideOut'
+    ])
   },
   components: {
     DmMenu,
@@ -37,6 +51,11 @@ export default {
     DmSideMenu
   },
   computed: {
+    ...mapState({
+    }),
+    ...mapGetters([
+      'sideMenuState'
+    ])
   }
 }
 </script>

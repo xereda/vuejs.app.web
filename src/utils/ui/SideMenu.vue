@@ -1,12 +1,12 @@
 <template>
   <div class="">
     <div class="main-sidemenu">
-      <span :class="{ 'nav-toggle': true, 'is-active': sideMenuIsActive }" @click="sideMenu()">
+      <span :class="{ 'nav-toggle': true, 'is-active': sideMenuState.sideMenuIsActive }" @click="sideMenu()">
         <span></span>
         <span></span>
         <span></span>
       </span>
-      <div id="sideMenu" :class="{ 'nav-right': true, 'nav-menu': true, 'animated': true, 'slideInRight': true, 'slideOutRight': slideOut, 'is-active': sideMenuIsActive }">
+      <div id="sideMenu" :class="{ 'nav-right': true, 'nav-menu': true, 'animated': true, 'slideInRight': true, 'slideOutRight': sideMenuState.slideOut, 'is-active': sideMenuState.sideMenuIsActive }">
         <span class="nav-item is-hidden-tablet headerWorkplaceIdent">
           {{ workplaceName }}
         </span>
@@ -71,8 +71,6 @@ import DmSideMenu from './SideMenu.vue'
 export default {
   data () {
     return {
-      sideMenuIsActive: false,
-      slideOut: false
     }
   },
   methods: {
@@ -86,25 +84,27 @@ export default {
     },
     setNewRoute (route) {
       this.$router.push(route)
-      this.slideOut = true
+      this.setSideMenuStateSlideOut(true)
       setTimeout(() => {
-        this.sideMenuIsActive = false
-        this.slideOut = false
+        this.setSideMenuStateIsActive(false)
+        this.setSideMenuStateSlideOut(false)
       }, 300)
     },
     sideMenu () {
-      if (this.sideMenuIsActive) {
-        this.slideOut = true
+      if (this.sideMenuState.sideMenuIsActive) {
+        this.setSideMenuStateSlideOut(true)
         setTimeout(() => {
-          this.sideMenuIsActive = false
-          this.slideOut = false
+          this.setSideMenuStateIsActive(false)
+          this.setSideMenuStateSlideOut(false)
         }, 300)
       } else {
-        this.sideMenuIsActive = true
+        this.setSideMenuStateIsActive(true)
       }
     },
     ...mapActions([
-      'sessionLogOff'
+      'sessionLogOff',
+      'setSideMenuStateIsActive',
+      'setSideMenuStateSlideOut'
     ])
   },
   components: {
@@ -117,7 +117,8 @@ export default {
     }),
     ...mapGetters([
       'session',
-      'mainModules'
+      'mainModules',
+      'sideMenuState'
     ]),
     workplaceName () {
       if (this.session.workplaces === undefined || _.isEmpty(this.session.workplaces)) return 'Usuário sem local definido'
@@ -128,6 +129,8 @@ export default {
     userIdentification () {
       return _.startCase(_.lowerCase(this.session.name)) + ' - ' + this.session.email
     }
+  },
+  watch: {
   }
 }
 </script>

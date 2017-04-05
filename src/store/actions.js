@@ -15,5 +15,11 @@ export default {
   },
   masterLoadingStop (context) {
     context.commit('MASTERLOADING_CONTROL', false)
+  },
+  setSideMenuStateIsActive (context, control) {
+    context.commit('SET_SIDE_MENU_STATE_ISACTIVE', control)
+  },
+  setSideMenuStateSlideOut (context, control) {
+    context.commit('SET_SIDE_MENU_STATE_SLIDEOUT', control)
   }
 }
