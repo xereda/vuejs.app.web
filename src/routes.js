@@ -19,6 +19,7 @@ const routes = [
   ...Schedules,
   ...Login,
   { path: '*', redirect: '/dashboard/dashboard1' }
+  // { path: '*', redirect: '/dashboard/dashboard1?key' + Date.now() / 1000 }
 ]
 
 const router = new VueRouter({
@@ -26,22 +27,26 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  console.log('dentro da beforeEach: ', to.name, from.name)
   store.dispatch('masterLoadingStart')
-  setTimeout(() => {
-    store.dispatch('masterLoadingStop')
-  }, 10000)
-  window.scrollTo(0, 0)
-  if (to.name === 'login') return next()
-  const module = store.state[to.path.split('/')[1]].modules.filter(e => {
+  if (to.name === 'login') {
+    console.log('vai mandar para login')
+    return next()
+  }
+  const modules = store.state[to.path.split('/')[1]].modules
+  if (modules === undefined) return next('/dashboard/dasboard1/?key=' + Date.now() / 1000)
+  const module = modules.filter(e => {
     return to.name === e.name
   })[0]
-  if (store.state.user.admin === false && module.adminOnly) return next('/')
+  if (store.state.user.admin === false && module.adminOnly) next('/dashboard/dasboard1/?key=' + Date.now() / 1000)
   ValidateToken((route) => {
     return next(route)
   })
 })
 
 router.afterEach((to, from) => {
+  console.log('dentro da afterEach: ', to.name, from.name)
+  window.scrollTo(0, 0)
   store.dispatch('masterLoadingStop')
 })
 

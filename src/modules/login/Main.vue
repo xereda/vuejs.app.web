@@ -101,9 +101,10 @@ export default {
     DmFormPassword
   },
   beforeCreate () {
-    if (_.isEmpty(this.accessToken) === false) this.$router.push({ name: 'dashboard1' })
+    if (_.isEmpty(this.accessToken) === false) this.$router.push({ path: '/' })
   },
   mounted () {
+    console.log('mounted do login')
     this.masterLoadingStop()
   },
   methods: {
@@ -120,7 +121,8 @@ export default {
         } else {
           this.updateUserSession(payload)
           this.updateTokenSession(accessToken)
-          this.$router.push({ name: 'dashboard1' })
+          console.log('vai autenticar...')
+          this.$router.push({ path: '/' })
         }
         this.isLoading = false
       }, (error) => {

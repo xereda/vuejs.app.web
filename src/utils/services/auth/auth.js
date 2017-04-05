@@ -8,17 +8,19 @@ const validate = (callback) => {
     }
   })
   .then(response => {
+    console.log(response.data.lastChangeDate, store.state.user.lastChangeDate)
     if (response.data.lastChangeDate === store.state.user.lastChangeDate) {
+      console.log('validou o token e vai acessar a rota')
       callback()
     } else {
       store.dispatch('sessionLogOff')
-      callback('/login/?error=2')
+      callback('/login/?error=2&key=' + Date.now() / 1000)
     }
   })
   .catch(error => {
     console.log('Error: ', error)
     store.dispatch('sessionLogOff')
-    callback('/login/?error=1')
+    callback('/login/?error=1&key=' + Date.now() / 1000)
   })
 }
 

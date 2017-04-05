@@ -44,10 +44,8 @@ export default {
   },
   watch: {
     accessToken (val, oldVal) {
-      console.log('mudou o token de acesso, vai fazer logoff: ', val, oldVal)
-      if (val === '') {
-        this.$router.push({ name: 'login' })
-      }
+      console.log(val, oldVal)
+      if (val === '' && oldVal !== '') setTimeout(() => { this.$router.push({ name: 'login' }) }, 200)
     }
   }
 }

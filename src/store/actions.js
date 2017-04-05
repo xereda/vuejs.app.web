@@ -8,6 +8,7 @@ export default {
   sessionLogOff (context) {
     context.commit('UPDATE_USER_SESSION', {})
     context.commit('UPDATE_TOKEN_SESSION', '')
+    context.commit('MASTERLOADING_CONTROL', true)
   },
   masterLoadingStart (context) {
     context.commit('MASTERLOADING_CONTROL', true)
