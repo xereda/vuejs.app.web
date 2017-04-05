@@ -32,17 +32,11 @@ export default {
   },
   methods: {
     goHome () {
-      this.setSideMenuStateSlideOut(true)
-      // this.$router.push({ path: '/dashboard/dashboard1/?key=' + Date.now() / 1000 })
       this.$router.push({ path: '/' })
-      setTimeout(() => {
-        this.setSideMenuStateIsActive(false)
-        this.setSideMenuStateSlideOut(false)
-      }, 300)
+      this.closeSideMenu()
     },
     ...mapActions([
-      'setSideMenuStateIsActive',
-      'setSideMenuStateSlideOut'
+      'closeSideMenu'
     ])
   },
   components: {
@@ -54,7 +48,6 @@ export default {
     ...mapState({
     }),
     ...mapGetters([
-      'sideMenuState'
     ])
   }
 }

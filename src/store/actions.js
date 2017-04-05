@@ -21,5 +21,15 @@ export default {
   },
   setSideMenuStateSlideOut (context, control) {
     context.commit('SET_SIDE_MENU_STATE_SLIDEOUT', control)
+  },
+  closeSideMenu (context) {
+    context.commit('SET_SIDE_MENU_STATE_SLIDEOUT', true)
+    setTimeout(() => {
+      context.commit('SET_SIDE_MENU_STATE_ISACTIVE', false)
+      context.commit('SET_SIDE_MENU_STATE_SLIDEOUT', false)
+    }, 300)
+  },
+  openSideMenu (context) {
+    context.commit('SET_SIDE_MENU_STATE_ISACTIVE', true)
   }
 }

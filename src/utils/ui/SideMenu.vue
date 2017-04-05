@@ -84,27 +84,19 @@ export default {
     },
     setNewRoute (route) {
       this.$router.push(route)
-      this.setSideMenuStateSlideOut(true)
-      setTimeout(() => {
-        this.setSideMenuStateIsActive(false)
-        this.setSideMenuStateSlideOut(false)
-      }, 300)
+      this.closeSideMenu()
     },
     sideMenu () {
       if (this.sideMenuState.sideMenuIsActive) {
-        this.setSideMenuStateSlideOut(true)
-        setTimeout(() => {
-          this.setSideMenuStateIsActive(false)
-          this.setSideMenuStateSlideOut(false)
-        }, 300)
+        this.closeSideMenu()
       } else {
-        this.setSideMenuStateIsActive(true)
+        this.openSideMenu()
       }
     },
     ...mapActions([
       'sessionLogOff',
-      'setSideMenuStateIsActive',
-      'setSideMenuStateSlideOut'
+      'closeSideMenu',
+      'openSideMenu'
     ])
   },
   components: {
