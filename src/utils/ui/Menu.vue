@@ -14,11 +14,11 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import mixins from 'mixins/main'
+import nagivation from 'mixins/navigation'
 
 export default {
   mixins: [
-    mixins
+    nagivation
   ],
   computed: {
     menuList () {

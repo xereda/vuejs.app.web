@@ -27,7 +27,7 @@
             <span>Nova agenda</span>
           </a>
         </span>
-        <div class="has-text-left" v-for="module in mainModules" v-if="isValideMenuItem(module)">
+        <div class="has-text-left" v-for="module in mainModules" v-if="checkPermission(module)">
           <span class="nav-item is-hidden-tablet">
             <a class="is-active" @click="setNewRoute({ name: module.route.to } )">
               <span class="icon moduleIcon">
@@ -36,7 +36,7 @@
               {{ module.name }}
             </a>
           </span>
-          <span class="nav-item is-hidden-tablet subModule" v-for="subModule in getSubModules(module.route.name)" v-if="isValideMenuItem(subModule)">
+          <span class="nav-item is-hidden-tablet subModule" v-for="subModule in getSubModules(module.route.name)" v-if="checkPermission(subModule)">
             <a @click="setNewRoute({ name: subModule.name })">
               <span class="icon moduleIcon">
                 <i :class="subModule.icon"></i>
@@ -63,12 +63,16 @@
 <script>
 import _ from 'lodash'
 import 'animate.css'
+import navigation from 'mixins/navigation'
 import { mapState, mapActions, mapGetters } from 'vuex'
 import DmMenu from './Menu.vue'
 import DmTitle from './Title.vue'
 import DmSideMenu from './SideMenu.vue'
 
 export default {
+  mixins: [
+    navigation
+  ],
   data () {
     return {
     }
@@ -76,11 +80,6 @@ export default {
   methods: {
     getSubModules (mainModule) {
       return this.$store.state[mainModule].modules
-    },
-    isValideMenuItem (module) {
-      if (this.session.admin) return true
-      if (module.adminOnly === false) return true
-      return false
     },
     setNewRoute (route) {
       this.$router.push(route)

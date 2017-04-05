@@ -34,10 +34,12 @@ router.beforeEach((to, from, next) => {
     return next()
   }
   const modules = store.state[to.path.split('/')[1]].modules
+  console.log('dentro da beforeEach - modules: ', modules)
   if (modules === undefined) return next('/dashboard/dasboard1/?key=' + Date.now() / 1000)
   const module = modules.filter(e => {
     return to.name === e.name
   })[0]
+  if (module === undefined) return next('/dashboard/dasboard1/?key=' + Date.now() / 1000)
   if (store.state.user.admin === false && module.adminOnly) next('/dashboard/dasboard1/?key=' + Date.now() / 1000)
   ValidateToken((route) => {
     return next(route)

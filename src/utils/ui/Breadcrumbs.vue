@@ -20,13 +20,20 @@ export default {
   },
   computed: {
     links () {
-      return this.state === 'new' ? this.objectLinks.new : this.objectLinks.update
+      if (this.state === 'new') return this.objectLinks.new
+      if (this.state === 'update') return this.objectLinks.update
+      return this.objectLinks
     }
   },
-  props: [
-    'object-links',
-    'state'
-  ]
+  props: {
+    objectLinks: {
+      required: true
+    },
+    state: {
+      type: String,
+      default: ''
+    }
+  }
 }
 </script>
 

@@ -14,12 +14,12 @@
 </template>
 
 <script>
-import mixins from 'mixins/main'
+import navigation from 'mixins/navigation'
 import { mapGetters } from 'vuex'
 
 export default {
   mixins: [
-    mixins
+    navigation
   ],
   computed: {
     ...mapGetters([
