@@ -21,7 +21,7 @@
           <span>Excluir</span>
         </a>
       </div>
-      <div class="is-hidden-tabelt">
+      <div class="is-hidden-tablet">
         <a :class="{ 'button': true, 'is-info': true, 'is-disabled': saveButtonOff }" @click="saveDoc()">
           <span class="icon is-small">
             <i class="fa fa-check"></i>

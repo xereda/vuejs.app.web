@@ -1,62 +1,59 @@
 <template>
   <div class="">
-    <div class="main-sidemenu">
-      <span :class="{ 'nav-toggle': true, 'is-active': sideMenuState.sideMenuIsActive }" @click="sideMenu()">
-        <span></span>
-        <span></span>
-        <span></span>
+    <span :class="{ 'nav-toggle': true, 'is-active': sideMenuState.sideMenuIsActive }" @click="sideMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </span>
+    <div id="sideMenu" :class="{ 'nav-right': true, 'nav-menu': true, 'animated': true, 'slideInRight': true, 'slideOutRight': sideMenuState.slideOut, 'is-active': sideMenuState.sideMenuIsActive }">
+      <span class="nav-item is-hidden-tablet headerWorkplaceIdent">
+        {{ workplaceName }}
       </span>
-      <div id="sideMenu" :class="{ 'nav-right': true, 'nav-menu': true, 'animated': true, 'slideInRight': true, 'slideOutRight': sideMenuState.slideOut, 'is-active': sideMenuState.sideMenuIsActive }">
-        <span class="nav-item is-hidden-tablet headerWorkplaceIdent">
-          {{ workplaceName }}
-        </span>
-        <span class="nav-item has-text-left is-hidden-tablet headerUserIdent">
-          {{ userIdentification }}
-        </span>
-        <span class="nav-item">
-
-              <a class="button is-small is-primary is-inverted">
-                <span class="icon is-small">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span>Agenda do dia</span>
-              </a>
-              <a class="button is-small is-primary is-inverted">
-                <span class="icon is-small">
-                  <i class="fa fa-file-o"></i>
-                </span>
-                <span>Nova agenda</span>
-              </a>
-        </span>
-        <div class="has-text-left" v-for="module in mainModules" v-if="checkPermission(module)">
-          <span class="nav-item is-hidden-tablet">
-            <a class="is-active" @click="setNewRoute({ name: module.route.to } )">
-              <span class="icon moduleIcon">
-                <i :class="module.icon"></i>
-              </span>
-              {{ module.name }}
-            </a>
+      <span class="nav-item has-text-left is-hidden-tablet headerUserIdent">
+        {{ userIdentification }}
+      </span>
+      <span class="nav-item">
+        <a class="button is-small is-primary is-inverted">
+          <span class="icon is-small">
+            <i class="fa fa-calendar-check-o"></i>
           </span>
-          <span class="nav-item is-hidden-tablet subModule" v-for="subModule in getSubModules(module.route.name)" v-if="checkPermission(subModule)">
-            <a @click="setNewRoute({ name: subModule.name })">
-              <span class="icon moduleIcon">
-                <i :class="subModule.icon"></i>
-              </span>
-              {{ subModule.label }}
-            </a>
+          <span>Agenda do dia</span>
+        </a>
+        <a class="button is-small is-primary is-inverted">
+          <span class="icon is-small">
+            <i class="fa fa-file-o"></i>
           </span>
-        </div>
-        <span class="nav-item">
-          <a class="button is-danger" @click="sessionLogOff()">
-            <span class="icon is-small">
-              <i class="fa fa-close"></i>
+          <span>Nova agenda</span>
+        </a>
+      </span>
+      <div class="has-text-left" v-for="module in mainModules" v-if="checkPermission(module)">
+        <span class="nav-item is-hidden-tablet">
+          <a class="is-active" @click="setNewRoute({ name: module.route.to } )">
+            <span class="icon moduleIcon">
+              <i :class="module.icon"></i>
             </span>
-            <span>Sair</span>
+            {{ module.name }}
           </a>
         </span>
-        <!-- <span class="nav-item is-hidden-tablet fake-footer">
-        </span> -->
+        <span class="nav-item is-hidden-tablet subModule" v-for="subModule in getSubModules(module.route.name)" v-if="checkPermission(subModule)">
+          <a @click="setNewRoute({ name: subModule.name })">
+            <span class="icon moduleIcon">
+              <i :class="subModule.icon"></i>
+            </span>
+            {{ subModule.label }}
+          </a>
+        </span>
       </div>
+      <span class="nav-item">
+        <a class="button is-small is-danger" @click="sessionLogOff()">
+          <span class="icon is-small">
+            <i class="fa fa-close"></i>
+          </span>
+          <span>Sair</span>
+        </a>
+      </span>
+      <!-- <span class="nav-item is-hidden-tablet fake-footer">
+      </span> -->
     </div>
   </div>
 </template>
@@ -137,9 +134,6 @@ export default {
   .control.has-icon > .fa {
     z-index: 1
   }
-  .main-sidemenu {
-  }
-
   .fake-footer {
     background-color: white;
     height: 300px;

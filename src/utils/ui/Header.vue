@@ -2,16 +2,14 @@
   <section class="hero is-info is-small">
     <!-- Hero header: will stick at the top -->
     <div class="hero-head">
-      <header class="nav">
-        <div class="container is-fluid">
-          <div class="nav-left">
-            <a class="nav-item is-brand" @click="goHome()">
-              <img src="../../img/docmob_header.svg" alt="Logo">
-            </a>
-          </div>
-          <dm-side-menu></dm-side-menu>
+      <nav class="nav">
+        <div class="nav-left">
+          <a class="nav-item" @click="goHome()">
+            <img src="../../img/docmob_header.svg" alt="Logo">
+          </a>
         </div>
-      </header>
+        <dm-side-menu></dm-side-menu>
+      </nav>
     </div>
     <dm-title></dm-title>
     <dm-menu></dm-menu>
