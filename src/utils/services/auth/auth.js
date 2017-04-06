@@ -19,10 +19,15 @@ const validate = (routeTo, routeFrom, callback) => {
     }
   })
   .catch(error => {
-    console.log('Error do timeout saiu aqui?: ', error)
-    store.dispatch('masterLoadingStop')
-    showWarning({ title: 'Conexão', message: 'Houve um problema no acesso ao servidor. Verifique sua conexão e tenta novamente.' })
-    callback(routeFrom.name)
+    console.log('Error do timeout saiu aqui?: ', error.response, error)
+    if (error.response !== undefined && error.response.status === 401) {
+      store.dispatch('sessionLogOff')
+      callback('/login/?error=1&key=' + Date.now() / 1000)
+    } else {
+      store.dispatch('masterLoadingStop')
+      showWarning({ title: 'Conexão', message: 'Houve um problema no acesso ao servidor. Verifique sua conexão e tenta novamente.' })
+      callback(routeFrom.name)
+    }
   })
 }
 

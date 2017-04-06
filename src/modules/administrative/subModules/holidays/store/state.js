@@ -27,7 +27,7 @@ export default {
       table: {
         header: {
           visible: true,
-          class: ''
+          class: 'is-hidden-mobile'
         }
       }
     },

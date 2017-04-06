@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="level-right">
-    <div class="control is-grouped is-hidden-mobile">
+    <div class="field is-grouped is-hidden-mobile">
       <p class="control" v-if="showSave">
         <a :class="{ 'button': true, 'is-info': true, 'is-disabled': !saveEnabled, 'is-loading': saveButtonIsLoading }" @click="actionSave()">
           <span class="icon is-small">
@@ -12,9 +12,9 @@
       <p class="control" v-if="showCancel">
         <a :class="{ 'button': true, 'is-disabled': !cancelEnabled }" @click="actionCancel()">
           <span class="icon is-small">
-            <i class="fa fa-ban"></i>
+            <i class="fa fa-sign-out"></i>
           </span>
-          <span>Cancelar</span>
+          <span>Sair</span>
         </a>
       </p>
       <p class="control" v-if="showDelete">
@@ -26,7 +26,7 @@
         </a>
       </p>
     </div>
-    <div class="control is-grouped is-hidden-tablet">
+    <div class="field is-grouped is-hidden-tablet">
       <p class="control" v-if="showSave">
         <a :class="{ 'button': true, 'is-small': false, 'is-info': true, 'is-disabled': !saveEnabled, 'is-loading': saveButtonIsLoading }" @click="actionSave()">
           <span class="icon is-small">
@@ -38,9 +38,9 @@
       <p class="control" v-if="showCancel">
         <a :class="{ 'button': true, 'is-small': false, 'is-disabled': !cancelEnabled }" @click="actionCancel()">
           <span class="icon is-small">
-            <i class="fa fa-ban"></i>
+            <i class="fa fa-sign-out"></i>
           </span>
-          <span>Cancelar</span>
+          <span>Sair</span>
         </a>
       </p>
       <p class="control" v-if="showDelete">

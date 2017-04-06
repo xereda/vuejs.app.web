@@ -123,28 +123,44 @@
         <dm-modal-audit :mutation-prefix="API.mutationPrefix" :resource="API.resource" :last-doc-update-date="getLastDocUpdateDate()" :document-id="documentId" v-if="isUpdateDocument() "></dm-modal-audit>
       </section>
       <footer class="modal-card-foot">
-
-        <a :class="getCSSButtonSave" @click="formSubmit()">
-          <span class="icon is-small">
-            <i class="fa fa-check"></i>
-          </span>
-          <span>Salvar</span>
-        </a>
-
-        <a :class="'button'" @click="confirmeModalClose()">
-          <span class="icon is-small">
-            <i class="fa fa-ban"></i>
-          </span>
-          <span>Cancelar</span>
-        </a>
-
-        <a :class="'button is-danger'" v-if="isUpdateDocument()" @click="removeDocument()">
-          <span class="icon is-small">
-            <i class="fa fa-trash"></i>
-          </span>
-          <span>Excluir</span>
-        </a>
-
+        <div class="is-hidden-mobile">
+          <a :class="getCSSButtonSave" @click="formSubmit()">
+            <span class="icon is-small">
+              <i class="fa fa-check"></i>
+            </span>
+            <span>Salvar</span>
+          </a>
+          <a :class="'button'" @click="confirmeModalClose()">
+            <span class="icon is-small">
+              <i class="fa fa-sign-out"></i>
+            </span>
+            <span>Cancelar</span>
+          </a>
+          <a :class="'button is-danger'" v-if="isUpdateDocument()" @click="removeDocument()">
+            <span class="icon is-small">
+              <i class="fa fa-trash"></i>
+            </span>
+            <span>Excluir</span>
+          </a>
+        </div>
+        <div class="is-hidden-tablet">
+          <a :class="getCSSButtonSave" @click="formSubmit()">
+            <span class="icon is-small">
+              <i class="fa fa-check"></i>
+            </span>
+            <span>Salvar</span>
+          </a>
+          <a :class="'button'" @click="confirmeModalClose()">
+            <span class="icon is-small">
+              <i class="fa fa-sign-out"></i>
+            </span>
+          </a>
+          <a :class="'button is-danger'" v-if="isUpdateDocument()" @click="removeDocument()">
+            <span class="icon is-small">
+              <i class="fa fa-trash"></i>
+            </span>
+          </a>
+        </div>
       </footer>
     </div>
   </div>

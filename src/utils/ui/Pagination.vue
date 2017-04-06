@@ -2,7 +2,7 @@
   <div>
     <nav class="pagination">
       <a :class="backButtonCSS" @click="setPage(currentPag - 1)" :disabled="defPrevButton()">Voltar</a>
-      <a :class="nextButtonCSS" @click="setPage(currentPag + 1)" :disabled="defNextButton()">Próxima página</a>
+      <a :class="nextButtonCSS" @click="setPage(currentPag + 1)" :disabled="defNextButton()">Próxima</a>
       <ul class="pagination-list">
         <li v-show="defFirstAndLastPageButtons()">
           <a :disabled="iscurrentPagInLoop(currentPag, 1)" :class="setCSSButton(currentPag, 1) + ''" @click="setPage(1)">1</a>
@@ -10,7 +10,7 @@
         <li v-show="defFirstAndLastPageButtons()">
           <span class="pagination-ellipsis">&hellip;</span>
         </li>
-        <li v-for="pag in pages">
+        <li v-for="pag in pages" v-show="pages.length > 1">
           <a :disabled="iscurrentPagInLoop(currentPag, pag)" :class="setCSSButton(currentPag, pag)" @click="setPage(pag)">{{ pag }}</a>
         </li>
         <li v-show="defFirstAndLastPageButtons()">

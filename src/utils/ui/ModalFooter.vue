@@ -1,27 +1,44 @@
 <template lang="html">
   <transition name="fade">
     <footer class="modal-card-foot">
-      <a :class="{ 'button': true, 'is-info': true, 'is-disabled': saveButtonOff }" @click="saveDoc()">
-        <span class="icon is-small">
-          <i class="fa fa-check"></i>
-        </span>
-        <span>Salvar</span>
-      </a>
-
-      <a :class="{ 'button': true }" @click="modalCloseConfirm()">
-        <span class="icon is-small">
-          <i class="fa fa-ban"></i>
-        </span>
-        <span>Cancelar</span>
-      </a>
-
-      <a :class="{ 'button': true, 'is-danger': true, 'is-disabled': delButtonOff }" @click="delDoc()">
-        <span class="icon is-small">
-          <i class="fa fa-trash"></i>
-        </span>
-        <span>Excluir</span>
-      </a>
-
+      <div class="is-hidden-mobile">
+        <a :class="{ 'button': true, 'is-info': true, 'is-disabled': saveButtonOff }" @click="saveDoc()">
+          <span class="icon is-small">
+            <i class="fa fa-check"></i>
+          </span>
+          <span>Salvar</span>
+        </a>
+        <a :class="{ 'button': true }" @click="modalCloseConfirm()">
+          <span class="icon is-small">
+            <i class="fa fa-sign-out"></i>
+          </span>
+          <span>Sair</span>
+        </a>
+        <a :class="{ 'button': true, 'is-danger': true, 'is-disabled': delButtonOff }" @click="delDoc()">
+          <span class="icon is-small">
+            <i class="fa fa-trash"></i>
+          </span>
+          <span>Excluir</span>
+        </a>
+      </div>
+      <div class="is-hidden-tabelt">
+        <a :class="{ 'button': true, 'is-info': true, 'is-disabled': saveButtonOff }" @click="saveDoc()">
+          <span class="icon is-small">
+            <i class="fa fa-check"></i>
+          </span>
+          <span>Salvar</span>
+        </a>
+        <a :class="{ 'button': true }" @click="modalCloseConfirm()">
+          <span class="icon is-small">
+            <i class="fa fa-sign-out"></i>
+          </span>
+        </a>
+        <a :class="{ 'button': true, 'is-danger': true, 'is-disabled': delButtonOff }" @click="delDoc()">
+          <span class="icon is-small">
+            <i class="fa fa-trash"></i>
+          </span>
+        </a>
+      </div>
     </footer>
   </transition>
 </template>

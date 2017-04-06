@@ -7,48 +7,62 @@
     <nav class="level">
       <!-- Left side -->
       <div class="level-left" v-if="appliedFilters()">
-        <div class="level-item">
+        <div class="level-item is-hidden-mobile">
           <p class="subtitle is-5">
             (<strong>{{ pagination.total }}</strong> {{ general.title }})
           </p>
         </div>
         <span class="">Filtro aplicado:&nbsp;</span>
         <span class="tag is-warning is-medium">
-          [{{ (filters.search.fieldName === 'q') ? 'Todos' : filters.search.fieldName }}] {{ filters.search.text }}
+          {{ (filters.search.fieldName === 'q') ? '' : '[' + filters.search.fieldName + ']' }} {{ filters.search.text }}
           <button @click="clearSearchFields()" class="delete is-small"></button>
         </span>
+        <a :class="'button is-success ' + getCSSState()" @click="newDocument()">
+          <span class="icon is-small">
+            <i class="fa fa-file-o"></i>
+          </span>
+        </a>
       </div>
       <div class="level-left" v-else>
-        <div class="level-item">
+        <div class="level-item is-hidden-mobile">
           <p class="subtitle is-5">
             (<strong>{{ pagination.total }}</strong> {{ general.title }})
           </p>
         </div>
         <div class="level-item">
           <p class="control has-addons">
-            <span class="select is-hidden-mobile">
+            <span class="select is-hidden">
               <select :class="getCSSState()" @change="selectChanged" v-model="control.filters.search.fieldName">
                 <option value="q">Todos</option>
                 <option v-for="(col, index) in collection" v-if="isSearchFilter(col)" :value="index">{{ col.label }}</option>
               </select>
             </span>
-            <input :class="'input ' + getCSSState()" type="text"
-                  ref="searchTextField"
-                   v-focus
-                   v-model="control.filters.search.text"
-                   @keyup.enter="(control.filters.search.text.length > 3) ? localUpdateSearchFilters() : null"
-                   placeholder="Filtrar o resultado">
-            <button class="button is-info"
-                    :disabled="control.filters.search.text.length <= 3"
-                    @click="localUpdateSearchFilters">
-              Filtrar
-            </button>
+            <div class="">
+              <input :class="'input ' + getCSSState()" type="text"
+                    ref="searchTextField"
+                     v-focus
+                     v-model="control.filters.search.text"
+                     @keyup.enter="(control.filters.search.text.length > 3) ? localUpdateSearchFilters() : null"
+                     placeholder="Filtrar o resultado">
+            </div>
+            <div class="">
+              <a class="button is-info" @click="localUpdateSearchFilters()" :disabled="control.filters.search.text.length <= 3">
+                <span class="icon is-small">
+                  <i class="fa fa-filter"></i>
+                </span>
+              </a>
+              <a :class="'button is-success ' + getCSSState()" @click="newDocument()">
+                <span class="icon is-small">
+                  <i class="fa fa-file-o"></i>
+                </span>
+              </a>
+            </div>
           </p>
         </div>
       </div>
       <!-- Right side -->
-      <div class="level-right">
-        <p class="level-item" v-if="isNotEmpty(booleanColumns)"><a :class="getCSSState()" @click="specialties_removeAllBooleanFilter([])"><strong>Todos</strong></a></p>
+      <div class="level-right is-hidden-mobile">
+        <p class="level-item" v-if="isNotEmpty(booleanColumns)"><a :class="getCSSState()" @click="people_removeAllBooleanFilter([])"><strong>Todos</strong></a></p>
         <p class="level-item"
            v-for="(col, index) in booleanColumns">
           <a :class="getCSSState()" @click="localAddBooleanFilter(index)" v-if="isBooleanApplied(index) === false">{{ col.label }}</a>
@@ -56,14 +70,6 @@
             {{ col.label }}
             <button @click="localRemoveBooleanFilter(index)" :class="'delete is-small ' + getCSSState()"></button>
           </span>
-        </p>
-        <p class="level-item">
-          <a :class="'button is-success ' + getCSSState()" @click="newDocument()">
-            <span class="icon is-small">
-              <i class="fa fa-file-o"></i>
-            </span>
-            <span>Novo</span>
-          </a>
         </p>
       </div>
     </nav>

@@ -14,18 +14,19 @@
           {{ userIdentification }}
         </span>
         <span class="nav-item">
-          <a class="button is-primary is-inverted is-outlined">
-            <span class="icon is-small">
-              <i class="fa fa-calendar-check-o"></i>
-            </span>
-            <span>Agenda do dia</span>
-          </a>
-          <a class="button is-primary is-inverted is-outlined">
-            <span class="icon is-small">
-              <i class="fa fa-file-o"></i>
-            </span>
-            <span>Nova agenda</span>
-          </a>
+
+              <a class="button is-small is-primary is-inverted">
+                <span class="icon is-small">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span>Agenda do dia</span>
+              </a>
+              <a class="button is-small is-primary is-inverted">
+                <span class="icon is-small">
+                  <i class="fa fa-file-o"></i>
+                </span>
+                <span>Nova agenda</span>
+              </a>
         </span>
         <div class="has-text-left" v-for="module in mainModules" v-if="checkPermission(module)">
           <span class="nav-item is-hidden-tablet">

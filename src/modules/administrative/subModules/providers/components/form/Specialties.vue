@@ -101,7 +101,7 @@ export default {
         regionalCouncilCode: {
           label: 'Código no CR',
           field: 'regionalCouncilCode',
-          visible: true
+          visible: false
         }
       }
     }

@@ -70,7 +70,7 @@
                   <p class="control">
                     <a class="button" @click="$emit('close-form')">
                       <span class="icon is-small">
-                        <i class="fa fa-ban"></i>
+                        <i class="fa fa-sign-out"></i>
                       </span>
                       <span>Cancelar</span>
                     </a>
@@ -95,7 +95,7 @@
                   <p class="control">
                     <a class="button" @click="$emit('close-form')">
                       <span class="icon is-small">
-                        <i class="fa fa-ban"></i>
+                        <i class="fa fa-sign-out"></i>
                       </span>
                     </a>
                   </p>
