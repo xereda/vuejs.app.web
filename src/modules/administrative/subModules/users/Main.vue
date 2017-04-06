@@ -41,20 +41,25 @@
               <input :class="'input ' + getCSSState()" type="text"
                     ref="searchTextField"
                      v-focus
+                     style="max-width:55%"
                      v-model="control.filters.search.text"
                      @keyup.enter="(control.filters.search.text.length > 3) ? localUpdateSearchFilters() : null"
-                     placeholder="Filtrar o resultado">
-            </div>
-            <div class="">
+                     placeholder="Filtrar...">
               <a class="button is-info" @click="localUpdateSearchFilters()" :disabled="control.filters.search.text.length <= 3">
                 <span class="icon is-small">
                   <i class="fa fa-filter"></i>
                 </span>
               </a>
-              <a :class="'button is-success ' + getCSSState()" @click="newDocument()">
+              <a :class="'button is-success is-hidden-tablet ' + getCSSState()" @click="newDocument()">
                 <span class="icon is-small">
                   <i class="fa fa-file-o"></i>
                 </span>
+              </a>
+              <a :class="'button is-hidden-mobile is-success ' + getCSSState()" @click="newDocument()">
+                <span class="icon is-small">
+                  <i class="fa fa-file-o"></i>
+                </span>
+                <span>Novo</span>
               </a>
             </div>
           </p>
@@ -74,7 +79,7 @@
       </div>
     </nav>
 
-    
+
     <div ref="tableDiv" class="tableDivClass">
       <transition name="fade">
         <table class="table" v-show="transitionTable">
