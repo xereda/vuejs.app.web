@@ -1,7 +1,8 @@
 import Http from '../httpAuth'
 import store from 'store/store'
+import { showWarning } from 'utils/services/messenger/main'
 
-const validate = (callback) => {
+const validate = (routeTo, routeFrom, callback) => {
   Http.get('validate-token', {
     headers: {
       'Authorization': 'JWT ' + store.state.accessToken
@@ -18,9 +19,10 @@ const validate = (callback) => {
     }
   })
   .catch(error => {
-    console.log('Error: ', error)
-    store.dispatch('sessionLogOff')
-    callback('/login/?error=1&key=' + Date.now() / 1000)
+    console.log('Error do timeout saiu aqui?: ', error)
+    store.dispatch('masterLoadingStop')
+    showWarning({ title: 'Conexão', message: 'Houve um problema no acesso ao servidor. Verifique sua conexão e tenta novamente.' })
+    callback(routeFrom.name)
   })
 }
 

@@ -41,7 +41,7 @@ router.beforeEach((to, from, next) => {
   })[0]
   if (module === undefined) return next('/dashboard/dasboard1/?key=' + Date.now() / 1000)
   if (store.state.user.admin === false && module.adminOnly) next('/dashboard/dasboard1/?key=' + Date.now() / 1000)
-  ValidateToken((route) => {
+  ValidateToken(to, from, (route) => {
     return next(route)
   })
 })
