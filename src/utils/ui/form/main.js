@@ -15,7 +15,9 @@ import SubDocumentsList from './SubDocumentsList.vue'
 import DmFormTextarea from './Textarea.vue'
 import DmFormPhone from './Phone.vue'
 import DmFormCep from './CEP.vue'
+import DmFormCheckbox from './Checkbox.vue'
 import DmFormNumber from './Number.vue'
+import DmFormCalendar from './Calendar.vue'
 import DmFormLatitude from './Latitude.vue'
 import DmFormLongitude from './Longitude.vue'
 
@@ -39,5 +41,7 @@ export {
   DmFormCep,
   DmFormLatitude,
   DmFormLongitude,
-  DmFormNumber
+  DmFormNumber,
+  DmFormCalendar,
+  DmFormCheckbox
 }

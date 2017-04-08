@@ -32,7 +32,8 @@
           altInput: true,
           clickOpens: !this.readonly,
           minDate: this.minDate,
-          maxDate: this.maxDate
+          maxDate: this.maxDate,
+          disableMobile: this.disableMobile
         }
       }
     },
@@ -146,6 +147,10 @@
         default: false
       },
       hiddenIcon: {
+        type: Boolean,
+        default: false
+      },
+      disableMobile: {
         type: Boolean,
         default: false
       }

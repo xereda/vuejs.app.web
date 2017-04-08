@@ -22,7 +22,7 @@
             </a>
           </div>
           <div class="column">
-            <a class="button is-danger is-fullwidth">
+            <a class="button is-danger is-fullwidth" @click="goRouteByName('scheduleDefinitions.rules')">
               <span class="icon is-small">
                 <i class="fa fa-list"></i>
               </span>

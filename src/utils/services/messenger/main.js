@@ -117,9 +117,46 @@ const showConfirmDelete = (callback) => {
   })
 }
 
+const showConfirm = (object, callback) => {
+  izitoast.show({
+    // position: 'center',
+    // icon: 'fa fa-check-square',
+    // color: 'green',
+    // title: 'Definição de agenda.',
+    // message: 'Foram gerados ',
+    position: object.position,
+    icon: object.icon,
+    color: object.color,
+    title: object.title,
+    timeout: object.timeout,
+    message: object.message,
+    buttons: [
+      ['<button> ' + object.buttons.btn1.label + ' </button>', (instance, toast) => {
+        object.buttons.btn1.callback()
+        instance.hide({
+          transitionOut: 'fadeOutUp',
+          onClose: (instance, toast, closedBy) => {
+            console.log('closedBy: ' + closedBy) // btn2
+          }
+        }, toast)
+      }],
+      ['<button> ' + object.buttons.btn2.label + ' </button>', (instance, toast) => {
+        object.buttons.btn2.callback()
+        instance.hide({
+          transitionOut: 'fadeOutUp',
+          onClose: (instance, toast, closedBy) => {
+            console.log('closedBy: ' + closedBy) // btn2
+          }
+        }, toast, 'close', 'btn2')
+      }]
+    ]
+  })
+}
+
 export {
   showAPIErrors,
   showAPISuccess,
   showWarning,
-  showConfirmDelete
+  showConfirmDelete,
+  showConfirm
 }
