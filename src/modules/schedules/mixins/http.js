@@ -18,11 +18,27 @@ export default {
         this.masterLoadingStop()
       })
     },
-    getProvidersList () {
+    getProvidersList (callback) {
       Http.get('workplaces/' + this.session.workplaces[0]._id + '/providers')
       .then(response => {
         console.log(response.data)
-        this.providersList = response.data.map(e => { return e.provider }).map(e => { return { _id: e._id, name: e.name } })
+        this.providersList = response.data.map(e => { return e.provider }).map(e => { return { _id: e._id, name: e.name, checked: false } })
+        callback(this.providersList)
+      })
+      .catch(error => {
+        showAPIErrors(error.response || error)
+      })
+    },
+    getProviderAgreements (providerId, callback) {
+      Http.get('workplaces/' + this.session.workplaces[0]._id + '/providers')
+      .then(response => {
+        console.log('data completo: ', response.data)
+        const provider = response.data.filter(e => {
+          return e.provider._id === providerId
+        })
+        this.agreementsList = provider.map(e => { return { 'agreements': e.agreements } })
+        console.log('agreements: ', this.agreementsList)
+        callback(this.agreementsList[0])
       })
       .catch(error => {
         showAPIErrors(error.response || error)

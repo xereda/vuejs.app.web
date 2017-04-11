@@ -27,14 +27,11 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  console.log('dentro da beforeEach: ', to.name, from.name)
   store.dispatch('masterLoadingStart')
   if (to.name === 'login') {
-    console.log('vai mandar para login')
     return next()
   }
   const modules = store.state[to.path.split('/')[1]].modules
-  console.log('dentro da beforeEach - modules: ', modules)
   if (modules === undefined) return next('/dashboard/dasboard1/?key=' + Date.now() / 1000)
   const module = modules.filter(e => {
     return to.name === e.name
@@ -47,7 +44,6 @@ router.beforeEach((to, from, next) => {
 })
 
 router.afterEach((to, from) => {
-  console.log('dentro da afterEach: ', to.name, from.name)
   window.scrollTo(0, 0)
   store.dispatch('masterLoadingStop')
 })

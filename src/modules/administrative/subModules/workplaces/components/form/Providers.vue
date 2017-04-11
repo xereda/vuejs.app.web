@@ -209,7 +209,6 @@ export default {
   },
   methods: {
     cancelForm () {
-      console.log('dentro de cancelForm')
       this.localState = 'new'
       this.clearDataForm()
     },
@@ -230,7 +229,6 @@ export default {
     },
     hidrateDataForm (data) {
       this.temp = data
-      console.log(data, data.agreements)
       this.providerSelectedObject = { _id: data.provider._id, name: data.provider.name }
       this.formFields.email = data.email
       this.formFields.phoneExtension = data.phoneExtension !== null ? data.phoneExtension.toString() : ''
@@ -250,7 +248,6 @@ export default {
       Http.get('/workplaces/' + this.workplaceId + '/providers/?provider=' + providerId)
       .then(response => {
         this.localState = 'update'
-        console.log(response.data)
         this.hidrateDataForm(response.data[0])
       })
       .catch(error => {
@@ -274,11 +271,9 @@ export default {
       })
     },
     deleteDocRelWorkplace (provider) {
-      console.log('vai deletar o doc relacionado em workplace')
       topbar.show()
       Http.delete('/providers/' + provider + '/workplaces/' + this.workplaceId)
       .then(response => {
-        console.log('deletou o doc relacionado em workplace!!!')
         topbar.hide()
         this.clearDataForm()
       })
@@ -355,7 +350,6 @@ export default {
     cloneDataFormFields () {
       const _formsFieldsCloned = _.cloneDeep(this.formFields)
       this.localState === 'new' ? _formsFieldsCloned.createdById = this.session._id : _formsFieldsCloned.updatedById = this.session._id
-      console.log('_formsFieldsCloned: ', _formsFieldsCloned)
       return _formsFieldsCloned
     },
     enableSaveButton () {
@@ -371,6 +365,7 @@ export default {
   },
   watch: {
     providerSelectedObject (val, oldVal) {
+      console.log('dentro do watch - providerSelectedObject: ', val, oldVal)
       if (val !== undefined && val !== null & val._id !== undefined) {
         this.formFields.provider = val._id
       } else {
@@ -378,7 +373,6 @@ export default {
       }
     },
     specialtiesSelectedObject (val) {
-      console.log('dentro de specialtiesSelectedObject: ', val.length, val)
       if (val !== undefined && val[0] !== undefined && val[0]._id !== undefined && val[0]._id !== '') {
         this.formFields.specialties = val.map(e => { return { 'specialty': e._id, 'name': e.name } })
       } else {
@@ -386,7 +380,6 @@ export default {
       }
     },
     agreementsSelectedObject (val) {
-      console.log('dentro de agreementsSelectedObject: ', val.length, val)
       val.length > 0 ? this.formFields.agreements = val.map(e => { return { 'agreement': e._id, 'name': e.name } }) : this.formFields.agreements = []
     }
   }

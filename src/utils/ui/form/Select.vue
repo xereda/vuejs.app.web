@@ -38,7 +38,6 @@
       asyncFind (query) {
         this.isLoading = true
         const _uri = this.apiResource + '/?_limit=' + this.optionsLimit + this.activesOnly + this.filter + '&_fields=_id,name&'
-        console.log(_uri)
         Http.get(_uri)
         .then((response) => {
           this.dataList = response.data

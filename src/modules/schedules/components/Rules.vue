@@ -74,7 +74,9 @@ export default {
     CollapseItem
   },
   mounted () {
-    this.getProvidersList()
+    this.getProvidersList((list) => {
+      this.providersList = list
+    })
   },
   data () {
     return {

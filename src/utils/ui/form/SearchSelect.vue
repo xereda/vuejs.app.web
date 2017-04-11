@@ -70,6 +70,9 @@
       selectedObject (val) {
         console.log('vai passar este objeto: ', val)
         this.$emit('input', val === null ? { _id: '', name: '' } : val)
+      },
+      value (val, oldVal) {
+        this.selectedObject = val
       }
     },
     computed: {

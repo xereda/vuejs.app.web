@@ -8,9 +8,9 @@
         <div class="columns is-multiline">
           <div class="column is-3">
             <div class="box is-hidden-mobile">
-              <prestadores></prestadores>
+              <dm-providers :providers-list="providersList" @provider-select="providerSelect" :provider-id="providerId"></dm-providers>
               <hr>
-              <convenios></convenios>
+              <dm-agreements v-if="showAgreementsList" :agreements-list="agreementsList"></dm-agreements>
             </div>
           </div>
           <div class="column">
@@ -29,31 +29,60 @@
 </template>
 
 <script>
+import http from '../mixins/http'
 import navigation from 'mixins/navigation'
 import session from 'mixins/session'
-import prestadores from './prestadores.vue'
-import convenios from './convenios.vue'
+import DmProviders from './Providers.vue'
+import DmAgreements from './Agreements.vue'
 import fullCalendar from 'vue-fullcalendar'
 import { DmFormCalendar } from 'utils/ui/form/main'
 
 export default {
+  name: 'DmSchedule',
   data () {
     return {
       date: '',
-      fcEvents: []
+      fcEvents: [],
+      providerId: '',
+      providersList: [],
+      agreementsList: []
     }
+  },
+  mounted () {
+    this.getProvidersList((list) => {
+      this.providersList = list
+    })
   },
   mixins: [
     navigation,
-    session
+    session,
+    http
   ],
   components: {
-    prestadores,
-    convenios,
+    DmProviders,
+    DmAgreements,
     fullCalendar,
     DmFormCalendar
   },
+  computed: {
+    showAgreementsList () {
+      if (this.agreementsList === undefined) return false
+      if (this.agreementsList.agreements === undefined) return false
+      if (this.agreementsList.agreements.length === 0) return false
+      return true
+    }
+  },
   methods: {
+    providerSelect (providerId) {
+      console.log('disparou a providerSelect() atraves de emit', providerId)
+      this.providerId = providerId
+      this.getAgreements(providerId)
+    },
+    getAgreements (providerId) {
+      this.getProviderAgreements(providerId, (list) => {
+        this.agreementsList = list
+      })
+    }
   }
 }
 </script>

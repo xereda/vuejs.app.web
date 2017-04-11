@@ -311,10 +311,8 @@ export default {
       SPIN.spin(this.$refs.spin)
       topbar.show()
       this.cleanCEPData()
-      console.log('dentro da get cep data')
       Http.get(this.config.APICEPData + this.formFields.address.zipCode.replace('.', '').replace('-', ''))
       .then(response => {
-        console.log(response.data)
         this.formFields.address.name = response.data.logradouro
         this.formFields.address.neighborhood = response.data.bairro
         this.getCityData(response.data.cidade)
@@ -332,7 +330,6 @@ export default {
       if (name === undefined || name === '') return false
       Http.get('cities/?name=' + name.toUpperCase())
       .then(response => {
-        console.log(response.data)
         this.formFields.city = response.data[0]._id
       })
       .catch(error => {
@@ -344,7 +341,6 @@ export default {
       this.$router.push({ name: 'workplaces' })
     },
     saveForm () {
-      console.log('entrou na saveForm()')
       this.state === 'new' ? this.newDoc() : this.updateDoc()
     },
     openDoc (workplaceId) {
@@ -352,7 +348,6 @@ export default {
       topbar.show()
       Http.get('/workplaces/' + workplaceId + '/?_populate=city')
       .then(response => {
-        console.log('response', response, response.data)
         this.hydrateDataForm(response.data)
       })
       .catch(error => {
@@ -368,7 +363,6 @@ export default {
       topbar.show()
       Http.post('/workplaces', this.cloneDataFormFields(this.formFields))
       .then(response => {
-        console.log('response', response, response.data)
         this.$router.push({ name: 'workplaces.update', params: { state: 'update', workplaceId: response.data._id } })
         showAPISuccess({ title: 'OK', message: 'Local de atendimento cadastrado com sucesso!' })
         SPIN.stop()
@@ -388,7 +382,6 @@ export default {
       .then(response => {
         SPIN.stop()
         topbar.hide()
-        console.log('response', response, response.data)
         showAPISuccess({ title: 'OK', message: 'Local de atendimento alterado com sucesso!' })
       })
       .catch(error => {
@@ -401,7 +394,6 @@ export default {
     callbackDeleteDoc () {
       Http.delete('/workplaces/' + this.workplaceId)
       .then(response => {
-        console.log('response', response, response.data)
         showAPISuccess({ title: 'OK', message: 'Local de atendimento removido com sucesso!' })
         this.closeForm()
       })
@@ -458,7 +450,6 @@ export default {
         SPIN.stop()
         topbar.hide()
       }, 200)
-      console.log(this.formFields)
     }
   },
   computed: {

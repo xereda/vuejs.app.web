@@ -55,7 +55,6 @@
     },
     methods: {
       applyMask (val) {
-        console.log('dentro do applyMask')
         this.number = VMasker.toPattern(val, this.mask)
         this.$emit('input', this.number)
       }
@@ -98,7 +97,6 @@
     },
     watch: {
       value (val) {
-        console.log('dentro do Number.vue: ', val)
         this.number = val
       }
     }

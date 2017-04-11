@@ -9,9 +9,7 @@ const validate = (routeTo, routeFrom, callback) => {
     }
   })
   .then(response => {
-    console.log(response.data.lastChangeDate, store.state.user.lastChangeDate)
     if (response.data.lastChangeDate === store.state.user.lastChangeDate) {
-      console.log('validou o token e vai acessar a rota')
       callback()
     } else {
       store.dispatch('sessionLogOff')
@@ -19,7 +17,6 @@ const validate = (routeTo, routeFrom, callback) => {
     }
   })
   .catch(error => {
-    console.log('Error do timeout saiu aqui?: ', error.response, error)
     if (error.response !== undefined && error.response.status === 401) {
       store.dispatch('sessionLogOff')
       callback('/login/?error=1&key=' + Date.now() / 1000)

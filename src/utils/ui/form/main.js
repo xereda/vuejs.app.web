@@ -10,6 +10,7 @@ import DmFormMultiSelect from './MultiSelect.vue'
 import DmFormSearchSelect from './SearchSelect.vue'
 import DmFormName from './Name.vue'
 import DmFormRadio from './Radio.vue'
+import DmFormRadioElementUI from './RadioElementUI.vue'
 import DmFormSelect from './Select.vue'
 import SubDocumentsList from './SubDocumentsList.vue'
 import DmFormTextarea from './Textarea.vue'
@@ -34,6 +35,7 @@ export {
   DmFormSearchSelect,
   DmFormName,
   DmFormRadio,
+  DmFormRadioElementUI,
   DmFormSelect,
   SubDocumentsList,
   DmFormTextarea,

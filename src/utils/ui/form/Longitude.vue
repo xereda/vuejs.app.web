@@ -47,7 +47,6 @@
     },
     methods: {
       applyMask (val) {
-        console.log(val, val.length)
         if (this.geoLocation.indexOf('+') > -1) {
           val.length > 11 ? this.geoLocation = VMasker.toPattern(val, '+999.9999999') : this.geoLocation = VMasker.toPattern(val, '+99.9999999')
           val.length === 1 ? this.geoLocation = '+' + val.replace('+', '') : null

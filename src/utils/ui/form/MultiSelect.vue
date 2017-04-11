@@ -1,6 +1,7 @@
 <template lang="html">
   <div>
-    <!-- <pre>{{ selectedObject }}</pre> -->
+    <!-- value: <pre>{{ value }}</pre>
+    selectedObject: <pre>{{ selectedObject }}</pre> -->
     <label v-if="showLabel" class="label">{{ label }}</label>
         <multiselect
           v-model="selectedObject"
@@ -35,7 +36,6 @@
   import { mapState } from 'vuex'
   import Http from '../../../utils/services/http'
   import Multiselect from 'vue-multiselect'
-
   export default {
     name: 'dmFormMultiSelect',
     data () {
@@ -95,6 +95,9 @@
       docId (val) {
         this.selectedObject = null
         this.asyncFind()
+      },
+      value (val, oldVal) {
+        this.selectedObject = val
       }
     },
     computed: {
@@ -211,8 +214,8 @@
   }
 </script>
 
-<style lang="scss" scoped>
-  @import '~vue-multiselect/dist/vue-multiselect.min.css';
+<style lang="scss">
+  // @import '~vue-multiselect/dist/vue-multiselect.min.css';
 
   .noResult {
     font-size: .8em;

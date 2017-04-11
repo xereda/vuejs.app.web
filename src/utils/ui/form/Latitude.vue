@@ -47,7 +47,6 @@
     },
     methods: {
       applyMask (val) {
-        console.log(val, val.length, this.geoLocation.length, this.geoLocation, this.geoLocation.indexOf('+') > -1)
         if (this.geoLocation.indexOf('+') > -1) {
           // console.log('vai aplicar a maskara com positivo')
           this.geoLocation = VMasker.toPattern(val, '+99.9999999')
