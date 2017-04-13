@@ -1,8 +1,8 @@
 <template>
   <div>
-    <dm-header v-if="$route.name !== 'login'"></dm-header>
+    <dm-header v-if="accessToken !== '' && $route.name !== 'login'"></dm-header>
     <router-view></router-view>
-    <dm-footer v-if="$route.name !== 'login' && masterLoading === false"></dm-footer>
+    <dm-footer v-if="accessToken !== '' && $route.name !== 'login' && masterLoading === false"></dm-footer>
     <dm-loading v-show="masterLoading"></dm-loading>
   </div>
 </template>

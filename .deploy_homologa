@@ -23,7 +23,7 @@ expect {
     exp_continue
 }
 -re ".*sword.*" {
-    exp_send "suce\$\$0?\r"
+    exp_send "suce\$\$0??????\r"
 }
 }
 interact

@@ -354,7 +354,7 @@ export default {
       const _uri = this.config.APIURIBase + this.API.resource
 
       this.$http.post(_uri, this.modalDoc, { emulateJSON: true }).then((response) => {
-        showAPISuccess({ title: 'OK', message: 'Operadora cadastrada com sucesso!' })
+        showAPISuccess({ title: 'OK', message: 'Especialidade cadastrada com sucesso!' })
         this.$emit('set-pag', 1)
         this.$set(this, 'clonedDoc', JSON.parse(JSON.stringify(this.modelFactory)))
         this.$set(this, 'modalDoc', JSON.parse(JSON.stringify(this.modelFactory)))
@@ -373,7 +373,7 @@ export default {
 
       this.$http.put(_uri, this.modalDoc, { emulateJSON: true }).then((response) => {
         response.body.updatedAt !== undefined ? this.modalDoc.updatedAt = response.body.updatedAt : null
-        showAPISuccess({ title: 'OK', message: 'Operadora alterada com sucesso!' })
+        showAPISuccess({ title: 'OK', message: 'Especialidade alterada com sucesso!' })
         this.$set(this, 'clonedDoc', JSON.parse(JSON.stringify(this.modalDoc)))
         this.$emit('set-pag')
         this.stopLoading(500)
